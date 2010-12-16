@@ -23,6 +23,8 @@ public class PersonQueries extends AbstractTableModel
    private PreparedStatement selectAllPeople = null; 
    private PreparedStatement selectPeopleByLastName = null; 
    private PreparedStatement insertNewPerson = null;
+   private PreparedStatement deletePerson = null;
+   private PreparedStatement updatePerson = null;
    private int numberOfRows;
    private Statement statement;
    private ResultSetMetaData metaData;
@@ -53,6 +55,14 @@ public class PersonQueries extends AbstractTableModel
             "( FirstName, LastName, Email, PhoneNumber ) " + 
             "VALUES ( ?, ?, ?, ? )" );
 
+         // create insert that adds a new entry into the database
+         updatePerson = connection.prepareStatement(
+            "UPDATE Addresses SET FirstName=?, LastName=?, Email=?,"
+            + " PhoneNumber=? WHERE AddressID=?");
+
+         deletePerson = connection.prepareStatement(
+            "DELETE FROM Addresses WHERE AddressID = ?");
+
       // create Statement to query database
       statement = connection.createStatement(
          ResultSet.TYPE_SCROLL_INSENSITIVE,
@@ -80,6 +90,7 @@ public class PersonQueries extends AbstractTableModel
       try 
       {
          // executeQuery returns ResultSet containing matching entries
+         setQuery( "SELECT * FROM Addresses" );
          myResultSet = selectAllPeople.executeQuery();
          results = new ArrayList< Person >();
          
@@ -123,7 +134,7 @@ public class PersonQueries extends AbstractTableModel
       try 
       {
          selectPeopleByLastName.setString( 1, name ); // specify last name
-
+         setQuery("SELECT * FROM Addresses WHERE LastName = '" + name + "'");
          // executeQuery returns ResultSet containing matching entries
          resultSet = selectPeopleByLastName.executeQuery(); 
 
@@ -173,7 +184,8 @@ public class PersonQueries extends AbstractTableModel
          insertNewPerson.setString( 4, num );
 
          // insert the new entry; returns # of rows updated
-         result = insertNewPerson.executeUpdate(); 
+         result = insertNewPerson.executeUpdate();
+         
       } // end try
       catch ( SQLException sqlException )
       {
@@ -181,6 +193,60 @@ public class PersonQueries extends AbstractTableModel
          close();
       } // end catch
       
+      return result;
+   } // end method addPerson
+
+
+
+   // add an entry
+   public int updatePerson(
+      String addressID, String fname, String lname, String email, String num )
+   {
+      int result = 0;
+
+      // set parameters, then execute insertNewPerson
+      try
+      {
+         
+         updatePerson.setString( 1, fname );
+         updatePerson.setString( 2, lname );
+         updatePerson.setString( 3, email );
+         updatePerson.setString( 4, num );
+         updatePerson.setString( 5, addressID);
+
+         // insert the new entry; returns # of rows updated
+         result = updatePerson.executeUpdate();
+
+      } // end try
+      catch ( SQLException sqlException )
+      {
+         sqlException.printStackTrace();
+         close();
+      } // end catch
+
+      return result;
+   } // end method addPerson
+
+
+
+   public int deletePerson(String addressID )
+   {
+      int result = 0;
+
+      // set parameters, then execute insertNewPerson
+      try
+      {
+         deletePerson.setString( 1, addressID );
+
+         // insert the new entry; returns # of rows updated
+         result = deletePerson.executeUpdate();
+      } // end try
+      catch ( SQLException sqlException )
+      {
+         sqlException.printStackTrace();
+         close();
+      } // end catch
+
       return result;
    } // end method addPerson
    
@@ -317,6 +383,7 @@ public class PersonQueries extends AbstractTableModel
 
       // notify JTable that model has changed
       fireTableStructureChanged();
+
    } // end method setQuery
 
    // close Statement and Connection

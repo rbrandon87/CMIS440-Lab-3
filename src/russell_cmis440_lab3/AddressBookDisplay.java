@@ -19,9 +19,12 @@ package russell_cmis440_lab3;
 */
 
 
+
 import java.util.List;
 import javax.swing.JOptionPane;
-import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
         
 public class AddressBookDisplay extends javax.swing.JFrame {
 
@@ -33,12 +36,11 @@ public class AddressBookDisplay extends javax.swing.JFrame {
 
     /** Creates new form AddressBookDisplay */
     public AddressBookDisplay() {
-      super( "Address Book" );
-
-      // establish database connection and set up PreparedStatements
-      personQueries = new PersonQueries();
-      
+        //super( "Address Book" );
+        // establish database connection and set up PreparedStatements
+        personQueries = new PersonQueries();
         initComponents();
+        loadDatabase();
     }
 
     /** This method is called from within the constructor to
@@ -56,9 +58,9 @@ public class AddressBookDisplay extends javax.swing.JFrame {
         lblOf = new javax.swing.JLabel();
         txtTotalRecordCount = new javax.swing.JTextField();
         btnNext = new javax.swing.JButton();
-        btnBrowseAllEntries = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         myJTable = new javax.swing.JTable();
+        lblNoData = new javax.swing.JLabel();
         newUpdateDeletePanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtAddressID = new javax.swing.JTextField();
@@ -114,13 +116,6 @@ public class AddressBookDisplay extends javax.swing.JFrame {
             }
         });
 
-        btnBrowseAllEntries.setText("Browse All Entries");
-        btnBrowseAllEntries.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBrowseAllEntriesActionPerformed(evt);
-            }
-        });
-
         myJTable.setModel(personQueries);
         myJTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         myJTable.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -128,7 +123,16 @@ public class AddressBookDisplay extends javax.swing.JFrame {
                 myJTablePropertyChange(evt);
             }
         });
+        ListSelectionModel rowSM = myJTable.getSelectionModel();
+        rowSM.addListSelectionListener(new ListSelectionListener() {
+            public void valueChanged(ListSelectionEvent evt) {
+                myJTableValueChanged(evt);
+            }
+        });
         jScrollPane2.setViewportView(myJTable);
+
+        lblNoData.setForeground(javax.swing.UIManager.getDefaults().getColor("nb.errorForeground"));
+        lblNoData.setText("*No Data Present");
 
         javax.swing.GroupLayout browsePanelLayout = new javax.swing.GroupLayout(browsePanel);
         browsePanel.setLayout(browsePanelLayout);
@@ -137,7 +141,10 @@ public class AddressBookDisplay extends javax.swing.JFrame {
             .addGroup(browsePanelLayout.createSequentialGroup()
                 .addGroup(browsePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(browsePanelLayout.createSequentialGroup()
-                        .addGap(160, 160, 160)
+                        .addContainerGap()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 677, Short.MAX_VALUE))
+                    .addGroup(browsePanelLayout.createSequentialGroup()
+                        .addGap(194, 194, 194)
                         .addComponent(btnPrevious)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtCurrentRecord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -147,12 +154,9 @@ public class AddressBookDisplay extends javax.swing.JFrame {
                         .addComponent(txtTotalRecordCount, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnNext))
-                    .addGroup(browsePanelLayout.createSequentialGroup()
-                        .addGap(468, 468, 468)
-                        .addComponent(btnBrowseAllEntries))
-                    .addGroup(browsePanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 575, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, browsePanelLayout.createSequentialGroup()
+                        .addContainerGap(602, Short.MAX_VALUE)
+                        .addComponent(lblNoData)))
                 .addContainerGap())
         );
 
@@ -172,8 +176,8 @@ public class AddressBookDisplay extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnBrowseAllEntries)
-                .addGap(21, 21, 21))
+                .addComponent(lblNoData)
+                .addGap(30, 30, 30))
         );
 
         newUpdateDeletePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("New/Update/Delete Record"));
@@ -198,8 +202,18 @@ public class AddressBookDisplay extends javax.swing.JFrame {
         });
 
         btnUpdateEntry.setText("Update Entry");
+        btnUpdateEntry.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateEntryActionPerformed(evt);
+            }
+        });
 
         btnDeleteEntry.setText("Delete Entry");
+        btnDeleteEntry.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteEntryActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout newUpdateDeletePanelLayout = new javax.swing.GroupLayout(newUpdateDeletePanel);
         newUpdateDeletePanel.setLayout(newUpdateDeletePanelLayout);
@@ -231,7 +245,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
                         .addComponent(btnUpdateEntry)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnDeleteEntry)))
-                .addContainerGap(66, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         newUpdateDeletePanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnDeleteEntry, btnNewEntry, btnUpdateEntry});
@@ -282,7 +296,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
             findPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, findPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txtFind, javax.swing.GroupLayout.DEFAULT_SIZE, 462, Short.MAX_VALUE)
+                .addComponent(txtFind, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnFind, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -307,7 +321,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
         errorPanel.setLayout(errorPanelLayout);
         errorPanelLayout.setHorizontalGroup(
             errorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE)
         );
         errorPanelLayout.setVerticalGroup(
             errorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -358,15 +372,113 @@ public class AddressBookDisplay extends javax.swing.JFrame {
 
     private void btnPreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreviousActionPerformed
       currentEntryIndex--;
-
+      
       if ( currentEntryIndex < 0 )
          currentEntryIndex = numberOfEntries - 1;
 
       txtCurrentRecord.setText( "" + ( currentEntryIndex + 1 ) );
-      txtCurrentRecordActionPerformed( evt );
+      updateCurrentSelectedRecord();
     }//GEN-LAST:event_btnPreviousActionPerformed
 
     private void txtCurrentRecordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCurrentRecordActionPerformed
+        updateCurrentSelectedRecord();
+    }//GEN-LAST:event_txtCurrentRecordActionPerformed
+
+    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
+      currentEntryIndex++;
+
+      if ( currentEntryIndex >= numberOfEntries )
+         currentEntryIndex = 0;
+
+      txtCurrentRecord.setText( "" + ( currentEntryIndex + 1 ) );
+      updateCurrentSelectedRecord();
+    }//GEN-LAST:event_btnNextActionPerformed
+
+    private void btnFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindActionPerformed
+      if (txtFind.getText().equals("")){
+          loadDatabase();
+          return;
+      }
+      results = personQueries.getPeopleByLastName( txtFind.getText() );
+      numberOfEntries = results.size();
+
+      if ( numberOfEntries != 0 )
+      {
+          currentEntryIndex = 0;
+          currentEntry = results.get(currentEntryIndex);
+          txtAddressID.setText("" + currentEntry.getAddressID());
+          txtFirstName.setText(currentEntry.getFirstName());
+          txtLastName.setText(currentEntry.getLastName());
+          txtEmail.setText(currentEntry.getEmail());
+          txtPhoneNum.setText(currentEntry.getPhoneNumber());
+          txtTotalRecordCount.setText("" + numberOfEntries);
+          txtCurrentRecord.setText("" + (currentEntryIndex + 1));
+          myJTable.setModel(personQueries);
+          enableControls();
+      }
+      else{
+          loadDatabase();
+      }
+    }//GEN-LAST:event_btnFindActionPerformed
+
+    private void btnNewEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewEntryActionPerformed
+      int result = personQueries.addPerson( txtFirstName.getText(),
+         txtLastName.getText(), txtEmail.getText(),
+         txtPhoneNum.getText() );
+
+      if ( result == 1 ){
+         JOptionPane.showMessageDialog( this, "Person added!",
+            "Person added", JOptionPane.PLAIN_MESSAGE );
+      }else{
+         JOptionPane.showMessageDialog( this, "Person not added!",
+            "Error", JOptionPane.PLAIN_MESSAGE );
+      }
+
+      loadDatabase();
+    }//GEN-LAST:event_btnNewEntryActionPerformed
+
+    private void myJTablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_myJTablePropertyChange
+
+    }//GEN-LAST:event_myJTablePropertyChange
+
+    private void btnDeleteEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteEntryActionPerformed
+    if (txtAddressID.getText().equals("")){
+        return;
+    }
+    int result = personQueries.deletePerson( txtAddressID.getText());
+
+      if ( result == 1 ){
+         JOptionPane.showMessageDialog( this, "Person deleted!",
+            "Person added", JOptionPane.PLAIN_MESSAGE );
+      }else{
+         JOptionPane.showMessageDialog( this, "Person not deleted!",
+            "Error", JOptionPane.PLAIN_MESSAGE );
+      }
+
+      loadDatabase();
+    }//GEN-LAST:event_btnDeleteEntryActionPerformed
+
+    private void btnUpdateEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateEntryActionPerformed
+    if (txtAddressID.getText().equals("")){
+        return;
+    }
+        int result = personQueries.updatePerson( txtAddressID.getText(),
+              txtFirstName.getText(),txtLastName.getText(),
+              txtEmail.getText(),txtPhoneNum.getText() );
+
+      if ( result == 1 ){
+         JOptionPane.showMessageDialog( this, "Person updated!",
+            "Person added", JOptionPane.PLAIN_MESSAGE );
+      }else{
+         JOptionPane.showMessageDialog( this, "Person not updated!",
+            "Error", JOptionPane.PLAIN_MESSAGE );
+      }
+
+      loadDatabase();
+    }//GEN-LAST:event_btnUpdateEntryActionPerformed
+
+
+    private void updateCurrentSelectedRecord(){
       currentEntryIndex =
          ( Integer.parseInt( txtCurrentRecord.getText() ) - 1 );
 
@@ -381,88 +493,69 @@ public class AddressBookDisplay extends javax.swing.JFrame {
          txtTotalRecordCount.setText( "" + numberOfEntries );
          txtCurrentRecord.setText( "" + ( currentEntryIndex + 1 ) );
          myJTable.changeSelection(currentEntryIndex, 0, false, false);
-         
+
       } // end if
-    }//GEN-LAST:event_txtCurrentRecordActionPerformed
+    }
 
-    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
-      currentEntryIndex++;
+    private void myJTableValueChanged(ListSelectionEvent evt) {
+        if (evt.getValueIsAdjusting()){
+            return; // if you don't want to handle intermediate selections
+        }
+        ListSelectionModel rowSM = (ListSelectionModel)evt.getSource();
+        int selectedIndex = rowSM.getMinSelectionIndex();
+        currentEntryIndex = selectedIndex;
+        if (currentEntryIndex > -1){
+            txtCurrentRecord.setText( "" + ( currentEntryIndex + 1 ) );
+            updateCurrentSelectedRecord();
+        }
 
-      if ( currentEntryIndex >= numberOfEntries )
-         currentEntryIndex = 0;
-
-      txtCurrentRecord.setText( "" + ( currentEntryIndex + 1 ) );
-      txtCurrentRecordActionPerformed( evt );
-    }//GEN-LAST:event_btnNextActionPerformed
-
-    private void btnFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindActionPerformed
-      results =
-         personQueries.getPeopleByLastName( txtFind.getText() );
-      numberOfEntries = results.size();
-
-      if ( numberOfEntries != 0 )
-      {
-         currentEntryIndex = 0;
-         currentEntry = results.get( currentEntryIndex );
-         txtAddressID.setText("" + currentEntry.getAddressID() );
-         txtFirstName.setText( currentEntry.getFirstName() );
-         txtLastName.setText( currentEntry.getLastName() );
-         txtEmail.setText( currentEntry.getEmail() );
-         txtPhoneNum.setText( currentEntry.getPhoneNumber() );
-         txtTotalRecordCount.setText( "" + numberOfEntries );
-         txtCurrentRecord.setText( "" + ( currentEntryIndex + 1 ) );
-         btnNext.setEnabled( true );
-         btnPrevious.setEnabled( true );
-      } // end if
-      else
-         btnBrowseAllEntriesActionPerformed( evt );
-    }//GEN-LAST:event_btnFindActionPerformed
-
-    private void btnBrowseAllEntriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBrowseAllEntriesActionPerformed
+    }
+    
+    private void loadDatabase(){
       try
       {
          results = personQueries.getAllPeople();
          numberOfEntries = results.size();
-
-         if ( numberOfEntries != 0 )
-         {
-            currentEntryIndex = 0;
-            currentEntry = results.get( currentEntryIndex );
-         txtAddressID.setText("" + currentEntry.getAddressID() );
-         txtFirstName.setText( currentEntry.getFirstName() );
-         txtLastName.setText( currentEntry.getLastName() );
-         txtEmail.setText( currentEntry.getEmail() );
-         txtPhoneNum.setText( currentEntry.getPhoneNumber() );
+         txtAddressID.setText("");
+         txtFirstName.setText("");
+         txtLastName.setText("");
+         txtEmail.setText("");
+         txtPhoneNum.setText("");
          txtTotalRecordCount.setText( "" + numberOfEntries );
-         txtCurrentRecord.setText( "" + ( currentEntryIndex + 1 ) );
-         btnNext.setEnabled( true );
-         btnPrevious.setEnabled( true );
-         } // end if
+         txtCurrentRecord.setText("");
+         myJTable.setModel(personQueries);
+
+         if ( numberOfEntries > 0 ){
+             enableControls();
+         }else{
+             disableControls();
+         }
+
       } // end try
       catch ( Exception e )
       {
          e.printStackTrace();
-      } // end catch
-    }//GEN-LAST:event_btnBrowseAllEntriesActionPerformed
+      } // end catch        
+    }
+    
+    private void enableControls(){
+         btnNext.setEnabled( true );
+         btnPrevious.setEnabled( true );
+         txtCurrentRecord.setEnabled(true);
+         lblNoData.setVisible(false);
+         btnDeleteEntry.setEnabled(true);
+         btnUpdateEntry.setEnabled(true);
+    }
+    
+    private void disableControls(){
+         btnNext.setEnabled( false );
+         btnPrevious.setEnabled( false );
+         txtCurrentRecord.setEnabled(false);
+         lblNoData.setVisible(true);
+         btnDeleteEntry.setEnabled(false);
+         btnUpdateEntry.setEnabled(false);
+    }
 
-    private void btnNewEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewEntryActionPerformed
-      int result = personQueries.addPerson( txtFirstName.getText(),
-         txtLastName.getText(), txtEmail.getText(),
-         txtPhoneNum.getText() );
-
-      if ( result == 1 )
-         JOptionPane.showMessageDialog( this, "Person added!",
-            "Person added", JOptionPane.PLAIN_MESSAGE );
-      else
-         JOptionPane.showMessageDialog( this, "Person not added!",
-            "Error", JOptionPane.PLAIN_MESSAGE );
-
-      btnBrowseAllEntriesActionPerformed( evt );
-    }//GEN-LAST:event_btnNewEntryActionPerformed
-
-    private void myJTablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_myJTablePropertyChange
-        // TODO add your handling code here:
-    }//GEN-LAST:event_myJTablePropertyChange
 
     /**
     * @param args the command line arguments
@@ -477,7 +570,6 @@ public class AddressBookDisplay extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel browsePanel;
-    private javax.swing.JButton btnBrowseAllEntries;
     private javax.swing.JButton btnDeleteEntry;
     private javax.swing.JButton btnFind;
     private javax.swing.JButton btnNewEntry;
@@ -497,6 +589,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblFirstName;
     private javax.swing.JLabel lblLastName;
+    private javax.swing.JLabel lblNoData;
     private javax.swing.JLabel lblOf;
     private javax.swing.JLabel lblPhoneNum;
     private javax.swing.JTable myJTable;
