@@ -58,7 +58,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
         btnNext = new javax.swing.JButton();
         btnBrowseAllEntries = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        myJTable = new javax.swing.JTable();
         newUpdateDeletePanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtAddressID = new javax.swing.JTextField();
@@ -121,8 +121,14 @@ public class AddressBookDisplay extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(personQueries);
-        jScrollPane2.setViewportView(jTable1);
+        myJTable.setModel(personQueries);
+        myJTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        myJTable.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                myJTablePropertyChange(evt);
+            }
+        });
+        jScrollPane2.setViewportView(myJTable);
 
         javax.swing.GroupLayout browsePanelLayout = new javax.swing.GroupLayout(browsePanel);
         browsePanel.setLayout(browsePanelLayout);
@@ -374,6 +380,8 @@ public class AddressBookDisplay extends javax.swing.JFrame {
          txtPhoneNum.setText( currentEntry.getPhoneNumber() );
          txtTotalRecordCount.setText( "" + numberOfEntries );
          txtCurrentRecord.setText( "" + ( currentEntryIndex + 1 ) );
+         myJTable.changeSelection(currentEntryIndex, 0, false, false);
+         
       } // end if
     }//GEN-LAST:event_txtCurrentRecordActionPerformed
 
@@ -452,6 +460,10 @@ public class AddressBookDisplay extends javax.swing.JFrame {
       btnBrowseAllEntriesActionPerformed( evt );
     }//GEN-LAST:event_btnNewEntryActionPerformed
 
+    private void myJTablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_myJTablePropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_myJTablePropertyChange
+
     /**
     * @param args the command line arguments
     */
@@ -482,12 +494,12 @@ public class AddressBookDisplay extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblFirstName;
     private javax.swing.JLabel lblLastName;
     private javax.swing.JLabel lblOf;
     private javax.swing.JLabel lblPhoneNum;
+    private javax.swing.JTable myJTable;
     private javax.swing.JPanel newUpdateDeletePanel;
     private javax.swing.JTextField txtAddressID;
     private javax.swing.JTextField txtCurrentRecord;
