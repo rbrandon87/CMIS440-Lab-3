@@ -9,8 +9,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
+import javax.swing.table.AbstractTableModel;
+import java.sql.ResultSetMetaData;
+import java.sql.Statement;
 
-public class PersonQueries 
+public class PersonQueries extends AbstractTableModel
 {
    private static final String URL = "jdbc:derby:AddressBook";
    private static final String USERNAME = "deitel";
@@ -19,8 +22,15 @@ public class PersonQueries
    private Connection connection = null; // manages connection
    private PreparedStatement selectAllPeople = null; 
    private PreparedStatement selectPeopleByLastName = null; 
-   private PreparedStatement insertNewPerson = null; 
-    
+   private PreparedStatement insertNewPerson = null;
+   private int numberOfRows;
+   private Statement statement;
+   private ResultSetMetaData metaData;
+   private ResultSet resultSet;
+
+   // keep track of database connection status
+   private boolean connectedToDatabase = false;
+   
    // constructor
    public PersonQueries()
    {
@@ -42,6 +52,17 @@ public class PersonQueries
             "INSERT INTO Addresses " + 
             "( FirstName, LastName, Email, PhoneNumber ) " + 
             "VALUES ( ?, ?, ?, ? )" );
+
+      // create Statement to query database
+      statement = connection.createStatement(
+         ResultSet.TYPE_SCROLL_INSENSITIVE,
+         ResultSet.CONCUR_READ_ONLY );
+
+      // update database connection status
+      connectedToDatabase = true;
+
+      // set query and execute it
+      setQuery( "SELECT * FROM Addresses" );
       } // end try
       catch ( SQLException sqlException )
       {
@@ -54,22 +75,22 @@ public class PersonQueries
    public List< Person > getAllPeople()
    {
       List< Person > results = null;
-      ResultSet resultSet = null;
+      ResultSet myResultSet = null;
       
       try 
       {
          // executeQuery returns ResultSet containing matching entries
-         resultSet = selectAllPeople.executeQuery(); 
+         myResultSet = selectAllPeople.executeQuery();
          results = new ArrayList< Person >();
          
-         while ( resultSet.next() )
+         while ( myResultSet.next() )
          {
             results.add( new Person(
-               resultSet.getInt( "addressID" ),
-               resultSet.getString( "firstName" ),
-               resultSet.getString( "lastName" ),
-               resultSet.getString( "email" ),
-               resultSet.getString( "phoneNumber" ) ) );
+               myResultSet.getInt( "addressID" ),
+               myResultSet.getString( "firstName" ),
+               myResultSet.getString( "lastName" ),
+               myResultSet.getString( "email" ),
+               myResultSet.getString( "phoneNumber" ) ) );
          } // end while
       } // end try
       catch ( SQLException sqlException )
@@ -80,7 +101,7 @@ public class PersonQueries
       {
          try 
          {
-            resultSet.close();
+            myResultSet.close();
          } // end try
          catch ( SQLException sqlException )
          {
@@ -177,24 +198,154 @@ public class PersonQueries
    } // end method close
 
 
-   public ResultSet getAllPeopleResultSet()
-   {
-      ResultSet resultSet = null;
+//*****************************************************************************
 
+   // get class that represents column type
+    @Override
+   public Class getColumnClass( int column ) throws IllegalStateException
+   {
+      // ensure database connection is available
+      if ( !connectedToDatabase )
+         throw new IllegalStateException( "Not Connected to Database" );
+
+      // determine Java class of column
       try
       {
-         // executeQuery returns ResultSet containing matching entries
-         resultSet = selectAllPeople.executeQuery();
-         return resultSet;
+         String className = metaData.getColumnClassName( column + 1 );
 
+         // return Class object that represents className
+         return Class.forName( className );
+      } // end try
+      catch ( Exception exception )
+      {
+         exception.printStackTrace();
+      } // end catch
+
+      return Object.class; // if problems occur above, assume type Object
+   } // end method getColumnClass
+
+   // get number of columns in ResultSet
+   public int getColumnCount() throws IllegalStateException
+   {
+      // ensure database connection is available
+      if ( !connectedToDatabase )
+         throw new IllegalStateException( "Not Connected to Database" );
+
+      // determine number of columns
+      try
+      {
+         return metaData.getColumnCount();
       } // end try
       catch ( SQLException sqlException )
       {
          sqlException.printStackTrace();
-         return null;
       } // end catch
 
-   } // end method getAllPeople
+      return 0; // if problems occur above, return 0 for number of columns
+   } // end method getColumnCount
+
+   // get name of a particular column in ResultSet
+    @Override
+   public String getColumnName( int column ) throws IllegalStateException
+   {
+      // ensure database connection is available
+      if ( !connectedToDatabase )
+         throw new IllegalStateException( "Not Connected to Database" );
+
+      // determine column name
+      try
+      {
+         return metaData.getColumnName( column + 1 );
+      } // end try
+      catch ( SQLException sqlException )
+      {
+         sqlException.printStackTrace();
+      } // end catch
+
+      return ""; // if problems, return empty string for column name
+   } // end method getColumnName
+
+   // return number of rows in ResultSet
+   public int getRowCount() throws IllegalStateException
+   {
+      // ensure database connection is available
+      if ( !connectedToDatabase )
+         throw new IllegalStateException( "Not Connected to Database" );
+
+      return numberOfRows;
+   } // end method getRowCount
+
+   // obtain value in particular row and column
+   public Object getValueAt( int row, int column )
+      throws IllegalStateException
+   {
+      // ensure database connection is available
+      if ( !connectedToDatabase )
+         throw new IllegalStateException( "Not Connected to Database" );
+
+      // obtain a value at specified ResultSet row and column
+      try
+      {
+         resultSet.absolute( row + 1 );
+         return resultSet.getObject( column + 1 );
+      } // end try
+      catch ( SQLException sqlException )
+      {
+         sqlException.printStackTrace();
+      } // end catch
+
+      return ""; // if problems, return empty string object
+   } // end method getValueAt
+
+   // set new database query string
+   public void setQuery( String query )
+      throws SQLException, IllegalStateException
+   {
+      // ensure database connection is available
+      if ( !connectedToDatabase )
+         throw new IllegalStateException( "Not Connected to Database" );
+
+      // specify query and execute it
+      resultSet = statement.executeQuery( query );
+
+      // obtain meta data for ResultSet
+      metaData = resultSet.getMetaData();
+
+      // determine number of rows in ResultSet
+      resultSet.last();                   // move to last row
+      numberOfRows = resultSet.getRow();  // get row number
+
+      // notify JTable that model has changed
+      fireTableStructureChanged();
+   } // end method setQuery
+
+   // close Statement and Connection
+   public void disconnectFromDatabase()
+   {
+      if ( connectedToDatabase )
+      {
+         // close Statement and Connection
+         try
+         {
+            resultSet.close();
+            statement.close();
+            connection.close();
+         } // end try
+         catch ( SQLException sqlException )
+         {
+            sqlException.printStackTrace();
+         } // end catch
+         finally  // update database connection status
+         {
+            connectedToDatabase = false;
+         } // end finally
+      } // end if
+   } // end method disconnectFromDatabase
+
+   public void getLastError(){
+       
+   }
+
 } // end class PersonQueries
 
 
