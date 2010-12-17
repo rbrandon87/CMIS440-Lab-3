@@ -20,9 +20,24 @@ package russell_cmis440_lab3;
 */
 
 
-
+import javax.swing.JTextArea;
 
 
 public class TextAreaLogger {
+    
+    private JTextArea myDebugJTextArea = null;
+
+    public TextAreaLogger(JTextArea aJTextArea){
+        myDebugJTextArea = aJTextArea;
+    }
+
+    public void log(String msg){
+        myDebugJTextArea.setText(msg);
+    }
+
+    public void log(String msg, int value){
+        myDebugJTextArea.setText(msg + " = " + value);
+    }
+
 
 }

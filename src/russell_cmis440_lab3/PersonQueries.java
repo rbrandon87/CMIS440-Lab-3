@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 import java.sql.ResultSetMetaData;
 import java.sql.Statement;
+import javax.swing.JTextArea;
 
 public class PersonQueries extends AbstractTableModel
 {
@@ -32,13 +33,17 @@ public class PersonQueries extends AbstractTableModel
 
    // keep track of database connection status
    private boolean connectedToDatabase = false;
+   private String lastError = null;
+   private JTextArea myDebugJTextArea = null;
    
    // constructor
-   public PersonQueries()
+   public PersonQueries(JTextArea aJTextArea)
    {
       try 
       {
-         connection = 
+          lastError = null;
+          myDebugJTextArea = aJTextArea;
+          connection =
             DriverManager.getConnection( URL, USERNAME, PASSWORD );
 
          // create query that selects all entries in the AddressBook
@@ -76,14 +81,18 @@ public class PersonQueries extends AbstractTableModel
       } // end try
       catch ( SQLException sqlException )
       {
-         sqlException.printStackTrace();
-         System.exit( 1 );
-      } // end catch
+         lastError += sqlException.toString();
+      }catch ( Exception exception){
+          lastError += exception.toString();
+      }finally{
+          writeError();
+      }
    } // end PersonQueries constructor
    
    // select all of the addresses in the database
    public List< Person > getAllPeople()
    {
+      lastError = null;
       List< Person > results = null;
       ResultSet myResultSet = null;
       
@@ -106,9 +115,10 @@ public class PersonQueries extends AbstractTableModel
       } // end try
       catch ( SQLException sqlException )
       {
-         sqlException.printStackTrace();         
-      } // end catch
-      finally
+         lastError += sqlException.toString();
+      }catch ( Exception exception){
+          lastError += exception.toString();
+      }finally
       {
          try 
          {
@@ -116,65 +126,69 @@ public class PersonQueries extends AbstractTableModel
          } // end try
          catch ( SQLException sqlException )
          {
-            sqlException.printStackTrace();         
+            lastError += sqlException.toString();
             close();
          } // end catch
+         writeError();
+         return results;
       } // end finally
       
-      return results;
    } // end method getAllPeople
 
    
    // select person by last name   
    public List< Person > getPeopleByLastName( String name )
    {
+      lastError = null;
       List< Person > results = null;
-      ResultSet resultSet = null;
+      ResultSet myResultSet = null;
 
       try 
       {
          selectPeopleByLastName.setString( 1, name ); // specify last name
          setQuery("SELECT * FROM Addresses WHERE LastName = '" + name + "'");
          // executeQuery returns ResultSet containing matching entries
-         resultSet = selectPeopleByLastName.executeQuery(); 
+         myResultSet = selectPeopleByLastName.executeQuery();
 
          results = new ArrayList< Person >();
 
-         while ( resultSet.next() )
+         while ( myResultSet.next() )
          {
-            results.add( new Person( resultSet.getInt( "addressID"),
-               resultSet.getString( "firstName" ),
-               resultSet.getString( "lastName" ),
-               resultSet.getString( "email" ),
-               resultSet.getString( "phoneNumber" ) ) );
+            results.add( new Person( myResultSet.getInt( "addressID"),
+               myResultSet.getString( "firstName" ),
+               myResultSet.getString( "lastName" ),
+               myResultSet.getString( "email" ),
+               myResultSet.getString( "phoneNumber" ) ) );
          } // end while
       } // end try
       catch ( SQLException sqlException )
       {
-         sqlException.printStackTrace();
-      } // end catch
-      finally
+         lastError += sqlException.toString();
+      }catch ( Exception exception){
+          lastError += exception.toString();
+      }finally
       {
-         try 
+         try
          {
-            resultSet.close();
+            myResultSet.close();
          } // end try
          catch ( SQLException sqlException )
          {
-            sqlException.printStackTrace();         
+            lastError += sqlException.toString();
             close();
          } // end catch
+         writeError();
       } // end finally
-      
+
       return results;
-   } // end method getPeopleByName
+   } // end method getAllPeople
    
    // add an entry
    public int addPerson( 
       String fname, String lname, String email, String num )
    {
       int result = 0;
-      
+      lastError = null;
       // set parameters, then execute insertNewPerson
       try 
       {
@@ -182,16 +196,19 @@ public class PersonQueries extends AbstractTableModel
          insertNewPerson.setString( 2, lname );
          insertNewPerson.setString( 3, email );
          insertNewPerson.setString( 4, num );
-
+        // if (true)throw new Exception("");
          // insert the new entry; returns # of rows updated
          result = insertNewPerson.executeUpdate();
          
       } // end try
       catch ( SQLException sqlException )
       {
-         sqlException.printStackTrace();
-         close();
-      } // end catch
+         lastError += sqlException.toString();
+      }catch ( Exception exception){
+          lastError += exception.toString();
+      }finally{
+          writeError();
+      }
       
       return result;
    } // end method addPerson
@@ -202,6 +219,7 @@ public class PersonQueries extends AbstractTableModel
    public int updatePerson(
       String addressID, String fname, String lname, String email, String num )
    {
+      lastError = null;
       int result = 0;
 
       // set parameters, then execute insertNewPerson
@@ -220,9 +238,12 @@ public class PersonQueries extends AbstractTableModel
       } // end try
       catch ( SQLException sqlException )
       {
-         sqlException.printStackTrace();
-         close();
-      } // end catch
+         lastError += sqlException.toString();
+      }catch ( Exception exception){
+          lastError += exception.toString();
+      }finally{
+          writeError();
+      }
 
       return result;
    } // end method addPerson
@@ -243,11 +264,13 @@ public class PersonQueries extends AbstractTableModel
       } // end try
       catch ( SQLException sqlException )
       {
-         sqlException.printStackTrace();
-         close();
-      } // end catch
-
-      return result;
+         lastError += sqlException.toString();
+      }catch ( Exception exception){
+          lastError += exception.toString();
+      }finally{
+          writeError();
+          return result;
+      }
    } // end method addPerson
    
    // close the database connection
@@ -259,9 +282,13 @@ public class PersonQueries extends AbstractTableModel
       } // end try
       catch ( SQLException sqlException )
       {
-         sqlException.printStackTrace();
-      } // end catch
-   } // end method close
+         lastError += sqlException.toString();
+      }catch ( Exception exception){
+          lastError += exception.toString();
+      }finally{
+          writeError();
+      }
+   }
 
 
 //*****************************************************************************
@@ -270,6 +297,7 @@ public class PersonQueries extends AbstractTableModel
     @Override
    public Class getColumnClass( int column ) throws IllegalStateException
    {
+        lastError = null;
       // ensure database connection is available
       if ( !connectedToDatabase )
          throw new IllegalStateException( "Not Connected to Database" );
@@ -282,17 +310,19 @@ public class PersonQueries extends AbstractTableModel
          // return Class object that represents className
          return Class.forName( className );
       } // end try
-      catch ( Exception exception )
-      {
-         exception.printStackTrace();
-      } // end catch
-
-      return Object.class; // if problems occur above, assume type Object
+      catch ( Exception exception){
+          lastError += exception.toString();
+      }finally{
+         writeError();
+         return Object.class; // if problems occur above, assume type Object
+      }
+      
    } // end method getColumnClass
 
    // get number of columns in ResultSet
    public int getColumnCount() throws IllegalStateException
    {
+       lastError = null;
       // ensure database connection is available
       if ( !connectedToDatabase )
          throw new IllegalStateException( "Not Connected to Database" );
@@ -304,16 +334,20 @@ public class PersonQueries extends AbstractTableModel
       } // end try
       catch ( SQLException sqlException )
       {
-         sqlException.printStackTrace();
-      } // end catch
+         lastError += sqlException.toString();
+         return 0; // if problems occur above, return 0 for number of columns
+      }finally{
+          writeError();
+      }
 
-      return 0; // if problems occur above, return 0 for number of columns
+      
    } // end method getColumnCount
 
    // get name of a particular column in ResultSet
     @Override
    public String getColumnName( int column ) throws IllegalStateException
    {
+        lastError = null;
       // ensure database connection is available
       if ( !connectedToDatabase )
          throw new IllegalStateException( "Not Connected to Database" );
@@ -325,18 +359,21 @@ public class PersonQueries extends AbstractTableModel
       } // end try
       catch ( SQLException sqlException )
       {
-         sqlException.printStackTrace();
-      } // end catch
-
-      return ""; // if problems, return empty string for column name
+         lastError += sqlException.toString();
+         return ""; // if problems, return empty string for column name
+      }finally{
+          writeError();
+      }
    } // end method getColumnName
 
    // return number of rows in ResultSet
    public int getRowCount() throws IllegalStateException
    {
+       lastError = null;
       // ensure database connection is available
-      if ( !connectedToDatabase )
+      if ( !connectedToDatabase ){
          throw new IllegalStateException( "Not Connected to Database" );
+      }
 
       return numberOfRows;
    } // end method getRowCount
@@ -345,9 +382,11 @@ public class PersonQueries extends AbstractTableModel
    public Object getValueAt( int row, int column )
       throws IllegalStateException
    {
+       lastError = null;
       // ensure database connection is available
-      if ( !connectedToDatabase )
+      if ( !connectedToDatabase ){
          throw new IllegalStateException( "Not Connected to Database" );
+      }
 
       // obtain a value at specified ResultSet row and column
       try
@@ -357,19 +396,23 @@ public class PersonQueries extends AbstractTableModel
       } // end try
       catch ( SQLException sqlException )
       {
-         sqlException.printStackTrace();
-      } // end catch
+         lastError += sqlException.toString();
+         return ""; // if problems, return empty string object
+      }finally{
+          writeError();
+      }
 
-      return ""; // if problems, return empty string object
    } // end method getValueAt
 
    // set new database query string
-   public void setQuery( String query )
+   private void setQuery( String query )
       throws SQLException, IllegalStateException
    {
+       lastError = null;
       // ensure database connection is available
-      if ( !connectedToDatabase )
+      if ( !connectedToDatabase ){
          throw new IllegalStateException( "Not Connected to Database" );
+      }
 
       // specify query and execute it
       resultSet = statement.executeQuery( query );
@@ -389,6 +432,7 @@ public class PersonQueries extends AbstractTableModel
    // close Statement and Connection
    public void disconnectFromDatabase()
    {
+       lastError = null;
       if ( connectedToDatabase )
       {
          // close Statement and Connection
@@ -400,17 +444,25 @@ public class PersonQueries extends AbstractTableModel
          } // end try
          catch ( SQLException sqlException )
          {
-            sqlException.printStackTrace();
+            lastError += sqlException.toString();
          } // end catch
          finally  // update database connection status
          {
-            connectedToDatabase = false;
+             writeError();
+             connectedToDatabase = false;
          } // end finally
       } // end if
    } // end method disconnectFromDatabase
 
-   public void getLastError(){
-       
+   private String getLastError(){
+       return lastError;
+   }
+
+   private void writeError(){
+       if (getLastError() != null){
+           myDebugJTextArea.setText(myDebugJTextArea.getText()
+                   + getLastError() + "\n");
+       }
    }
 
 } // end class PersonQueries

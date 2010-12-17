@@ -38,8 +38,8 @@ public class AddressBookDisplay extends javax.swing.JFrame {
     public AddressBookDisplay() {
         //super( "Address Book" );
         // establish database connection and set up PreparedStatements
-        personQueries = new PersonQueries();
         initComponents();
+        personQueries = new PersonQueries(debugTextArea);
         loadDatabase();
     }
 
@@ -116,7 +116,14 @@ public class AddressBookDisplay extends javax.swing.JFrame {
             }
         });
 
-        myJTable.setModel(personQueries);
+        myJTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
         myJTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         myJTable.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
