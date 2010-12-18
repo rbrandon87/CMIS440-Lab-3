@@ -12,7 +12,42 @@ package russell_cmis440_lab3;
 * Files:
 *
 * Program Requirements:
+* Minimum Assignment Requirements:
+* 
+* 1)Install and configure the Java DB per section 28.10 of the text. 
+* 2)If you use the text book examples as your starting point, you will 
+*   demonstrate you understand the code by a) commenting the code to meet 
+*   the course standards and b) ensuring the course naming conventions 
+*   are followed. 
+* 3)Implement the additions stated in Exercise 28.6 of the text. 
+* 4)Implement the additions stated in Exercise 28.7 of the text. 
+* 5)Add a JTextArea to the main UI form for the display of the internal
+*   'debugging' statements. 
+* 6)Create a class called TextAreaLogger that takes a JTextArea in its 
+*   contructor and provides one or more log methods. Possible log methods 
+*   might be: 
 *
+*   log(String msg) - log the given message to the provided JTextArea 
+*   log(String msg, int value) - log the given message and value to the 
+*   provided JTextArea in a format: message = value 
+* 7)Add a getLastError method to the PersonQueries class. The backing variable 
+*   should be cleared (set to null) at the beginning of each method in the 
+*   class and will contain any error messages that occurred in the method, i.e.,
+*   replace the current sqlException.printStackTrace() to use this last error 
+*   variable. This implies that after every method call on a PersonQueries 
+*   instance you should check to see if the returned value of getLastError()
+*   is null, meaning the operation was successful, or not null meaning the 
+*   operation failed. All failures should be written to the 'debugging'
+*   JTextArea. 
+* 8)Remove all System.exit calls in the PersonQueries class and use the last
+*   error variable approach outlined above. 
+* 9)Add strategically placed logging statements in your UI code only. 
+*
+* Assignment Optional Implementations:
+*
+* 1)Add support for the Books database in a similar manner as the Address
+*   database by creating a Book class, BooksQuery class and BoosDisplay form
+*   class.
 *
 * Things you what me to know before I grade your work: I used the NetBeans
 * Graphic designer to create the GUI portion of this program.
@@ -25,6 +60,31 @@ import javax.swing.JOptionPane;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+
+
+/** This is the main window of operation for the entire program. The purpose of
+*  this class is to create a GUI Interface to the AddressBook JavaDB Database
+*  for the user to interact with.
+*|----------------------------------------------------------------------------|
+*|                                CRC: AddressBookDisplay                     |
+*|----------------------------------------------------------------------------|
+*|Creates GUI Interface                                                       |
+*|Initialize Person object to hold current person to edit       Person        |
+*|Initialize PersonQueries to handle AddressBook data entries   PersonQueries |
+*|----------------------------------------------------------------------------|
+*
+* @TheCs Cohesion - All methods in this class work together on similar task.
+* Completeness - Completely creates/runs Person and PersonQueries object to
+*                handle AddressBook entries.
+* Convenience - There are sufficient methods and variables to complete the
+*                required task.
+* Clarity - The methods and variables are distinguishable and work in a
+*           uniform manner to provide clarity to other programmers.
+* Consistency - All names,parameters ,return values , and behaviors follow
+*               the same basic rules.
+*/
         
 public class AddressBookDisplay extends javax.swing.JFrame {
 
@@ -33,13 +93,33 @@ public class AddressBookDisplay extends javax.swing.JFrame {
    private List< Person > results;
    private int numberOfEntries = 0;
    private int currentEntryIndex;
+   private TextAreaLogger myTextAreaLogger = null;
 
-    /** Creates new form AddressBookDisplay */
+    /**Constructor to initialize gui components and load database data.
+    * @TheCs Cohesion - Constructor to initialize gui components and load
+    *                   database data.
+    * Completeness - Completely constructs gui components / loads database data.
+    * Convenience - Simply constructs gui components / loads database data.
+    * Clarity - It is simple to understand that this constructs gui components
+    *           / loads database data.
+    * Consistency - It uses the same syntax rules as the rest of the class and
+    *               continues to use proper casing and indentation.
+    */
     public AddressBookDisplay() {
         //super( "Address Book" );
-        // establish database connection and set up PreparedStatements
-        initComponents();
-        personQueries = new PersonQueries(debugTextArea);
+        initComponents();//Create GUI components
+        /**
+         * myTextAreaLogger will be used throughout to print any errors to the
+         * TextArea component.
+         * personQueries is the main interface to the database
+         * checkForErrors will see if the lastError variable is not null and
+         * will print any errors if not.
+         * loadDatabase will query the database for all entries to display in
+         * the gui components.
+         */
+        myTextAreaLogger = new TextAreaLogger(debugTextArea);
+        personQueries = new PersonQueries();
+        checkForErrors();
         loadDatabase();
     }
 
@@ -82,9 +162,11 @@ public class AddressBookDisplay extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         debugTextArea = new javax.swing.JTextArea();
         jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
-        jMenu3 = new javax.swing.JMenu();
+        fileMenu = new javax.swing.JMenu();
+        openBooksMenuItem = new javax.swing.JMenuItem();
+        exitMenuItem = new javax.swing.JMenuItem();
+        helpMenu = new javax.swing.JMenu();
+        instructionsMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("CMIS440 Lab 3 JavaDB Address Book Program");
@@ -130,6 +212,12 @@ public class AddressBookDisplay extends javax.swing.JFrame {
                 myJTablePropertyChange(evt);
             }
         });
+        /**
+        * The code below creates a ListSelectionModel based on the JTable and then
+        * attaches a listener and refers it to the valueChanged method. This is used
+        * so that the user can change the entry being edited by selecting it from the
+        * table.
+        */
         ListSelectionModel rowSM = myJTable.getSelectionModel();
         rowSM.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent evt) {
@@ -288,7 +376,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
                 .addContainerGap(96, Short.MAX_VALUE))
         );
 
-        findPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Find"));
+        findPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Find by Last Name"));
 
         btnFind.setText("Find");
         btnFind.addActionListener(new java.awt.event.ActionListener() {
@@ -335,14 +423,40 @@ public class AddressBookDisplay extends javax.swing.JFrame {
             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
         );
 
-        jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
+        fileMenu.setText("File");
 
-        jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        openBooksMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK));
+        openBooksMenuItem.setText("Switch to Books Database");
+        openBooksMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                openBooksMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(openBooksMenuItem);
 
-        jMenu3.setText("Help");
-        jMenuBar1.add(jMenu3);
+        exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.SHIFT_MASK));
+        exitMenuItem.setText("Exit");
+        exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                exitMenuItemActionPerformed(evt);
+            }
+        });
+        fileMenu.add(exitMenuItem);
+
+        jMenuBar1.add(fileMenu);
+
+        helpMenu.setText("Help");
+
+        instructionsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.SHIFT_MASK));
+        instructionsMenuItem.setText("Instructions");
+        instructionsMenuItem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                instructionsMenuItemActionPerformed(evt);
+            }
+        });
+        helpMenu.add(instructionsMenuItem);
+
+        jMenuBar1.add(helpMenu);
 
         setJMenuBar(jMenuBar1);
 
@@ -377,137 +491,365 @@ public class AddressBookDisplay extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**Selects Previous entry from List of Person objects
+    * @TheCs Cohesion - Selects Previous entry from List of Person objects
+    * Completeness - Completely selects Previous entry from List of Person
+    *                objects.
+    * Convenience - Simply selects Previous entry from List of Person objects.
+    * Clarity - It is simple to understand that this selects Previous entry
+    *           from List of Person objects.
+    * Consistency - It uses the same syntax rules as the rest of the class and
+    *               continues to use proper casing and indentation.
+    */
     private void btnPreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreviousActionPerformed
-      currentEntryIndex--;
-      
-      if ( currentEntryIndex < 0 )
-         currentEntryIndex = numberOfEntries - 1;
-
-      txtCurrentRecord.setText( "" + ( currentEntryIndex + 1 ) );
-      updateCurrentSelectedRecord();
+        /**
+         * Basically this deducts from the current entry index and if it is less
+         * than 0 it makes it equal to the last record. This number is then
+         * added to the current record text field and 
+         * updateCurrentSelected record will use this number to determine 
+         * which person object in the person object list to display for editing.
+         */
+        currentEntryIndex--;
+        if ( currentEntryIndex < 0 ){
+            currentEntryIndex = numberOfEntries - 1;
+        }
+        txtCurrentRecord.setText( "" + ( currentEntryIndex + 1 ) );
+        updateCurrentSelectedRecord();
     }//GEN-LAST:event_btnPreviousActionPerformed
 
+    /**Allows the user to enter a number of record to select
+    * @TheCs Cohesion - Allows the user to enter a number of record to select
+    * Completeness - Completely allows the user to enter a number of record to
+    *                select.
+    * Convenience - Simply allows the user to enter a number of record to
+    *               select.
+    * Clarity - It is simple to understand that this  allows the user to enter
+    *           a number of record to select.
+    * Consistency - It uses the same syntax rules as the rest of the class and
+    *               continues to use proper casing and indentation.
+    */
     private void txtCurrentRecordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCurrentRecordActionPerformed
+        /**
+         * updateCurrentSelectedRecord will use the number entered into the
+         * current record textfield to determine which person object in the
+         * person object list to display for editing.
+         */
         updateCurrentSelectedRecord();
     }//GEN-LAST:event_txtCurrentRecordActionPerformed
 
+    /**Selects Next entry from List of Person objects
+    * @TheCs Cohesion - Selects Next entry from List of Person objects
+    * Completeness - Completely selects Next entry from List of Person
+    *                objects.
+    * Convenience - Simply selects Next entry from List of Person objects.
+    * Clarity - It is simple to understand that this selects Next entry
+    *           from List of Person objects.
+    * Consistency - It uses the same syntax rules as the rest of the class and
+    *               continues to use proper casing and indentation.
+    */
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
-      currentEntryIndex++;
+        /**
+        * Basically this adds 1 to the current entry index and if it is greater
+        * than the total number of entries it makes it equal to the first record
+        * . This number is then added to the current record text field and 
+        * updateCurrentSelected record will use this number to determine 
+        * which person object in the person object list to display for editing.
+        */
+        currentEntryIndex++;
 
-      if ( currentEntryIndex >= numberOfEntries )
-         currentEntryIndex = 0;
-
-      txtCurrentRecord.setText( "" + ( currentEntryIndex + 1 ) );
-      updateCurrentSelectedRecord();
+        if ( currentEntryIndex >= numberOfEntries ){
+          currentEntryIndex = 0;
+        }
+        txtCurrentRecord.setText( "" + ( currentEntryIndex + 1 ) );
+        updateCurrentSelectedRecord();
     }//GEN-LAST:event_btnNextActionPerformed
 
+    /** Find records based on last name entered
+    * @TheCs Cohesion - Find records based on last name entered
+    * Completeness - Completely finds records based on last name entered.
+    * Convenience - Simply finds records based on last name entered.
+    * Clarity - It is simple to understand that this finds records based on
+    *           last name entered.
+    * Consistency - It uses the same syntax rules as the rest of the class and
+    *               continues to use proper casing and indentation.
+    */
     private void btnFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindActionPerformed
-      if (txtFind.getText().equals("")){
-          loadDatabase();
-          return;
-      }
-      results = personQueries.getPeopleByLastName( txtFind.getText() );
-      numberOfEntries = results.size();
+        /**
+         * If search field is blank, load entire database and return from method
+         */
+        if (txtFind.getText().equals("")){
+            loadDatabase();
+            return;
+        }
+        /**
+         * Run the .getPeopleByLastName method of personQueries to return a
+         * list of all persons with the specified last name. It then calls
+         * checkForErrors to determine if any errors were thrown during this
+         * method call by checking the lastError variable through the
+         * getLastError method. If so it will send to the TextAreaLogger to
+         * display in the TextArea on the GUI.
+         * Next it will get the number of entries and if not equal to 0 it will
+         * display the first one in the editable area. Also, it will reset the
+         * model of the JTable to ensure it reflects the new data being shown
+         * and also calls enableControls to make sure all the controls are
+         * enabled. Else it will just load the entire database if there are 0
+         * entries found.
+         */
+        results = personQueries.getPeopleByLastName( txtFind.getText() );
+        checkForErrors();
+        numberOfEntries = results.size();
 
-      if ( numberOfEntries != 0 )
-      {
-          currentEntryIndex = 0;
-          currentEntry = results.get(currentEntryIndex);
-          txtAddressID.setText("" + currentEntry.getAddressID());
-          txtFirstName.setText(currentEntry.getFirstName());
-          txtLastName.setText(currentEntry.getLastName());
-          txtEmail.setText(currentEntry.getEmail());
-          txtPhoneNum.setText(currentEntry.getPhoneNumber());
-          txtTotalRecordCount.setText("" + numberOfEntries);
-          txtCurrentRecord.setText("" + (currentEntryIndex + 1));
-          myJTable.setModel(personQueries);
-          enableControls();
-      }
-      else{
-          loadDatabase();
-      }
+        if ( numberOfEntries != 0 ){
+            currentEntryIndex = 0;
+            currentEntry = results.get(currentEntryIndex);
+            txtAddressID.setText("" + currentEntry.getAddressID());
+            txtFirstName.setText(currentEntry.getFirstName());
+            txtLastName.setText(currentEntry.getLastName());
+            txtEmail.setText(currentEntry.getEmail());
+            txtPhoneNum.setText(currentEntry.getPhoneNumber());
+            txtTotalRecordCount.setText("" + numberOfEntries);
+            txtCurrentRecord.setText("" + (currentEntryIndex + 1));
+            myJTable.setModel(personQueries);
+            enableControls();
+        }
+        else{
+            loadDatabase();
+        }
     }//GEN-LAST:event_btnFindActionPerformed
 
+    /** Inputs a new entry into the database
+    * @TheCs Cohesion - Inputs a new entry into the database
+    * Completeness - Completely inputs a new entry into the database.
+    * Convenience - Simply inputs a new entry into the database.
+    * Clarity - It is simple to understand that this inputs a new entry into the
+    *           database.
+    * Consistency - It uses the same syntax rules as the rest of the class and
+    *               continues to use proper casing and indentation.
+    */
     private void btnNewEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewEntryActionPerformed
-      int result = personQueries.addPerson( txtFirstName.getText(),
-         txtLastName.getText(), txtEmail.getText(),
-         txtPhoneNum.getText() );
 
-      if ( result == 1 ){
-         JOptionPane.showMessageDialog( this, "Person added!",
-            "Person added", JOptionPane.PLAIN_MESSAGE );
-      }else{
-         JOptionPane.showMessageDialog( this, "Person not added!",
-            "Error", JOptionPane.PLAIN_MESSAGE );
-      }
+        /**
+         * This calls the addPerson method of the personQueries object to add
+         * a new person to the database. It's assigned to a int to determine
+         * if it was successful in adding the person or not. checkForErrors is
+         * called after to see if any errors were thrown during the process.
+         * After the person is added the database is reloaded to reflect the new
+         * entry.
+         */
+        int result = personQueries.addPerson( txtFirstName.getText(),
+                txtLastName.getText(), txtEmail.getText(),
+                txtPhoneNum.getText() );
+        checkForErrors();
 
-      loadDatabase();
+          if ( result == 1 ){
+              JOptionPane.showMessageDialog( this, "Person added!",
+                      "Person added", JOptionPane.PLAIN_MESSAGE );
+          }else{
+            JOptionPane.showMessageDialog( this, "Person not added!",
+                    "Error", JOptionPane.PLAIN_MESSAGE );
+          }
+
+        loadDatabase();
     }//GEN-LAST:event_btnNewEntryActionPerformed
 
     private void myJTablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_myJTablePropertyChange
 
     }//GEN-LAST:event_myJTablePropertyChange
 
+    /** Deletes a entry into the database
+    * @TheCs Cohesion - Deletes a entry into the database
+    * Completeness - Completely deletes entry into the database.
+    * Convenience - Simply deletes entry into the database.
+    * Clarity - It is simple to understand that this deletes a entry into the
+    *           database.
+    * Consistency - It uses the same syntax rules as the rest of the class and
+    *               continues to use proper casing and indentation.
+    */
     private void btnDeleteEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteEntryActionPerformed
-    if (txtAddressID.getText().equals("")){
-        return;
-    }
-    int result = personQueries.deletePerson( txtAddressID.getText());
+        /**
+         * If the AddressID field is blank then the method is stopped since no
+         * entry is selected for deletion.
+         * This calls the deletePerson method of the personQueries object to
+         * delete a person from the database. It's assigned to a int to
+         * determine if it was successful in deleting the person or not.
+         * checkForErrors is called after to see if any errors were thrown
+         * during the process.
+         * After the person is deleted the database is reloaded to reflect the
+         * deleted entry is gone.
+         */
+        if (txtAddressID.getText().equals("")){
+            return;
+        }
+        int result = personQueries.deletePerson( txtAddressID.getText());
+        checkForErrors();
 
-      if ( result == 1 ){
-         JOptionPane.showMessageDialog( this, "Person deleted!",
-            "Person added", JOptionPane.PLAIN_MESSAGE );
-      }else{
-         JOptionPane.showMessageDialog( this, "Person not deleted!",
-            "Error", JOptionPane.PLAIN_MESSAGE );
-      }
-
-      loadDatabase();
+        if ( result == 1 ){
+            JOptionPane.showMessageDialog( this, "Person deleted!",
+                    "Person added", JOptionPane.PLAIN_MESSAGE );
+        }else{
+            JOptionPane.showMessageDialog( this, "Person not deleted!",
+                    "Error", JOptionPane.PLAIN_MESSAGE );
+        }
+        loadDatabase();
     }//GEN-LAST:event_btnDeleteEntryActionPerformed
 
+    /** Updates a entry into the database
+    * @TheCs Cohesion - Updates a entry into the database
+    * Completeness - Completely updates a entry into the database.
+    * Convenience - Simply updates a entry into the database.
+    * Clarity - It is simple to understand that this updates a entry into the
+    *           database.
+    * Consistency - It uses the same syntax rules as the rest of the class and
+    *               continues to use proper casing and indentation.
+    */
     private void btnUpdateEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateEntryActionPerformed
-    if (txtAddressID.getText().equals("")){
-        return;
-    }
-        int result = personQueries.updatePerson( txtAddressID.getText(),
-              txtFirstName.getText(),txtLastName.getText(),
-              txtEmail.getText(),txtPhoneNum.getText() );
+        /**
+         * If the AddressID field is blank then the method is stopped since no
+         * entry is selected for updating.
+         * This calls the updatePerson method of the personQueries object to
+         * update a person from the database. It's assigned to a int to
+         * determine if it was successful in updating the person or not.
+         * checkForErrors is called after to see if any errors were thrown
+         * during the process.
+         * After the person is updated the database is reloaded to reflect the
+         * changes.
+         */
+        if (txtAddressID.getText().equals("")){
+            return;
+        }
+            int result = personQueries.updatePerson( txtAddressID.getText(),
+                    txtFirstName.getText(),txtLastName.getText(),
+                    txtEmail.getText(),txtPhoneNum.getText() );
+            checkForErrors();
 
-      if ( result == 1 ){
-         JOptionPane.showMessageDialog( this, "Person updated!",
-            "Person added", JOptionPane.PLAIN_MESSAGE );
-      }else{
-         JOptionPane.showMessageDialog( this, "Person not updated!",
-            "Error", JOptionPane.PLAIN_MESSAGE );
-      }
-
-      loadDatabase();
+        if ( result == 1 ){
+            JOptionPane.showMessageDialog( this, "Person updated!",
+                    "Person added", JOptionPane.PLAIN_MESSAGE );
+        }else{
+                JOptionPane.showMessageDialog( this, "Person not updated!",
+                        "Error", JOptionPane.PLAIN_MESSAGE );
+        }
+        loadDatabase();
     }//GEN-LAST:event_btnUpdateEntryActionPerformed
 
+    /** Properly exits the program.
+    * @TheCs Cohesion - Properly exits the program.
+    * Completeness - Completely exits the program.
+    * Convenience - Simply exits the program.
+    * Clarity - It is simple to understand that this exits the program.
+    * Consistency - It uses the same syntax rules as the rest of the class and
+    *               continues to use proper casing and indentation.
+    */
+    private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_exitMenuItemActionPerformed
 
+    /** Shows instructions on using program.
+    * @TheCs Cohesion - Shows instructions on using program.
+    * Completeness - Completely shows instructions on using program.
+    * Convenience - Simply shows instructions on using program.
+    * Clarity - It is simple to understand that this shows instructions on using
+    *           program.
+    * Consistency - It uses the same syntax rules as the rest of the class and
+    *               continues to use proper casing and indentation.
+    */
+    private void instructionsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_instructionsMenuItemActionPerformed
+        String instructionMessage = ""
+                + "1) "
+                + "2) "
+                + "3) ";
+
+        JOptionPane.showMessageDialog(null, instructionMessage,
+            "Instructions", JOptionPane.INFORMATION_MESSAGE);
+    }//GEN-LAST:event_instructionsMenuItemActionPerformed
+
+    /** Switches over to Books database
+    * @TheCs Cohesion - Switches over to Books database
+    * Completeness - Completely switches over to Books database.
+    * Convenience - Simply switches over to Books database.
+    * Clarity - It is simple to understand that this switches over to Books
+    *           database.
+    * Consistency - It uses the same syntax rules as the rest of the class and
+    *               continues to use proper casing and indentation.
+    */
+    private void openBooksMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openBooksMenuItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_openBooksMenuItemActionPerformed
+
+
+    /**Sets editable area to entry based on number found in txtCurrentRecord
+    * @TheCs Cohesion - Sets editable area to entry based on number found in
+    *                   txtCurrentRecord.
+    * Completeness - Completely sets editable area to entry based on number
+    *                found in txtCurrentRecord.
+    * Convenience - Simply sets editable area to entry based on number found in
+    *               txtCurrentRecord.
+    * Clarity - It is simple to understand that this sets editable area to entry
+    *           based on number found in txtCurrentRecord.
+    * Consistency - It uses the same syntax rules as the rest of the class and
+    *               continues to use proper casing and indentation.
+    * @exception NumberFormatException for Integer.parseInt
+    * @exception Exception general exception capture
+    */
     private void updateCurrentSelectedRecord(){
-      currentEntryIndex =
-         ( Integer.parseInt( txtCurrentRecord.getText() ) - 1 );
+        try{
+            /**
+             * First it gets the number from the txtCurrentRecord and -1 since
+             * the person list is zero based.
+             */
+            currentEntryIndex =
+                    ( Integer.parseInt( txtCurrentRecord.getText() ) - 1 );
 
-      if ( numberOfEntries != 0 && currentEntryIndex < numberOfEntries )
-      {
-         currentEntry = results.get( currentEntryIndex );
-         txtAddressID.setText("" + currentEntry.getAddressID() );
-         txtFirstName.setText( currentEntry.getFirstName() );
-         txtLastName.setText( currentEntry.getLastName() );
-         txtEmail.setText( currentEntry.getEmail() );
-         txtPhoneNum.setText( currentEntry.getPhoneNumber() );
-         txtTotalRecordCount.setText( "" + numberOfEntries );
-         txtCurrentRecord.setText( "" + ( currentEntryIndex + 1 ) );
-         myJTable.changeSelection(currentEntryIndex, 0, false, false);
-
-      } // end if
+            /**
+             * Only attempt to get the person if the number of entries is not
+             * equal to 0 and the index entered is less than the total number
+             * of entries. It assigns the currentEntry, Person object, to the
+             * person object in the results list that is at the selected index
+             * and then retrieves all the information and displays in the
+             * editable area. Also, the record counters are updated and the
+             * JTable is updated to be selected to the entry in question.
+             */
+            if ( numberOfEntries != 0 && currentEntryIndex < numberOfEntries ){
+                currentEntry = results.get( currentEntryIndex );
+                txtAddressID.setText("" + currentEntry.getAddressID() );
+                txtFirstName.setText( currentEntry.getFirstName() );
+                txtLastName.setText( currentEntry.getLastName() );
+                txtEmail.setText( currentEntry.getEmail() );
+                txtPhoneNum.setText( currentEntry.getPhoneNumber() );
+                txtTotalRecordCount.setText( "" + numberOfEntries );
+                txtCurrentRecord.setText( "" + ( currentEntryIndex + 1 ) );
+                myJTable.changeSelection(currentEntryIndex, 0, false, false);
+            }
+        }catch (NumberFormatException exception){
+            myTextAreaLogger.log(exception.toString());
+        }catch (Exception exception){
+            myTextAreaLogger.log(exception.toString());
+        }
     }
 
+    /** Takes selected row from JTable to display in editable area
+    * @TheCs Cohesion - Takes selected row from JTable to display in editable
+    *                   area.
+    * Completeness - Completely takes selected row from JTable to display in
+    *                editable area.
+    * Convenience - Simply takes selected row from JTable to display in editable
+    *               area.
+    * Clarity - It is simple to understand that this takes selected row from
+    *           JTable to display in editable area.
+    * Consistency - It uses the same syntax rules as the rest of the class and
+    *               continues to use proper casing and indentation.
+    */
     private void myJTableValueChanged(ListSelectionEvent evt) {
         if (evt.getValueIsAdjusting()){
             return; // if you don't want to handle intermediate selections
         }
+        /**
+         * This basically selection list model to the table change event and
+         * retrieves the first selected index, or -1 if selection is empty
+         * and updates the txtCurrentRecord w/ this index.
+         * updateCurrentSelectedRecord will use this number to determine
+         * which person object in the person object list to display for editing.
+         */
         ListSelectionModel rowSM = (ListSelectionModel)evt.getSource();
         int selectedIndex = rowSM.getMinSelectionIndex();
         currentEntryIndex = selectedIndex;
@@ -517,34 +859,61 @@ public class AddressBookDisplay extends javax.swing.JFrame {
         }
 
     }
-    
+
+    /** Loads in data from database into results.
+    * @TheCs Cohesion - Loads in data from database into results.
+    * Completeness - Completely loads in data from database into results.
+    * Convenience - Simply loads in data from database into results.
+    * Clarity - It is simple to understand that this Loads in data from database
+    *           into results.
+    * Consistency - It uses the same syntax rules as the rest of the class and
+    *               continues to use proper casing and indentation.
+    * @exception Exception general exception capture
+    */
     private void loadDatabase(){
-      try
-      {
-         results = personQueries.getAllPeople();
-         numberOfEntries = results.size();
-         txtAddressID.setText("");
-         txtFirstName.setText("");
-         txtLastName.setText("");
-         txtEmail.setText("");
-         txtPhoneNum.setText("");
-         txtTotalRecordCount.setText( "" + numberOfEntries );
-         txtCurrentRecord.setText("");
-         myJTable.setModel(personQueries);
+        try
+        {
+            /**
+             * Calls the .getAllPeople to retrieve all records in the database.
+             * checkForErrors will determine if any errors were thrown during
+             * this process and if so will send them to the TextAreaLogger to
+             * display in the TextArea on the GUI. Also, all of the fields in
+             * the editable area are cleared and the JTable's model is reset to
+             * reflect the new data being pulled in. Next, if the number of
+             * entries pulled in is greater than zero the controls will be
+             * enabled, otherwise they will be disabled until data is input.
+             */
+            results = personQueries.getAllPeople();
+            checkForErrors();
+            numberOfEntries = results.size();
+            txtAddressID.setText("");
+            txtFirstName.setText("");
+            txtLastName.setText("");
+            txtEmail.setText("");
+            txtPhoneNum.setText("");
+            txtTotalRecordCount.setText( "" + numberOfEntries );
+            txtCurrentRecord.setText("");
+            myJTable.setModel(personQueries);
+            if ( numberOfEntries > 0 ){
+                enableControls();
+            }else{
+                disableControls();
+            }
 
-         if ( numberOfEntries > 0 ){
-             enableControls();
-         }else{
-             disableControls();
-         }
-
-      } // end try
-      catch ( Exception e )
-      {
-         e.printStackTrace();
-      } // end catch        
+        }
+        catch ( Exception exception ){
+            myTextAreaLogger.log(exception.toString());
+        }
     }
-    
+
+    /** Enables the Controls
+    * @TheCs Cohesion - Enables the Controls
+    * Completeness - Completely enables the Controls.
+    * Convenience - Simply enables the Controls.
+    * Clarity - It is simple to understand that this enables the Controls.
+    * Consistency - It uses the same syntax rules as the rest of the class and
+    *               continues to use proper casing and indentation.
+    */
     private void enableControls(){
          btnNext.setEnabled( true );
          btnPrevious.setEnabled( true );
@@ -553,7 +922,15 @@ public class AddressBookDisplay extends javax.swing.JFrame {
          btnDeleteEntry.setEnabled(true);
          btnUpdateEntry.setEnabled(true);
     }
-    
+
+    /** Disables the Controls
+    * @TheCs Cohesion - Disables the Controls.
+    * Completeness - Completely disables the Controls.
+    * Convenience - Simply disables the Controls.
+    * Clarity - It is simple to understand that this disables the Controls.
+    * Consistency - It uses the same syntax rules as the rest of the class and
+    *               continues to use proper casing and indentation.
+    */
     private void disableControls(){
          btnNext.setEnabled( false );
          btnPrevious.setEnabled( false );
@@ -563,11 +940,77 @@ public class AddressBookDisplay extends javax.swing.JFrame {
          btnUpdateEntry.setEnabled(false);
     }
 
+    /** Checks for errors from the personQueries object
+    * @TheCs Cohesion - Checks for errors from the personQueries object
+    * Completeness - Completely checks for errors from the personQueries object.
+    * Convenience - Simply checks for errors from the personQueries object.
+    * Clarity - It is simple to understand that this checks for errors from the
+    *           personQueries object.
+    * Consistency - It uses the same syntax rules as the rest of the class and
+    *               continues to use proper casing and indentation.
+    */
+    private void checkForErrors(){
+        /**
+         * Everytime a personQueries method is called this is called right after
+         * it. It calls the getLastError method to determine of the lastError
+         * variable is null or not. If it is not null then an error occured and
+         * so this will send the error message to the TextAreaLogger to be
+         * displayed on the TextArea on the GUI.
+         */
+        if (personQueries.getLastError() != null){
+            myTextAreaLogger.log(personQueries.getLastError());
+        }
+    }
 
-    /**
+
+    /** Main method that starts the program by making the GUI visible.
+    * @TheCs Cohesion - Starts the program by making the GUI visible.
+    * Completeness - Completely makes the GUI visible.
+    * Convenience - Simply makes the GUI visible.
+    * Clarity - It is simple to understand that this makes the GUI visible.
+    * Consistency - It uses the same syntax rules as the rest of the class and
+    *               continues to use proper casing and indentation.
+    *
     * @param args the command line arguments
+    * @exception UnsupportedLookAndFeelException for UIManager method
+    * @exception ClassNotFoundException for UIManager method
+    * @exception InstantiationException for UIManager method
+    * @exception IllegalAccessException for UIManager method
+    * @exception Exception general exception capture
     */
     public static void main(String args[]) {
+        try{
+            //Sets Look and Feel of GUI to Nimbus.
+            UIManager.setLookAndFeel(
+                    "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+
+        }catch (UnsupportedLookAndFeelException exception) {
+            JOptionPane.showMessageDialog(null,exception.getMessage(),
+                    "UnsupportedLookAndFeelException Exception Thrown on"
+                    + " UIManager",
+                    JOptionPane.ERROR_MESSAGE);
+        }catch (ClassNotFoundException exception) {
+            JOptionPane.showMessageDialog(null,exception.getMessage(),
+                    "ClassNotFoundException Exception Thrown on UIManager",
+                    JOptionPane.ERROR_MESSAGE);
+        }catch (InstantiationException exception) {
+            JOptionPane.showMessageDialog(null,exception.getMessage(),
+                    "InstantiationException Exception Thrown on UIManager",
+                    JOptionPane.ERROR_MESSAGE);
+        }catch (IllegalAccessException exception) {
+            JOptionPane.showMessageDialog(null,exception.getMessage(),
+                    "IllegalAccessException Exception Thrown on UIManager",
+                    JOptionPane.ERROR_MESSAGE);
+        }catch (Exception exception) {
+            JOptionPane.showMessageDialog(null,exception.getMessage(),
+                    "Unknown Exception Thrown on UIManager",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
+        /**
+         * After the UIManager is updated, then make a new Runnable on the
+         * SwingUtilities.invoke later to run the program and make it visible.
+         */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new AddressBookDisplay().setVisible(true);
@@ -585,11 +1028,12 @@ public class AddressBookDisplay extends javax.swing.JFrame {
     private javax.swing.JButton btnUpdateEntry;
     private javax.swing.JTextArea debugTextArea;
     private javax.swing.JPanel errorPanel;
+    private javax.swing.JMenuItem exitMenuItem;
+    private javax.swing.JMenu fileMenu;
     private javax.swing.JPanel findPanel;
+    private javax.swing.JMenu helpMenu;
+    private javax.swing.JMenuItem instructionsMenuItem;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
@@ -601,6 +1045,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
     private javax.swing.JLabel lblPhoneNum;
     private javax.swing.JTable myJTable;
     private javax.swing.JPanel newUpdateDeletePanel;
+    private javax.swing.JMenuItem openBooksMenuItem;
     private javax.swing.JTextField txtAddressID;
     private javax.swing.JTextField txtCurrentRecord;
     private javax.swing.JTextField txtEmail;

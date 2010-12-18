@@ -1,7 +1,34 @@
 package russell_cmis440_lab3;
 
-// Fig. 28.30: Person.java
-// Person class that represents an entry in an address book.
+
+/**
+* Program Name: CMIS440 Lab 3 JavaDB Address Book Program
+* @author Brandon R Russell
+* @Course CMIS440
+* Date: Dec 15,2010
+*/
+
+/** This object is the basic definition of a person for the purpose of the
+ * AddressBook program. It lays the foundation of what data on a person should
+ * be known.
+*|----------------------------------------------------------------------------|
+*|                           CRC: Person                                      |
+*|----------------------------------------------------------------------------|
+*|Provides setter/getter methods for Person object         AddressBookDisplay |
+*|----------------------------------------------------------------------------|
+*
+* @TheCs Cohesion - All methods in this class work together on similar task.
+* Completeness - Completely creates word counter threads to process file input
+* Convenience - There are sufficient methods and variables to complete the
+*                required task.
+* Clarity - The methods and variables are distinguishable and work in a
+*           uniform manner to provide clarity to other programmers.
+* Consistency - All names,parameters ,return values , and behaviors follow
+*               the same basic rules.
+*/
+
+
+
 public class Person
 {
    private int addressID;
@@ -10,82 +37,174 @@ public class Person
    private String email;
    private String phoneNumber;
 
-   // no-argument constructor
-   public Person()
-   {
-   } // end no-argument Person constructor
+   /** A blank constructor
+   * @TheCs Cohesion - A blank constructor
+   * Completeness - Completely constructs person with no parameters.
+   * Convenience - Simply constructs person with no parameters.
+   * Clarity - It is simple to understand that this constructs person with no
+   *           parameters.
+   * Consistency - It uses the same syntax rules as the rest of the class and
+   *               continues to use proper casing and indentation.
+   */
+   public Person(){
+   } 
 
-   // constructor
-   public Person( int id, String first, String last, 
-      String emailAddress, String phone )
-   {
-      setAddressID( id );
-      setFirstName( first );
-      setLastName( last );
-      setEmail( emailAddress );
-      setPhoneNumber( phone );
-   } // end five-argument Person constructor 
+   /** A Constructor with initial values
+   * @TheCs Cohesion -  A Constructor with initial values.
+   * Completeness - Completely constructs a person object with initial values.
+   * Convenience - Simply constructs a person object with initial values.
+   * Clarity - It is simple to understand that this constructs a person object
+   *           with initial values.
+   * Consistency - It uses the same syntax rules as the rest of the class and
+   *               continues to use proper casing and indentation.
+   */
+   public Person( int id, String first, String last,
+           String emailAddress, String phone ){
+       /**
+        * Basically this will take in values when the Person object is created
+        * and below it uses all the setter methods of this class to assign this
+        * person object these values.
+        */
+       setAddressID( id );
+       setFirstName( first );
+       setLastName( last );
+       setEmail( emailAddress );
+       setPhoneNumber( phone );
+   } 
 
-   // sets the addressID
-   private void setAddressID( int id )
-   {
-      addressID = id;
-   } // end method setAddressID
 
-   // returns the addressID 
-   public int getAddressID()
-   {
-      return addressID;
-   } // end method getAddressID
+   /** Sets the addressId of the person object.
+   * @TheCs Cohesion - Sets the addressId of the person object.
+   * Completeness - Completely sets the addressId of the person object.
+   * Convenience - Simply sets the addressId of the person object.
+   * Clarity - It is simple to understand that this sets the addressId of the
+   *           person object.
+   * Consistency - It uses the same syntax rules as the rest of the class and
+   *               continues to use proper casing and indentation.
+   */
+   private void setAddressID( int id ){
+       addressID = id;
+   }
+
+   /** Gets the addressId of the person object.
+   * @TheCs Cohesion - Gets the addressId of the person object.
+   * Completeness - Completely gets the addressId of the person object.
+   * Convenience - Simply gets the addressId of the person object.
+   * Clarity - It is simple to understand that this gets the addressId of the
+   *           person object.
+   * Consistency - It uses the same syntax rules as the rest of the class and
+   *               continues to use proper casing and indentation.
+   */
+   public int getAddressID(){
+       return addressID;
+   } 
    
-   // sets the firstName
-   private void setFirstName( String first )
-   {
-      firstName = first;
-   } // end method setFirstName
 
-   // returns the first name 
-   public String getFirstName()
-   {
-      return firstName;
-   } // end method getFirstName
+   /** Sets the firstName of the person object.
+   * @TheCs Cohesion - Sets the firstName of the person object.
+   * Completeness - Completely sets the firstName of the person object.
+   * Convenience - Simply sets the firstName of the person object.
+   * Clarity - It is simple to understand that this sets the firstName of the
+   *           person object.
+   * Consistency - It uses the same syntax rules as the rest of the class and
+   *               continues to use proper casing and indentation.
+   */
+   private void setFirstName( String first ){
+       firstName = first;
+   }
+
+
+   /** Gets the firstName of the person object.
+   * @TheCs Cohesion - Gets the firstName of the person object.
+   * Completeness - Completely gets the firstName of the person object.
+   * Convenience - Simply gets the firstName of the person object.
+   * Clarity - It is simple to understand that this gets the firstName of the
+   *           person object.
+   * Consistency - It uses the same syntax rules as the rest of the class and
+   *               continues to use proper casing and indentation.
+   */
+   public String getFirstName(){
+       return firstName;
+   }
    
-   // sets the lastName
-   private void setLastName( String last )
-   {
-      lastName = last;
-   } // end method setLastName
+   /** Sets the lastName of the person object.
+   * @TheCs Cohesion - Sets the lastName of the person object.
+   * Completeness - Completely sets the lastName of the person object.
+   * Convenience - Simply sets the lastName of the person object.
+   * Clarity - It is simple to understand that this sets the lastName of the
+   *           person object.
+   * Consistency - It uses the same syntax rules as the rest of the class and
+   *               continues to use proper casing and indentation.
+   */
+   private void setLastName( String last ){
+       lastName = last;
+   }
 
-   // returns the last name 
-   public String getLastName()
-   {
-      return lastName;
-   } // end method getLastName
+   /** Gets the lastName of the person object.
+   * @TheCs Cohesion - Gets the lastName of the person object.
+   * Completeness - Completely gets the lastName of the person object.
+   * Convenience - Simply gets the lastName of the person object.
+   * Clarity - It is simple to understand that this gets the lastName of the
+   *           person object.
+   * Consistency - It uses the same syntax rules as the rest of the class and
+   *               continues to use proper casing and indentation.
+   */
+   public String getLastName(){
+       return lastName;
+   }
    
-   // sets the email address
-   private void setEmail( String emailAddress )
-   {
-      email = emailAddress;
-   } // end method setEmail
+   /** Sets the email of the person object.
+   * @TheCs Cohesion - Sets the email of the person object.
+   * Completeness - Completely sets the email of the person object.
+   * Convenience - Simply sets the email of the person object.
+   * Clarity - It is simple to understand that this sets the email of the
+   *           person object.
+   * Consistency - It uses the same syntax rules as the rest of the class and
+   *               continues to use proper casing and indentation.
+   */
+   private void setEmail( String emailAddress ){
+       email = emailAddress;
+   }
 
-   // returns the email address
-   public String getEmail()
-   {
-      return email;
-   } // end method getEmail
+   /** Gets the email of the person object.
+   * @TheCs Cohesion - Gets the email of the person object.
+   * Completeness - Completely gets the email of the person object.
+   * Convenience - Simply gets the email of the person object.
+   * Clarity - It is simple to understand that this gets the email of the
+   *           person object.
+   * Consistency - It uses the same syntax rules as the rest of the class and
+   *               continues to use proper casing and indentation.
+   */
+   public String getEmail(){
+       return email;
+   }
    
-   // sets the phone number
-   private void setPhoneNumber( String phone )
-   {
-      phoneNumber = phone;
-   } // end method setPhoneNumber
+   /** Sets the phoneNumber of the person object.
+   * @TheCs Cohesion - Sets the phoneNumber of the person object.
+   * Completeness - Completely sets the phoneNumber of the person object.
+   * Convenience - Simply sets the phoneNumber of the person object.
+   * Clarity - It is simple to understand that this sets the phoneNumber of the
+   *           person object.
+   * Consistency - It uses the same syntax rules as the rest of the class and
+   *               continues to use proper casing and indentation.
+   */
+   private void setPhoneNumber( String phone ){
+       phoneNumber = phone;
+   }
 
-   // returns the phone number
-   public String getPhoneNumber()
-   {
-      return phoneNumber;
-   } // end method getPhoneNumber
-} // end class Person
+   /** Gets the phoneNumber of the person object.
+   * @TheCs Cohesion - Gets the phoneNumber of the person object.
+   * Completeness - Completely gets the phoneNumber of the person object.
+   * Convenience - Simply gets the phoneNumber of the person object.
+   * Clarity - It is simple to understand that this gets the phoneNumber of the
+   *           person object.
+   * Consistency - It uses the same syntax rules as the rest of the class and
+   *               continues to use proper casing and indentation.
+   */
+   public String getPhoneNumber(){
+       return phoneNumber;
+   } 
+} 
 
 
 
