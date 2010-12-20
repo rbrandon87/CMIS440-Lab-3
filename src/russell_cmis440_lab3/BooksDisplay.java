@@ -16,6 +16,9 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.TableColumn;
+
+
 
 
 /** This is the main window of operation for the entire program. The purpose of
@@ -47,6 +50,7 @@ public class BooksDisplay extends javax.swing.JFrame {
    private List< Book > results;
    private int numberOfEntries = 0;
    private int currentEntryIndex;
+   private String TempISBNHolder = "";
    private TextAreaLogger myTextAreaLogger = null;
 
     /**Constructor to initialize gui components and load database data.
@@ -122,7 +126,7 @@ public class BooksDisplay extends javax.swing.JFrame {
         debugTextArea = new javax.swing.JTextArea();
         myMenuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
-        openBooksMenuItem = new javax.swing.JMenuItem();
+        openAddressBookMenuItem = new javax.swing.JMenuItem();
         exitMenuItem = new javax.swing.JMenuItem();
         helpMenu = new javax.swing.JMenu();
         instructionsMenuItem = new javax.swing.JMenuItem();
@@ -416,18 +420,16 @@ public class BooksDisplay extends javax.swing.JFrame {
             .addComponent(myTextAreaScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
         );
 
-        fileMenu.setText("File");
-
-        openBooksMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK));
-        openBooksMenuItem.setText("Switch to Books Database");
-        openBooksMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        openAddressBookMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        openAddressBookMenuItem.setText("Switch to Address Book Database");
+        openAddressBookMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openBooksMenuItemActionPerformed(evt);
+                openAddressBookMenuItemActionPerformed(evt);
             }
         });
-        fileMenu.add(openBooksMenuItem);
+        fileMenu.add(openAddressBookMenuItem);
 
-        exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.SHIFT_MASK));
+        exitMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_X, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         exitMenuItem.setText("Exit");
         exitMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -440,7 +442,7 @@ public class BooksDisplay extends javax.swing.JFrame {
 
         helpMenu.setText("Help");
 
-        instructionsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.SHIFT_MASK));
+        instructionsMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_I, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         instructionsMenuItem.setText("Instructions");
         instructionsMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -598,6 +600,7 @@ public class BooksDisplay extends javax.swing.JFrame {
             txtTotalRecordCount.setText("" + numberOfEntries);
             txtCurrentRecord.setText("" + (currentEntryIndex + 1));
             myJTable.setModel(bookQueries);//Update JTable
+            setupTableColumns();
             enableControls();
         }
         else{
@@ -625,27 +628,48 @@ public class BooksDisplay extends javax.swing.JFrame {
          * entry.
          */
 
+try{
+
         boolean newAuthor = false;
+        boolean newBook = false;
+        String ISBN = txtISBN.getText();
+        String title = txtTitle.getText();
+        int editionNumber = txtEditionNumber.getText().equals("") ? 0 : Integer.parseInt(txtEditionNumber.getText());
+        String copyright = txtCopyright.getText();
+        String firstName = txtFirstName.getText();
+        String lastName = txtLastName.getText();
+
         for (int i = 0; i< results.size(); i++){
-            if (results.get(i).getISBN().equalsIgnoreCase(txtISBN.getText()) && results.get(i).getAuthorLastName().equalsIgnoreCase(txtLastName.getText()) && results.get(i).getAuthorFirstName().equalsIgnoreCase(txtFirstName.getText())){
+            if (results.get(i).getISBN().equalsIgnoreCase(ISBN) && results.get(i).getAuthorLastName().equalsIgnoreCase(lastName) && results.get(i).getAuthorFirstName().equalsIgnoreCase(firstName)){
                 JOptionPane.showMessageDialog(this, "This Author and Book are already added");
                 return;
-            }else if (results.get(i).getISBN().equalsIgnoreCase(txtISBN.getText()) && !(results.get(i).getAuthorLastName().equalsIgnoreCase(txtLastName.getText()) && results.get(i).getAuthorFirstName().equalsIgnoreCase(txtFirstName.getText()))){
-                newAuthor = false;
+            }else if (results.get(i).getISBN().equalsIgnoreCase(ISBN) && !(results.get(i).getAuthorLastName().equalsIgnoreCase(lastName) && results.get(i).getAuthorFirstName().equalsIgnoreCase(firstName))){
+                newAuthor = true;
+                newBook = false;
                 break;
+            }else if (!(results.get(i).getISBN().equalsIgnoreCase(ISBN)) && (results.get(i).getAuthorLastName().equalsIgnoreCase(lastName) && results.get(i).getAuthorFirstName().equalsIgnoreCase(firstName))){
+                newAuthor = false;
+                newBook = true;
             }else{
                 newAuthor = true;
+                newBook = true;
             }
 
         }
-        int result = bookQueries.addBook(txtISBN.getText(), txtTitle.getText(), txtEditionNumber.getText(), txtCopyright.getText(), txtFirstName.getText(), txtLastName.getText(), newAuthor );
+        int result = bookQueries.addBook(ISBN, title, editionNumber, copyright, firstName, lastName, newAuthor, newBook );
         checkForErrors();
 
         JOptionPane.showMessageDialog( this, result + " records affected by insert",
                       "Record Update Status", JOptionPane.PLAIN_MESSAGE );
 
 
-        loadDatabase();
+        }catch (NumberFormatException exception){
+            myTextAreaLogger.log(exception.toString());
+        }catch (Exception exception){
+            myTextAreaLogger.log(exception.toString());
+        }finally{
+            loadDatabase();
+        }
     }//GEN-LAST:event_btnNewEntryActionPerformed
 
     private void myJTablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_myJTablePropertyChange
@@ -679,13 +703,8 @@ public class BooksDisplay extends javax.swing.JFrame {
         int result = bookQueries.deleteBook( Integer.parseInt(txtAuthorID.getText()), txtISBN.getText());
         checkForErrors();
 
-        if ( result == 1 ){
-            JOptionPane.showMessageDialog( this, "Person deleted!",
-                    "Person added", JOptionPane.PLAIN_MESSAGE );
-        }else{
-            JOptionPane.showMessageDialog( this, "Person not deleted!",
-                    "Error", JOptionPane.PLAIN_MESSAGE );
-        }
+        JOptionPane.showMessageDialog( this, result + " records affected by insert",
+                      "Record Update Status", JOptionPane.PLAIN_MESSAGE );
         loadDatabase();
     }//GEN-LAST:event_btnDeleteEntryActionPerformed
 
@@ -710,22 +729,33 @@ public class BooksDisplay extends javax.swing.JFrame {
          * After the person is updated the database is reloaded to reflect the
          * changes.
          */
-        if (txtAuthorID.getText().equals("") || txtISBN.getText().equals("")){
-            JOptionPane.showMessageDialog(this, "Make sure Author ID and ISBN are not blank before updating", "Error", JOptionPane.PLAIN_MESSAGE);
+try{
+        int authorID = Integer.parseInt(txtAuthorID.getText());
+        String ISBN = txtISBN.getText();
+        String title = txtTitle.getText();
+        int editionNumber = txtEditionNumber.getText().equals("") ? 0 : Integer.parseInt(txtEditionNumber.getText());
+        String copyright = txtCopyright.getText();
+        String firstName = txtFirstName.getText();
+        String lastName = txtLastName.getText();
+
+
+        if (ISBN.equals("")){
+            JOptionPane.showMessageDialog(this, "Make sure ISBN is not blank before updating", "Error", JOptionPane.PLAIN_MESSAGE);
             return;
         }
 
-int result = bookQueries.updateBook(txtISBN.getText(), txtTitle.getText(), txtEditionNumber.getText(), txtCopyright.getText(), txtFirstName.getText(), txtLastName.getText(), Integer.parseInt(txtAuthorID.getText()) );
+int result = bookQueries.updateBook(ISBN, title, editionNumber, copyright, firstName, lastName, authorID, TempISBNHolder );
             checkForErrors();
 
-        if ( result == 1 ){
-            JOptionPane.showMessageDialog( this, "Person updated!",
-                    "Person added", JOptionPane.PLAIN_MESSAGE );
-        }else{
-                JOptionPane.showMessageDialog( this, "Person not updated!",
-                        "Error", JOptionPane.PLAIN_MESSAGE );
+        JOptionPane.showMessageDialog( this, result + " records affected by insert",
+                      "Record Update Status", JOptionPane.PLAIN_MESSAGE );
+        }catch (NumberFormatException exception){
+            myTextAreaLogger.log(exception.toString());
+        }catch (Exception exception){
+            myTextAreaLogger.log(exception.toString());
+        }finally{
+            loadDatabase();
         }
-        loadDatabase();
     }//GEN-LAST:event_btnUpdateEntryActionPerformed
 
     /** Properly exits the program.
@@ -751,20 +781,21 @@ int result = bookQueries.updateBook(txtISBN.getText(), txtTitle.getText(), txtEd
     */
     private void instructionsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_instructionsMenuItemActionPerformed
         String instructionMessage = ""
-                + "Add a Person\n"
-                + "1) Input First and Last Name, Email, and Phone Number.\n "
+                + "Add a Book/Author\n"
+                + "1) Input Author First and Last Name, ISBN, Book Title, "
+                + "Edition Number and Copyright year.\n "
                 + "2) Click 'Insert New Entry'.\n"
-                + "Update a Person\n"
-                + "1) Select the person you want to update by using the"
+                + "Update a Book/Author\n"
+                + "1) Select the Book/Author you want to update by using the"
                 + " Previous/Next buttons or by selecting them from the table"
                 + ".\n"
                 + "2) Update their information and click 'Update Entry\n"
-                + "Delete a Person\n"
-                + "1) Select the person you want to delete by using the Previous"
-                + "/Next buttons or by selecting them from the table.\n"
+                + "Delete a Book/Author\n"
+                + "1) Select the Book/Author you want to delete by using the "
+                + "Previous/Next buttons or by selecting them from the table.\n"
                 + "2) Click 'Delete Entry'\n"
-                + "Find a Person\n"
-                + "1) Enter the persons last name into the text field in the"
+                + "Find a Author\n"
+                + "1) Enter the authors last name into the text field in the"
                 + " find area.\n"
                 + "2) Click 'Find'.";
 
@@ -781,9 +812,49 @@ int result = bookQueries.updateBook(txtISBN.getText(), txtTitle.getText(), txtEd
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
     */
-    private void openBooksMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openBooksMenuItemActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_openBooksMenuItemActionPerformed
+    private void openAddressBookMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openAddressBookMenuItemActionPerformed
+        try{
+            bookQueries.disconnectFromDatabase();
+
+            //Sets Look and Feel of GUI to Nimbus.
+            UIManager.setLookAndFeel(
+                    "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+
+        }catch (UnsupportedLookAndFeelException exception) {
+            JOptionPane.showMessageDialog(null,exception.getMessage(),
+                    "UnsupportedLookAndFeelException Exception Thrown on"
+                    + " UIManager",
+                    JOptionPane.ERROR_MESSAGE);
+        }catch (ClassNotFoundException exception) {
+            JOptionPane.showMessageDialog(null,exception.getMessage(),
+                    "ClassNotFoundException Exception Thrown on UIManager",
+                    JOptionPane.ERROR_MESSAGE);
+        }catch (InstantiationException exception) {
+            JOptionPane.showMessageDialog(null,exception.getMessage(),
+                    "InstantiationException Exception Thrown on UIManager",
+                    JOptionPane.ERROR_MESSAGE);
+        }catch (IllegalAccessException exception) {
+            JOptionPane.showMessageDialog(null,exception.getMessage(),
+                    "IllegalAccessException Exception Thrown on UIManager",
+                    JOptionPane.ERROR_MESSAGE);
+        }catch (Exception exception) {
+            JOptionPane.showMessageDialog(null,exception.getMessage(),
+                    "Unknown Exception Thrown on UIManager",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+
+        /**
+         * After the UIManager is updated, then make a new Runnable on the
+         * SwingUtilities.invoke later to run the program and make it visible.
+         */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new AddressBookDisplay().setVisible(true);
+            }
+        });
+        this.dispose();
+
+    }//GEN-LAST:event_openAddressBookMenuItemActionPerformed
 
     /** Clear find results, shows entire address book
     * @TheCs Cohesion - Clear find results, shows entire address book.
@@ -846,6 +917,7 @@ int result = bookQueries.updateBook(txtISBN.getText(), txtTitle.getText(), txtEd
             txtFirstName.setText(currentEntry.getAuthorFirstName());
             txtLastName.setText(currentEntry.getAuthorLastName());
             txtISBN.setText(currentEntry.getISBN());
+            TempISBNHolder = currentEntry.getISBN();
             txtTitle.setText(currentEntry.getTitle());
             txtEditionNumber.setText(currentEntry.getEditionNumber());
             txtCopyright.setText(currentEntry.getCopyright());
@@ -929,6 +1001,8 @@ int result = bookQueries.updateBook(txtISBN.getText(), txtTitle.getText(), txtEd
             txtTotalRecordCount.setText( "" + numberOfEntries );
             txtCurrentRecord.setText("");
             myJTable.setModel(bookQueries);
+            setupTableColumns();
+
             if ( numberOfEntries > 0 ){
                 enableControls();
             }else{
@@ -975,6 +1049,24 @@ int result = bookQueries.updateBook(txtISBN.getText(), txtTitle.getText(), txtEd
          btnUpdateEntry.setEnabled(false);
     }
 
+    private void setupTableColumns(){
+        setColumnWidth(myJTable.getColumnModel().getColumn(0), 0);
+        setColumnWidth(myJTable.getColumnModel().getColumn(1), 90);
+        setColumnWidth(myJTable.getColumnModel().getColumn(2), 90);
+        setColumnWidth(myJTable.getColumnModel().getColumn(3), 0);
+        setColumnWidth(myJTable.getColumnModel().getColumn(4), 0);
+        setColumnWidth(myJTable.getColumnModel().getColumn(5), 100);
+        setColumnWidth(myJTable.getColumnModel().getColumn(6), 190);
+        setColumnWidth(myJTable.getColumnModel().getColumn(7), 75);
+        setColumnWidth(myJTable.getColumnModel().getColumn(8), 80);
+    }
+    
+    private void setColumnWidth(TableColumn column, int width){
+        column.setPreferredWidth(width);
+        column.setMaxWidth(width);
+    }
+
+
     /** Checks for errors from the bookQueries object
     * @TheCs Cohesion - Checks for errors from the bookQueries object
     * Completeness - Completely checks for errors from the bookQueries object.
@@ -996,6 +1088,7 @@ int result = bookQueries.updateBook(txtISBN.getText(), txtTitle.getText(), txtEd
             myTextAreaLogger.log(bookQueries.getLastError());
         }
     }
+    
 
 
     /** Main method that starts the program by making the GUI visible.
@@ -1083,7 +1176,7 @@ int result = bookQueries.updateBook(txtISBN.getText(), txtTitle.getText(), txtEd
     private javax.swing.JMenuBar myMenuBar;
     private javax.swing.JScrollPane myTextAreaScrollPane;
     private javax.swing.JPanel newUpdateDeletePanel;
-    private javax.swing.JMenuItem openBooksMenuItem;
+    private javax.swing.JMenuItem openAddressBookMenuItem;
     private javax.swing.JTextField txtAuthorID;
     private javax.swing.JTextField txtCopyright;
     private javax.swing.JTextField txtCurrentRecord;

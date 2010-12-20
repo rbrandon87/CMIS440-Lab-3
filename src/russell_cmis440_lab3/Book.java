@@ -61,7 +61,8 @@ public class Book
    *               continues to use proper casing and indentation.
    */
    public Book( String aISBN, String aTitle, String aEditionNumber,
-           String aCopyright, int aAuthorID, String aAuthorFirstName, String aAuthorLastName ){
+           String aCopyright, int aAuthorID, String aAuthorFirstName,
+           String aAuthorLastName ){
        /**
         * Basically this will take in values when the Person object is created
         * and below it uses all the setter methods of this class to assign this

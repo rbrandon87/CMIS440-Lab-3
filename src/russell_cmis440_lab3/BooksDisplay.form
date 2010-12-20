@@ -5,25 +5,22 @@
     <Menu class="javax.swing.JMenuBar" name="myMenuBar">
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="fileMenu">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="File"/>
-          </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="openBooksMenuItem">
+            <MenuItem class="javax.swing.JMenuItem" name="openAddressBookMenuItem">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Shift+S"/>
+                  <KeyStroke key="Shift+Ctrl+S"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Switch to Books Database"/>
+                <Property name="text" type="java.lang.String" value="Switch to Address Book Database"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openBooksMenuItemActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openAddressBookMenuItemActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="exitMenuItem">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Shift+X"/>
+                  <KeyStroke key="Shift+Ctrl+X"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Exit"/>
               </Properties>
@@ -41,7 +38,7 @@
             <MenuItem class="javax.swing.JMenuItem" name="instructionsMenuItem">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
-                  <KeyStroke key="Shift+I"/>
+                  <KeyStroke key="Shift+Ctrl+I"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Instructions"/>
               </Properties>
