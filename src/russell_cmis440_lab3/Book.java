@@ -41,9 +41,9 @@ public class Book
 
    /** A blank constructor
    * @TheCs Cohesion - A blank constructor
-   * Completeness - Completely constructs person with no parameters.
-   * Convenience - Simply constructs person with no parameters.
-   * Clarity - It is simple to understand that this constructs person with no
+   * Completeness - Completely constructs book with no parameters.
+   * Convenience - Simply constructs book with no parameters.
+   * Clarity - It is simple to understand that this constructs book with no
    *           parameters.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
@@ -53,9 +53,9 @@ public class Book
 
    /** A Constructor with initial values
    * @TheCs Cohesion -  A Constructor with initial values.
-   * Completeness - Completely constructs a person object with initial values.
-   * Convenience - Simply constructs a person object with initial values.
-   * Clarity - It is simple to understand that this constructs a person object
+   * Completeness - Completely constructs a book object with initial values.
+   * Convenience - Simply constructs a book object with initial values.
+   * Clarity - It is simple to understand that this constructs a book object
    *           with initial values.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
@@ -64,9 +64,9 @@ public class Book
            String aCopyright, int aAuthorID, String aAuthorFirstName,
            String aAuthorLastName ){
        /**
-        * Basically this will take in values when the Person object is created
+        * Basically this will take in values when the Book object is created
         * and below it uses all the setter methods of this class to assign this
-        * person object these values.
+        * book object these values.
         */
        setISBN( aISBN );
        setTitle( aTitle );
@@ -78,12 +78,12 @@ public class Book
    } 
 
 
-   /** Sets the addressId of the person object.
-   * @TheCs Cohesion - Sets the addressId of the person object.
-   * Completeness - Completely sets the addressId of the person object.
-   * Convenience - Simply sets the addressId of the person object.
-   * Clarity - It is simple to understand that this sets the addressId of the
-   *           person object.
+   /** Sets the authorId of the book object.
+   * @TheCs Cohesion - Sets the authorId of the book object.
+   * Completeness - Completely sets the authorId of the book object.
+   * Convenience - Simply sets the authorId of the book object.
+   * Clarity - It is simple to understand that this sets the authorId of the
+   *           book object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
    */
@@ -91,12 +91,12 @@ public class Book
        authorID = aAuthorID;
    }
 
-   /** Gets the addressId of the person object.
-   * @TheCs Cohesion - Gets the addressId of the person object.
-   * Completeness - Completely gets the addressId of the person object.
-   * Convenience - Simply gets the addressId of the person object.
-   * Clarity - It is simple to understand that this gets the addressId of the
-   *           person object.
+   /** Gets the authorId of the book object.
+   * @TheCs Cohesion - Gets the authorId of the book object.
+   * Completeness - Completely gets the authorId of the book object.
+   * Convenience - Simply gets the authorId of the book object.
+   * Clarity - It is simple to understand that this gets the authorId of the
+   *           book object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
    */
@@ -104,12 +104,12 @@ public class Book
        return authorID;
    }
 
-   /** Sets the addressId of the person object.
-   * @TheCs Cohesion - Sets the addressId of the person object.
-   * Completeness - Completely sets the addressId of the person object.
-   * Convenience - Simply sets the addressId of the person object.
-   * Clarity - It is simple to understand that this sets the addressId of the
-   *           person object.
+   /** Sets the ISBN of the book object.
+   * @TheCs Cohesion - Sets the ISBN of the book object.
+   * Completeness - Completely sets the ISBN of the book object.
+   * Convenience - Simply sets the ISBN of the book object.
+   * Clarity - It is simple to understand that this sets the ISBN of the book
+   *           object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
    */
@@ -117,12 +117,12 @@ public class Book
        ISBN = aISBN;
    }
 
-   /** Gets the addressId of the person object.
-   * @TheCs Cohesion - Gets the addressId of the person object.
-   * Completeness - Completely gets the addressId of the person object.
-   * Convenience - Simply gets the addressId of the person object.
-   * Clarity - It is simple to understand that this gets the addressId of the
-   *           person object.
+   /** Gets the ISBN of the book object.
+   * @TheCs Cohesion - Gets the ISBN of the book object.
+   * Completeness - Completely gets the ISBN of the book object.
+   * Convenience - Simply gets the ISBN of the book object.
+   * Clarity - It is simple to understand that this gets the ISBN of the book
+   *           object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
    */
@@ -131,12 +131,12 @@ public class Book
    } 
    
 
-   /** Sets the firstName of the person object.
-   * @TheCs Cohesion - Sets the firstName of the person object.
-   * Completeness - Completely sets the firstName of the person object.
-   * Convenience - Simply sets the firstName of the person object.
-   * Clarity - It is simple to understand that this sets the firstName of the
-   *           person object.
+   /** Sets the title of the book object.
+   * @TheCs Cohesion - Sets the title of the book object.
+   * Completeness - Completely sets the title of the book object.
+   * Convenience - Simply sets the title of the book object.
+   * Clarity - It is simple to understand that this sets the title of the book
+   *           object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
    */
@@ -145,12 +145,12 @@ public class Book
    }
 
 
-   /** Gets the firstName of the person object.
-   * @TheCs Cohesion - Gets the firstName of the person object.
-   * Completeness - Completely gets the firstName of the person object.
-   * Convenience - Simply gets the firstName of the person object.
-   * Clarity - It is simple to understand that this gets the firstName of the
-   *           person object.
+   /** Gets the title of the book object.
+   * @TheCs Cohesion - Gets the title of the book object.
+   * Completeness - Completely gets the title of the book object.
+   * Convenience - Simply gets the title of the book object.
+   * Clarity - It is simple to understand that this gets the title of the book
+   *           object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
    */
@@ -158,12 +158,12 @@ public class Book
        return title;
    }
    
-   /** Sets the lastName of the person object.
-   * @TheCs Cohesion - Sets the lastName of the person object.
-   * Completeness - Completely sets the lastName of the person object.
-   * Convenience - Simply sets the lastName of the person object.
-   * Clarity - It is simple to understand that this sets the lastName of the
-   *           person object.
+   /** Sets the edition # of the book object.
+   * @TheCs Cohesion - Sets the edition # of the book object.
+   * Completeness - Completely sets the edition # of the book object.
+   * Convenience - Simply sets the edition # of the book object.
+   * Clarity - It is simple to understand that this sets the edition # of the
+   *           book object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
    */
@@ -171,12 +171,12 @@ public class Book
        editionNumber = aEditionNumber;
    }
 
-   /** Gets the lastName of the person object.
-   * @TheCs Cohesion - Gets the lastName of the person object.
-   * Completeness - Completely gets the lastName of the person object.
-   * Convenience - Simply gets the lastName of the person object.
-   * Clarity - It is simple to understand that this gets the lastName of the
-   *           person object.
+   /** Gets the edition # of the book object.
+   * @TheCs Cohesion - Gets the edition # of the book object.
+   * Completeness - Completely gets the edition # of the book object.
+   * Convenience - Simply gets the edition # of the book object.
+   * Clarity - It is simple to understand that this gets the edition # of the
+   *           book object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
    */
@@ -184,12 +184,12 @@ public class Book
        return editionNumber;
    }
    
-   /** Sets the email of the person object.
-   * @TheCs Cohesion - Sets the email of the person object.
-   * Completeness - Completely sets the email of the person object.
-   * Convenience - Simply sets the email of the person object.
-   * Clarity - It is simple to understand that this sets the email of the
-   *           person object.
+   /** Sets the copyright year of the book object.
+   * @TheCs Cohesion - Sets the copyright year of the book object.
+   * Completeness - Completely sets the copyright year of the book object.
+   * Convenience - Simply sets the copyright year of the book object.
+   * Clarity - It is simple to understand that this sets the copyright year of
+   *           the book object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
    */
@@ -197,12 +197,12 @@ public class Book
        copyright = aCopyright;
    }
 
-   /** Gets the email of the person object.
-   * @TheCs Cohesion - Gets the email of the person object.
-   * Completeness - Completely gets the email of the person object.
-   * Convenience - Simply gets the email of the person object.
-   * Clarity - It is simple to understand that this gets the email of the
-   *           person object.
+   /** Gets the copyright year of the book object.
+   * @TheCs Cohesion - Gets the copyright year of the book object.
+   * Completeness - Completely gets the copyright year of the book object.
+   * Convenience - Simply gets the copyright year of the book object.
+   * Clarity - It is simple to understand that this gets the copyright year of
+   *           the book object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
    */
@@ -210,12 +210,12 @@ public class Book
        return copyright;
    }
    
-   /** Sets the phoneNumber of the person object.
-   * @TheCs Cohesion - Sets the phoneNumber of the person object.
-   * Completeness - Completely sets the phoneNumber of the person object.
-   * Convenience - Simply sets the phoneNumber of the person object.
-   * Clarity - It is simple to understand that this sets the phoneNumber of the
-   *           person object.
+   /** Sets the author first name of the book object.
+   * @TheCs Cohesion - Sets the author first name of the book object.
+   * Completeness - Completely sets the author first name of the book object.
+   * Convenience - Simply sets the author first name of the book object.
+   * Clarity - It is simple to understand that this sets the author first name
+   *           of the book object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
    */
@@ -223,12 +223,12 @@ public class Book
        authorFirstName = aAuthorFirstName;
    }
 
-   /** Gets the phoneNumber of the person object.
-   * @TheCs Cohesion - Gets the phoneNumber of the person object.
-   * Completeness - Completely gets the phoneNumber of the person object.
-   * Convenience - Simply gets the phoneNumber of the person object.
-   * Clarity - It is simple to understand that this gets the phoneNumber of the
-   *           person object.
+   /** Gets the author first name of the book object.
+   * @TheCs Cohesion - Gets the author first name of the book object.
+   * Completeness - Completely gets the author first name of the book object.
+   * Convenience - Simply gets the author first name of the book object.
+   * Clarity - It is simple to understand that this gets the author first name
+   *           of the book object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
    */
@@ -236,12 +236,12 @@ public class Book
        return authorFirstName;
    }
 
-   /** Sets the phoneNumber of the person object.
-   * @TheCs Cohesion - Sets the phoneNumber of the person object.
-   * Completeness - Completely sets the phoneNumber of the person object.
-   * Convenience - Simply sets the phoneNumber of the person object.
-   * Clarity - It is simple to understand that this sets the phoneNumber of the
-   *           person object.
+   /** Sets the author last name of the book object.
+   * @TheCs Cohesion - Sets the author last name of the book object.
+   * Completeness - Completely sets the author last name of the book object.
+   * Convenience - Simply sets the author last name of the book object.
+   * Clarity - It is simple to understand that this sets the author last name
+   *           of the book object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
    */
@@ -249,12 +249,12 @@ public class Book
        authorLastName = aAuthorLastName;
    }
 
-   /** Gets the phoneNumber of the person object.
-   * @TheCs Cohesion - Gets the phoneNumber of the person object.
-   * Completeness - Completely gets the phoneNumber of the person object.
-   * Convenience - Simply gets the phoneNumber of the person object.
-   * Clarity - It is simple to understand that this gets the phoneNumber of the
-   *           person object.
+   /** Gets the author last name of the book object.
+   * @TheCs Cohesion - Gets the author last name of the book object.
+   * Completeness - Completely gets the author last name of the book object.
+   * Convenience - Simply gets the author last name of the book object.
+   * Clarity - It is simple to understand that this gets the author last name
+   *           of the book object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
    */
