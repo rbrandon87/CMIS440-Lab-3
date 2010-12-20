@@ -1,38 +1,40 @@
-DROP TABLE "authorISBN";
-DROP TABLE "titles";
-DROP TABLE "authors";
+DROP TABLE authorISBN;
+DROP TABLE titles;
+DROP TABLE authors;
 
-CREATE TABLE "authors" (
-   "authorID" INT NOT NULL GENERATED ALWAYS AS IDENTITY,
-   "firstName" varchar (20) NOT NULL,
-   "lastName" varchar (30) NOT NULL,
-   PRIMARY KEY ("authorID")
+CREATE TABLE authors
+ (
+   authorID INT NOT NULL GENERATED ALWAYS AS IDENTITY,
+   firstName varchar (20) NOT NULL,
+   lastName varchar (30) NOT NULL,
+   PRIMARY KEY (authorID)
 );
 
-CREATE TABLE "titles" (
-   "isbn" varchar (20) NOT NULL,
-   "title" varchar (100) NOT NULL,
-   "editionNumber" INT NOT NULL,
-   "copyright" varchar (4) NOT NULL,
-   PRIMARY KEY ("isbn")
+CREATE TABLE titles 
+(
+   isbn varchar (20) NOT NULL,
+   title varchar (100) NOT NULL,
+   editionNumber INT NOT NULL,
+   copyright varchar (4) NOT NULL,
+   PRIMARY KEY (isbn)
 );
 
-CREATE TABLE "authorISBN" (
-   "authorID" INT NOT NULL,
-   "isbn" varchar (20) NOT NULL,
-   FOREIGN KEY ("authorID") REFERENCES "authors" ("authorID"), 
-   FOREIGN KEY ("isbn") REFERENCES "titles" ("isbn")
+CREATE TABLE authorISBN (
+   authorID INT NOT NULL,
+   isbn varchar (20) NOT NULL,
+   FOREIGN KEY (authorID) REFERENCES authors (authorID), 
+   FOREIGN KEY (isbn) REFERENCES titles (isbn)
 );
 
-INSERT INTO "authors" ("firstName", "lastName")
+INSERT INTO authors (firstName, lastName)
 VALUES 
    ('Harvey','Deitel'),
    ('Paul','Deitel'), 
    ('Andrew','Goldberg'),
    ('David','Choffnes');
 
-INSERT INTO "titles" ("isbn","title","editionNumber",
-   "copyright")
+INSERT INTO titles (isbn,title,editionNumber,
+   copyright)
 VALUES
    ('0131869000','Visual Basic 2005 How to Program',3,'2006'),
    ('0131525239','Visual C# 2005 How to Program',2,'2006'),
@@ -42,7 +44,7 @@ VALUES
    ('0131450913','Internet & World Wide Web How to Program',3,'2004'),
    ('0131828274','Operating Systems',3,'2004');
 
-INSERT INTO "authorISBN" ("authorID","isbn")
+INSERT INTO authorISBN (authorID,isbn)
 VALUES
    (1,'0131869000'),
    (2,'0131869000'),

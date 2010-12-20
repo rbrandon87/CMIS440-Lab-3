@@ -51,6 +51,11 @@ public class PersonQueries extends AbstractTableModel
    private PreparedStatement insertNewPerson = null;
    private PreparedStatement deletePerson = null;
    private PreparedStatement updatePerson = null;
+   private String selectAllPeopleSQL = "";
+   private String selectPeopleByLastNameSQL = "";
+   private String insertNewPersonSQL = "";
+   private String deletePersonSQL = "";
+   private String updatePersonSQL = "";
    private int numberOfRows;
    private Statement statement;
    private ResultSetMetaData metaData;
@@ -77,29 +82,30 @@ public class PersonQueries extends AbstractTableModel
    public PersonQueries(){
        try{
            lastError = null; //Will hold any errors from method
+           //*****Begin SQL Definitions******
+           selectAllPeopleSQL = "SELECT * FROM Addresses";
+           selectPeopleByLastNameSQL = "SELECT * FROM Addresses "
+                   + "WHERE LastName = ?";
+           insertNewPersonSQL = "INSERT INTO Addresses "
+                   + "( FirstName, LastName, Email, PhoneNumber ) "
+                   + "VALUES ( ?, ?, ?, ? )";
+           deletePersonSQL = "DELETE FROM Addresses WHERE AddressID = ?";
+           updatePersonSQL = "UPDATE Addresses SET "
+                   + "FirstName=?, LastName=?, Email=?, PhoneNumber=? "
+                   + "WHERE AddressID=?";
+           //*****End SQL Definitions******
            connection = DriverManager.getConnection( URL, USERNAME, PASSWORD );
            // create query that selects all entries in the AddressBook
-           selectAllPeople =
-                   connection.prepareStatement( "SELECT * FROM Addresses" );
-
+           selectAllPeople = connection.prepareStatement( selectAllPeopleSQL );
            // create query that selects entries with a specific last name
            selectPeopleByLastName = connection.prepareStatement(
-                   "SELECT * FROM Addresses WHERE LastName = ?" );
-
+                   selectPeopleByLastNameSQL );
            // create insert that adds a new entry into the database
-           insertNewPerson = connection.prepareStatement(
-                   "INSERT INTO Addresses " +
-                   "( FirstName, LastName, Email, PhoneNumber ) " +
-                   "VALUES ( ?, ?, ?, ? )" );
-
+           insertNewPerson = connection.prepareStatement(insertNewPersonSQL );
            // create update that updates a entry in the database
-           updatePerson = connection.prepareStatement(
-                   "UPDATE Addresses SET FirstName=?, LastName=?, Email=?,"
-                   + " PhoneNumber=? WHERE AddressID=?");
+           updatePerson = connection.prepareStatement(updatePersonSQL);
            // create delete that deletes an entry from the database
-           deletePerson = connection.prepareStatement(
-                   "DELETE FROM Addresses WHERE AddressID = ?");
-
+           deletePerson = connection.prepareStatement(deletePersonSQL);
            // create Statement to query database
            statement = connection.createStatement(
                    ResultSet.TYPE_SCROLL_INSENSITIVE,
@@ -109,7 +115,7 @@ public class PersonQueries extends AbstractTableModel
            connectedToDatabase = true;
 
            // set query and execute it
-           setQuery( "SELECT * FROM Addresses" );
+           setQuery( selectAllPeopleSQL );
        }
        catch ( SQLException sqlException ){
            lastError += sqlException.toString();
@@ -141,7 +147,7 @@ public class PersonQueries extends AbstractTableModel
             * JTable data up-to-date. Next the selectAllPeople SQL is executed
             * and places into myResultSet all persons from the database.
             */
-           setQuery( "SELECT * FROM Addresses" );
+           setQuery( selectAllPeopleSQL );
            myResultSet = selectAllPeople.executeQuery();
            results = new ArrayList< Person >();
            /**
@@ -198,7 +204,13 @@ public class PersonQueries extends AbstractTableModel
             * to keep JTable updated.
             */
            selectPeopleByLastName.setString( 1, name ); // specify last name
-           setQuery("SELECT * FROM Addresses WHERE LastName = '" + name + "'");
+           /**
+            * Interestingly enough you cannot get a string from a
+            * PreparedStatement that represents the SQL statement so I had to
+            * use my string definition from before and replace the ? w/ name
+            * manually below.
+            */
+           setQuery(selectPeopleByLastNameSQL.replace("?", "'" +name + "'"));
            // executeQuery returns ResultSet containing matching entries
            myResultSet = selectPeopleByLastName.executeQuery();
 

@@ -11,3 +11,4 @@ CREATE TABLE Addresses
 INSERT INTO Addresses (FirstName,LastName,Email,PhoneNumber)
 	VALUES ('Mike','Green','demo1@deitel.com','555-5555'),
 	('Mary','Brown','demo2@deitel.com','555-1234');
+		
