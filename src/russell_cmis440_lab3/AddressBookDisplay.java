@@ -158,10 +158,10 @@ public class AddressBookDisplay extends javax.swing.JFrame {
         findPanel = new javax.swing.JPanel();
         txtFind = new javax.swing.JTextField();
         btnFind = new javax.swing.JButton();
-        btnClearFind = new javax.swing.JButton();
         errorPanel = new javax.swing.JPanel();
         myTextAreaScrollPane = new javax.swing.JScrollPane();
         debugTextArea = new javax.swing.JTextArea();
+        btnClear = new javax.swing.JButton();
         myMenuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openBooksMenuItem = new javax.swing.JMenuItem();
@@ -248,41 +248,43 @@ public class AddressBookDisplay extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, browsePanelLayout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(myJTableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 677, Short.MAX_VALUE))
+                    .addGroup(browsePanelLayout.createSequentialGroup()
+                        .addContainerGap(602, Short.MAX_VALUE)
+                        .addComponent(lblNoData))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, browsePanelLayout.createSequentialGroup()
-                        .addGap(194, 194, 194)
+                        .addGap(191, 191, 191)
                         .addComponent(btnPrevious)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtCurrentRecord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblOf)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtTotalRecordCount, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnNext))
-                    .addGroup(browsePanelLayout.createSequentialGroup()
-                        .addContainerGap(602, Short.MAX_VALUE)
-                        .addComponent(lblNoData)))
+                        .addComponent(txtTotalRecordCount, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(btnNext)))
                 .addContainerGap())
         );
 
-        browsePanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtCurrentRecord, txtTotalRecordCount});
-
         browsePanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnNext, btnPrevious});
+
+        browsePanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtCurrentRecord, txtTotalRecordCount});
 
         browsePanelLayout.setVerticalGroup(
             browsePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(browsePanelLayout.createSequentialGroup()
                 .addGroup(browsePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(btnPrevious)
                     .addComponent(txtCurrentRecord, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblOf)
                     .addComponent(txtTotalRecordCount, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPrevious)
+                    .addComponent(lblOf)
                     .addComponent(btnNext))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(myJTableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 249, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(myJTableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblNoData))
         );
+
+        browsePanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {txtCurrentRecord, txtTotalRecordCount});
 
         newUpdateDeletePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("New/Update/Delete Record"));
 
@@ -383,7 +385,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
                     .addComponent(btnNewEntry)
                     .addComponent(btnUpdateEntry)
                     .addComponent(btnDeleteEntry))
-                .addContainerGap(96, Short.MAX_VALUE))
+                .addContainerGap(110, Short.MAX_VALUE))
         );
 
         findPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Find by Last Name"));
@@ -395,26 +397,16 @@ public class AddressBookDisplay extends javax.swing.JFrame {
             }
         });
 
-        btnClearFind.setText("Clear Find");
-        btnClearFind.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClearFindActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout findPanelLayout = new javax.swing.GroupLayout(findPanel);
         findPanel.setLayout(findPanelLayout);
         findPanelLayout.setHorizontalGroup(
             findPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(findPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(findPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, findPanelLayout.createSequentialGroup()
-                        .addComponent(txtFind, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnFind, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addComponent(btnClearFind, javax.swing.GroupLayout.Alignment.TRAILING)))
+                .addComponent(txtFind, javax.swing.GroupLayout.DEFAULT_SIZE, 557, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnFind, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         findPanelLayout.setVerticalGroup(
             findPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -423,8 +415,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
                 .addGroup(findPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtFind, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnFind))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
-                .addComponent(btnClearFind))
+                .addContainerGap(83, Short.MAX_VALUE))
         );
 
         errorPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Errors"));
@@ -441,8 +432,15 @@ public class AddressBookDisplay extends javax.swing.JFrame {
         );
         errorPanelLayout.setVerticalGroup(
             errorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(myTextAreaScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
+            .addComponent(myTextAreaScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 123, Short.MAX_VALUE)
         );
+
+        btnClear.setText("Clear");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
 
         fileMenu.setText("File");
 
@@ -450,7 +448,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
         openBooksMenuItem.setText("Switch to Books Database");
         openBooksMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openBooksMenuItemActionPerformed(evt);
+                openBooksMenuItemActionPerformed1(evt);
             }
         });
         fileMenu.add(openBooksMenuItem);
@@ -493,7 +491,8 @@ public class AddressBookDisplay extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(browsePanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(findPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(findPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnClear))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -506,7 +505,11 @@ public class AddressBookDisplay extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(errorPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(findPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33))
+                .addGap(29, 29, 29))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(502, Short.MAX_VALUE)
+                .addComponent(btnClear)
+                .addContainerGap())
         );
 
         pack();
@@ -800,46 +803,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
     *               continues to use proper casing and indentation.
     */
     private void openBooksMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openBooksMenuItemActionPerformed
-        try{
-            personQueries.disconnectFromDatabase();
-            
-            //Sets Look and Feel of GUI to Nimbus.
-            UIManager.setLookAndFeel(
-                    "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 
-        }catch (UnsupportedLookAndFeelException exception) {
-            JOptionPane.showMessageDialog(null,exception.getMessage(),
-                    "UnsupportedLookAndFeelException Exception Thrown on"
-                    + " UIManager",
-                    JOptionPane.ERROR_MESSAGE);
-        }catch (ClassNotFoundException exception) {
-            JOptionPane.showMessageDialog(null,exception.getMessage(),
-                    "ClassNotFoundException Exception Thrown on UIManager",
-                    JOptionPane.ERROR_MESSAGE);
-        }catch (InstantiationException exception) {
-            JOptionPane.showMessageDialog(null,exception.getMessage(),
-                    "InstantiationException Exception Thrown on UIManager",
-                    JOptionPane.ERROR_MESSAGE);
-        }catch (IllegalAccessException exception) {
-            JOptionPane.showMessageDialog(null,exception.getMessage(),
-                    "IllegalAccessException Exception Thrown on UIManager",
-                    JOptionPane.ERROR_MESSAGE);
-        }catch (Exception exception) {
-            JOptionPane.showMessageDialog(null,exception.getMessage(),
-                    "Unknown Exception Thrown on UIManager",
-                    JOptionPane.ERROR_MESSAGE);
-        }
-
-        /**
-         * After the UIManager is updated, then make a new Runnable on the
-         * SwingUtilities.invoke later to run the program and make it visible.
-         */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new BooksDisplay().setVisible(true);
-            }
-        });
-        this.dispose();
     }//GEN-LAST:event_openBooksMenuItemActionPerformed
 
     /** Clear find results, shows entire address book
@@ -851,10 +815,10 @@ public class AddressBookDisplay extends javax.swing.JFrame {
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
     */
-    private void btnClearFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearFindActionPerformed
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         txtFind.setText("");
         loadDatabase();
-    }//GEN-LAST:event_btnClearFindActionPerformed
+    }//GEN-LAST:event_btnClearActionPerformed
 
     private void myJTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myJTableMouseClicked
 
@@ -863,6 +827,37 @@ public class AddressBookDisplay extends javax.swing.JFrame {
     private void myJTableMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myJTableMouseReleased
 
     }//GEN-LAST:event_myJTableMouseReleased
+
+    private void openBooksMenuItemActionPerformed1(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openBooksMenuItemActionPerformed1
+        try{
+            //Sets Look and Feel of GUI to Nimbus.
+            UIManager.setLookAndFeel(
+                    "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
+
+        /**
+         * After the UIManager is updated, then make a new Runnable on the
+         * SwingUtilities.invoke later to run the program and make it visible.
+         */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new BooksDisplay().setVisible(true);
+            }
+        });
+        
+        this.dispose();
+
+        }catch (UnsupportedLookAndFeelException exception) {
+            myTextAreaLogger.log(exception.getMessage());
+        }catch (ClassNotFoundException exception) {
+            myTextAreaLogger.log(exception.getMessage());
+        }catch (InstantiationException exception) {
+            myTextAreaLogger.log(exception.getMessage());
+        }catch (IllegalAccessException exception) {
+            myTextAreaLogger.log(exception.getMessage());
+        }catch (Exception exception) {
+            myTextAreaLogger.log(exception.getMessage());
+        }
+    }//GEN-LAST:event_openBooksMenuItemActionPerformed1
 
 
     /**Sets editable area to entry based on number found in txtCurrentRecord
@@ -1108,7 +1103,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel browsePanel;
-    private javax.swing.JButton btnClearFind;
+    private javax.swing.JButton btnClear;
     private javax.swing.JButton btnDeleteEntry;
     private javax.swing.JButton btnFind;
     private javax.swing.JButton btnNewEntry;

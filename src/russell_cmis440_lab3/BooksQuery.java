@@ -325,37 +325,67 @@ public class BooksQuery extends AbstractTableModel
    */
    public int addBook(String aISBN, String aTitle, int aEditionNumber, 
            String aCopyright, String aAuthorFirstName,
-           String aAuthorLastName, boolean aNewAuthor, boolean aNewBook ){
+           String aAuthorLastName){
        
        ResultSet tempResultSet = null;
+       List< Book > results = getAllBooks();
        lastError = null;//Will hold any errors from method
        int result = 0;
        int TempAuthorIdHolder = 0;
+       boolean newAuthor = false;
+       boolean newBook = false;
        // set parameters, then execute insertNewPerson
        try{
+           for (int i = 0; i< results.size(); i++){
+               if (results.get(i).getISBN().equalsIgnoreCase(aISBN) &&
+                    results.get(i).getAuthorLastName().equalsIgnoreCase(aAuthorLastName) &&
+                    results.get(i).getAuthorFirstName().equalsIgnoreCase(aAuthorFirstName)){
+                throw new Exception("This Author and Book are already added.");
+
+               }else if (results.get(i).getISBN().equalsIgnoreCase(aISBN) && 
+                       !(results.get(i).getAuthorLastName().equalsIgnoreCase(aAuthorLastName)) ||
+                       !(results.get(i).getAuthorFirstName().equalsIgnoreCase(aAuthorFirstName))){
+                   newAuthor = true;
+                   newBook = false;
+               }else if (!(results.get(i).getISBN().equalsIgnoreCase(aISBN)) &&
+                    results.get(i).getAuthorLastName().equalsIgnoreCase(aAuthorLastName) &&
+                    results.get(i).getAuthorFirstName().equalsIgnoreCase(aAuthorFirstName)){
+                   newAuthor = false;
+                   newBook = true;
+               }else{
+                   newAuthor = true;
+                   newBook = true;
+               }
+
+           }
            /**
             * The setString method will insert the given variable into the sql
             * statement that was defined in the constructor.
-            */     
-           if (aNewAuthor){
+            */
+           if (newAuthor){
                insertNewAuthor.setString(1, aAuthorFirstName);
                insertNewAuthor.setString(2, aAuthorLastName);
                result = insertNewAuthor.executeUpdate();
            }
+
            tempResultSet = selectAllAuthors.executeQuery();
            while ( tempResultSet.next() ){
-               if (tempResultSet.getString("firstName").equalsIgnoreCase(aAuthorFirstName) && tempResultSet.getString("lastName").equalsIgnoreCase(aAuthorLastName)){
+               if (tempResultSet.getString("firstName").
+                       equalsIgnoreCase(aAuthorFirstName) &&
+                       tempResultSet.getString("lastName")
+                       .equalsIgnoreCase(aAuthorLastName)){
+
                    TempAuthorIdHolder = tempResultSet.getInt("authorID");
                    break;
                }
            }
 
-           if (aNewBook){
-           insertNewBook.setString(1, aISBN);
-           insertNewBook.setString(2, aTitle);
-           insertNewBook.setInt(3, aEditionNumber);
-           insertNewBook.setString(4, aCopyright);
-           result += insertNewBook.executeUpdate();
+           if (newBook){
+               insertNewBook.setString(1, aISBN);
+               insertNewBook.setString(2, aTitle);
+               insertNewBook.setInt(3, aEditionNumber);
+               insertNewBook.setString(4, aCopyright);
+               result += insertNewBook.executeUpdate();
            }
 
 
@@ -399,38 +429,36 @@ public class BooksQuery extends AbstractTableModel
            int aAuthorId, String aOldISBN  ){
 
        lastError = null; //Will hold any errors from method
-        int result = 0;
-        ResultSet tempResultSet = null;
-        ArrayList <Integer> TempAuthorIDHolder = new ArrayList<Integer>();
-        // set parameters, then execute insertNewPerson
-        try{
-
-            /**
-             * The setString method will insert the name variable into the sql
-             * statement that was defined in the constructor.
-             */
-            tempResultSet = selectAllAuthorISBN.executeQuery();
+       int result = 0;
+       ResultSet tempResultSet = null;
+       ArrayList <Integer> TempAuthorIDHolder = new ArrayList<Integer>();
+       // set parameters, then execute insertNewPerson
+       try{
+           /**
+            * The setString method will insert the name variable into the sql
+            * statement that was defined in the constructor.
+            */
+           tempResultSet = selectAllAuthorISBN.executeQuery();
            while ( tempResultSet.next() ){
                if (tempResultSet.getString("ISBN").equalsIgnoreCase(aOldISBN)){
                    TempAuthorIDHolder.add(tempResultSet.getInt("authorID"));
                }
            }
 
-            for (Integer tempAuthorId: TempAuthorIDHolder){
-            deleteAuthorISBN.setInt(1, tempAuthorId);
-            deleteAuthorISBN.setString(2, aOldISBN);
-            result += deleteAuthorISBN.executeUpdate();
-            }
+           for (Integer tempAuthorId: TempAuthorIDHolder){
+               deleteAuthorISBN.setInt(1, tempAuthorId);
+               deleteAuthorISBN.setString(2, aOldISBN);
+               result += deleteAuthorISBN.executeUpdate();
+           }
 
-            updateAuthor.setString(1, aFirstName);
-            updateAuthor.setString(2, aLastName);
-            updateAuthor.setInt(3, aAuthorId);
-            result = updateAuthor.executeUpdate();
+           updateAuthor.setString(1, aFirstName);
+           updateAuthor.setString(2, aLastName);
+           updateAuthor.setInt(3, aAuthorId);
+           result = updateAuthor.executeUpdate();
 
-
-            deleteBook.setString( 1, aOldISBN );
-            // delete the entry; returns # of rows updated
-            result += deleteBook.executeUpdate();
+           deleteBook.setString( 1, aOldISBN );
+           // delete the entry; returns # of rows updated
+           result += deleteBook.executeUpdate();
 
            insertNewBook.setString(1, aISBN);
            insertNewBook.setString(2, aTitle);
@@ -439,9 +467,9 @@ public class BooksQuery extends AbstractTableModel
            result += insertNewBook.executeUpdate();
 
            for (Integer tempAuthorId: TempAuthorIDHolder){
-           insertAuthorISBN.setInt(1, tempAuthorId);
-           insertAuthorISBN.setString(2, aISBN);
-           result += insertAuthorISBN.executeUpdate();
+               insertAuthorISBN.setInt(1, tempAuthorId);
+               insertAuthorISBN.setString(2, aISBN);
+               result += insertAuthorISBN.executeUpdate();
             }
 
             
@@ -470,22 +498,21 @@ public class BooksQuery extends AbstractTableModel
    */
    public int deleteBook(int aAuthorId, String aISBN ){
        lastError = null; //Will hold any errors from method
-        int result = 0;
-        List< Book > results = null;
-        boolean noMoreBooksForThisAuthor = false;
-        boolean noMoreAuthorsForThisBook = false;
-        ResultSet tempResultSet = null;
+       int result = 0;
+       List< Book > results = null;
+       boolean noMoreBooksForThisAuthor = false;
+       boolean noMoreAuthorsForThisBook = false;
+       ResultSet tempResultSet = null;
 
-        // set parameters, then execute insertNewPerson
-        try{
-            /**
-             * The setString method will insert the name variable into the sql
-             * statement that was defined in the constructor.
-             */
-
-            deleteAuthorISBN.setInt(1, aAuthorId);
-            deleteAuthorISBN.setString(2, aISBN);
-            result = deleteAuthorISBN.executeUpdate();
+       // set parameters, then execute insertNewPerson
+       try{
+           /**
+            * The setString method will insert the name variable into the sql
+            * statement that was defined in the constructor.
+            */
+           deleteAuthorISBN.setInt(1, aAuthorId);
+           deleteAuthorISBN.setString(2, aISBN);
+           result = deleteAuthorISBN.executeUpdate();
             
 
            tempResultSet = selectAllAuthorISBN.executeQuery();
@@ -500,7 +527,9 @@ public class BooksQuery extends AbstractTableModel
 
            results = getAllBooks();
            for (int i = 0; i < results.size(); i++){
-               if (results.get(i).getAuthorID() == aAuthorId && ((results.get(i).getISBN() != null) || (!results.get(i).getISBN().equals("")))){
+               if (results.get(i).getAuthorID() == aAuthorId &&
+                       ((results.get(i).getISBN() != null) ||
+                       (!results.get(i).getISBN().equals("")))){
                    noMoreBooksForThisAuthor = false;
                    break;
                }else{
@@ -513,9 +542,9 @@ public class BooksQuery extends AbstractTableModel
                result += deleteAuthor.executeUpdate();
            }
            if (noMoreAuthorsForThisBook){
-            deleteBook.setString( 1, aISBN );
-            // delete the entry; returns # of rows updated
-            result += deleteBook.executeUpdate();
+               deleteBook.setString( 1, aISBN );
+               // delete the entry; returns # of rows updated
+               result += deleteBook.executeUpdate();
            }
 
         }catch ( SQLException sqlException ){

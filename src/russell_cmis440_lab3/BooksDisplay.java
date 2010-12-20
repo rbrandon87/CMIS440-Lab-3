@@ -120,10 +120,10 @@ public class BooksDisplay extends javax.swing.JFrame {
         findPanel = new javax.swing.JPanel();
         txtFind = new javax.swing.JTextField();
         btnFind = new javax.swing.JButton();
-        btnClearFind = new javax.swing.JButton();
         errorPanel = new javax.swing.JPanel();
         myTextAreaScrollPane = new javax.swing.JScrollPane();
         debugTextArea = new javax.swing.JTextArea();
+        btnClear = new javax.swing.JButton();
         myMenuBar = new javax.swing.JMenuBar();
         fileMenu = new javax.swing.JMenu();
         openAddressBookMenuItem = new javax.swing.JMenuItem();
@@ -132,7 +132,7 @@ public class BooksDisplay extends javax.swing.JFrame {
         instructionsMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("CMIS440 Lab 3 JavaDB Address Book Program");
+        setTitle("CMIS440 Lab 3 JavaDB Book Database Program");
         setBackground(javax.swing.UIManager.getDefaults().getColor("Nb.Desktop.background"));
 
         browsePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Browse"));
@@ -205,13 +205,17 @@ public class BooksDisplay extends javax.swing.JFrame {
         browsePanel.setLayout(browsePanelLayout);
         browsePanelLayout.setHorizontalGroup(
             browsePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, browsePanelLayout.createSequentialGroup()
-                .addGroup(browsePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, browsePanelLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(myJTableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 677, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, browsePanelLayout.createSequentialGroup()
-                        .addGap(162, 162, 162)
+            .addGroup(browsePanelLayout.createSequentialGroup()
+                .addGroup(browsePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, browsePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, browsePanelLayout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(myJTableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE))
+                        .addGroup(browsePanelLayout.createSequentialGroup()
+                            .addContainerGap(614, Short.MAX_VALUE)
+                            .addComponent(lblNoData)))
+                    .addGroup(browsePanelLayout.createSequentialGroup()
+                        .addGap(191, 191, 191)
                         .addComponent(btnPrevious)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(txtCurrentRecord, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -220,10 +224,7 @@ public class BooksDisplay extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(txtTotalRecordCount, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnNext))
-                    .addGroup(browsePanelLayout.createSequentialGroup()
-                        .addContainerGap(602, Short.MAX_VALUE)
-                        .addComponent(lblNoData)))
+                        .addComponent(btnNext)))
                 .addContainerGap())
         );
 
@@ -371,26 +372,16 @@ public class BooksDisplay extends javax.swing.JFrame {
             }
         });
 
-        btnClearFind.setText("Clear Find");
-        btnClearFind.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnClearFindActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout findPanelLayout = new javax.swing.GroupLayout(findPanel);
         findPanel.setLayout(findPanelLayout);
         findPanelLayout.setHorizontalGroup(
             findPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(findPanelLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(findPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, findPanelLayout.createSequentialGroup()
-                        .addComponent(txtFind, javax.swing.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnFind, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap())
-                    .addComponent(btnClearFind, javax.swing.GroupLayout.Alignment.TRAILING)))
+                .addComponent(txtFind, javax.swing.GroupLayout.DEFAULT_SIZE, 569, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnFind, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         findPanelLayout.setVerticalGroup(
             findPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -399,8 +390,7 @@ public class BooksDisplay extends javax.swing.JFrame {
                 .addGroup(findPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtFind, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnFind))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
-                .addComponent(btnClearFind))
+                .addContainerGap(83, Short.MAX_VALUE))
         );
 
         errorPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Errors"));
@@ -419,6 +409,17 @@ public class BooksDisplay extends javax.swing.JFrame {
             errorPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(myTextAreaScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 117, Short.MAX_VALUE)
         );
+
+        btnClear.setText("Clear");
+        btnClear.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnClearActionPerformed(evt);
+            }
+        });
+
+        fileMenu.setText("File");
+        fileMenu.setMaximumSize(new java.awt.Dimension(33, 32767));
+        fileMenu.setPreferredSize(new java.awt.Dimension(33, 19));
 
         openAddressBookMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         openAddressBookMenuItem.setText("Switch to Address Book Database");
@@ -462,25 +463,30 @@ public class BooksDisplay extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(errorPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(newUpdateDeletePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(browsePanel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(findPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(errorPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(newUpdateDeletePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(browsePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(findPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(btnClear, javax.swing.GroupLayout.Alignment.TRAILING))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(newUpdateDeletePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(browsePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(browsePanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(newUpdateDeletePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(errorPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(findPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnClear)
+                .addGap(11, 11, 11))
         );
 
         pack();
@@ -627,48 +633,31 @@ public class BooksDisplay extends javax.swing.JFrame {
          * After the person is added the database is reloaded to reflect the new
          * entry.
          */
-
-try{
-
-        boolean newAuthor = false;
-        boolean newBook = false;
-        String ISBN = txtISBN.getText();
-        String title = txtTitle.getText();
-        int editionNumber = txtEditionNumber.getText().equals("") ? 0 : Integer.parseInt(txtEditionNumber.getText());
-        String copyright = txtCopyright.getText();
-        String firstName = txtFirstName.getText();
-        String lastName = txtLastName.getText();
-
-        for (int i = 0; i< results.size(); i++){
-            if (results.get(i).getISBN().equalsIgnoreCase(ISBN) && results.get(i).getAuthorLastName().equalsIgnoreCase(lastName) && results.get(i).getAuthorFirstName().equalsIgnoreCase(firstName)){
-                JOptionPane.showMessageDialog(this, "This Author and Book are already added");
+        try{
+            if (txtISBN.getText().equals("")){
+                myTextAreaLogger.log("ISBN must be populated before"
+                        + " an insert ");
                 return;
-            }else if (results.get(i).getISBN().equalsIgnoreCase(ISBN) && !(results.get(i).getAuthorLastName().equalsIgnoreCase(lastName) && results.get(i).getAuthorFirstName().equalsIgnoreCase(firstName))){
-                newAuthor = true;
-                newBook = false;
-                break;
-            }else if (!(results.get(i).getISBN().equalsIgnoreCase(ISBN)) && (results.get(i).getAuthorLastName().equalsIgnoreCase(lastName) && results.get(i).getAuthorFirstName().equalsIgnoreCase(firstName))){
-                newAuthor = false;
-                newBook = true;
-            }else{
-                newAuthor = true;
-                newBook = true;
             }
+            String ISBN = txtISBN.getText();
+            String title = txtTitle.getText();
+            int editionNumber = txtEditionNumber.getText().equals("") ? 0
+                    : Integer.parseInt(txtEditionNumber.getText());
+            String copyright = txtCopyright.getText();
+            String firstName = txtFirstName.getText();
+            String lastName = txtLastName.getText();
 
-        }
-        int result = bookQueries.addBook(ISBN, title, editionNumber, copyright, firstName, lastName, newAuthor, newBook );
-        checkForErrors();
+            int result = bookQueries.addBook(ISBN, title, editionNumber,
+                    copyright, firstName, lastName);
+            checkForErrors();
 
-        JOptionPane.showMessageDialog( this, result + " records affected by insert",
-                      "Record Update Status", JOptionPane.PLAIN_MESSAGE );
+            myTextAreaLogger.log(result > 0 ? "Successful" : "Not Successful");
 
-
+            loadDatabase();
         }catch (NumberFormatException exception){
             myTextAreaLogger.log(exception.toString());
         }catch (Exception exception){
             myTextAreaLogger.log(exception.toString());
-        }finally{
-            loadDatabase();
         }
     }//GEN-LAST:event_btnNewEntryActionPerformed
 
@@ -697,14 +686,16 @@ try{
          * After the person is deleted the database is reloaded to reflect the
          * deleted entry is gone.
          */
-        if (txtAuthorID.getText().equals("")){
+        if (txtAuthorID.getText().equals("") || txtISBN.getText().equals("")){
+            myTextAreaLogger.log("Author ID and ISBN must be "
+                    + "populated before a delete ");
             return;
         }
-        int result = bookQueries.deleteBook( Integer.parseInt(txtAuthorID.getText()), txtISBN.getText());
+        int result = bookQueries.deleteBook(
+                Integer.parseInt(txtAuthorID.getText()), txtISBN.getText());
         checkForErrors();
 
-        JOptionPane.showMessageDialog( this, result + " records affected by insert",
-                      "Record Update Status", JOptionPane.PLAIN_MESSAGE );
+        myTextAreaLogger.log(result > 0 ? "Successful" : "Not Successful");
         loadDatabase();
     }//GEN-LAST:event_btnDeleteEntryActionPerformed
 
@@ -729,32 +720,32 @@ try{
          * After the person is updated the database is reloaded to reflect the
          * changes.
          */
-try{
-        int authorID = Integer.parseInt(txtAuthorID.getText());
-        String ISBN = txtISBN.getText();
-        String title = txtTitle.getText();
-        int editionNumber = txtEditionNumber.getText().equals("") ? 0 : Integer.parseInt(txtEditionNumber.getText());
-        String copyright = txtCopyright.getText();
-        String firstName = txtFirstName.getText();
-        String lastName = txtLastName.getText();
+        try{
+            if (txtAuthorID.getText().equals("") ||
+                    txtISBN.getText().equals("")){
+                myTextAreaLogger.log("Author ID and ISBN must be "
+                        + "populated before an update ");
+                return;
+            }
+            int authorID = Integer.parseInt(txtAuthorID.getText());
+            String ISBN = txtISBN.getText();
+            String title = txtTitle.getText();
+            int editionNumber = txtEditionNumber.getText().equals("") ? 0
+                    : Integer.parseInt(txtEditionNumber.getText());
+            String copyright = txtCopyright.getText();
+            String firstName = txtFirstName.getText();
+            String lastName = txtLastName.getText();
 
-
-        if (ISBN.equals("")){
-            JOptionPane.showMessageDialog(this, "Make sure ISBN is not blank before updating", "Error", JOptionPane.PLAIN_MESSAGE);
-            return;
-        }
-
-int result = bookQueries.updateBook(ISBN, title, editionNumber, copyright, firstName, lastName, authorID, TempISBNHolder );
+            int result = bookQueries.updateBook(ISBN, title, editionNumber,
+                    copyright,firstName, lastName, authorID, TempISBNHolder );
             checkForErrors();
 
-        JOptionPane.showMessageDialog( this, result + " records affected by insert",
-                      "Record Update Status", JOptionPane.PLAIN_MESSAGE );
+            myTextAreaLogger.log(result > 0 ? "Successful" : "Not Successful");
+            loadDatabase();
         }catch (NumberFormatException exception){
             myTextAreaLogger.log(exception.toString());
         }catch (Exception exception){
             myTextAreaLogger.log(exception.toString());
-        }finally{
-            loadDatabase();
         }
     }//GEN-LAST:event_btnUpdateEntryActionPerformed
 
@@ -814,46 +805,33 @@ int result = bookQueries.updateBook(ISBN, title, editionNumber, copyright, first
     */
     private void openAddressBookMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openAddressBookMenuItemActionPerformed
         try{
-            bookQueries.disconnectFromDatabase();
-
             //Sets Look and Feel of GUI to Nimbus.
             UIManager.setLookAndFeel(
                     "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
-
-        }catch (UnsupportedLookAndFeelException exception) {
-            JOptionPane.showMessageDialog(null,exception.getMessage(),
-                    "UnsupportedLookAndFeelException Exception Thrown on"
-                    + " UIManager",
-                    JOptionPane.ERROR_MESSAGE);
-        }catch (ClassNotFoundException exception) {
-            JOptionPane.showMessageDialog(null,exception.getMessage(),
-                    "ClassNotFoundException Exception Thrown on UIManager",
-                    JOptionPane.ERROR_MESSAGE);
-        }catch (InstantiationException exception) {
-            JOptionPane.showMessageDialog(null,exception.getMessage(),
-                    "InstantiationException Exception Thrown on UIManager",
-                    JOptionPane.ERROR_MESSAGE);
-        }catch (IllegalAccessException exception) {
-            JOptionPane.showMessageDialog(null,exception.getMessage(),
-                    "IllegalAccessException Exception Thrown on UIManager",
-                    JOptionPane.ERROR_MESSAGE);
-        }catch (Exception exception) {
-            JOptionPane.showMessageDialog(null,exception.getMessage(),
-                    "Unknown Exception Thrown on UIManager",
-                    JOptionPane.ERROR_MESSAGE);
-        }
 
         /**
          * After the UIManager is updated, then make a new Runnable on the
          * SwingUtilities.invoke later to run the program and make it visible.
          */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new AddressBookDisplay().setVisible(true);
-            }
-        });
-        this.dispose();
+            java.awt.EventQueue.invokeLater(new Runnable() {
+                public void run() {
+                    new AddressBookDisplay().setVisible(true);
+                }
+            });
 
+            this.dispose();
+
+        }catch (UnsupportedLookAndFeelException exception) {
+            myTextAreaLogger.log(exception.getMessage());
+        }catch (ClassNotFoundException exception) {
+            myTextAreaLogger.log(exception.getMessage());
+        }catch (InstantiationException exception) {
+            myTextAreaLogger.log(exception.getMessage());
+        }catch (IllegalAccessException exception) {
+            myTextAreaLogger.log(exception.getMessage());
+        }catch (Exception exception) {
+            myTextAreaLogger.log(exception.getMessage());
+        }
     }//GEN-LAST:event_openAddressBookMenuItemActionPerformed
 
     /** Clear find results, shows entire address book
@@ -865,10 +843,10 @@ int result = bookQueries.updateBook(ISBN, title, editionNumber, copyright, first
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
     */
-    private void btnClearFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearFindActionPerformed
+    private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         txtFind.setText("");
         loadDatabase();
-    }//GEN-LAST:event_btnClearFindActionPerformed
+    }//GEN-LAST:event_btnClearActionPerformed
 
     private void myJTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_myJTableMouseClicked
 
@@ -1056,7 +1034,7 @@ int result = bookQueries.updateBook(ISBN, title, editionNumber, copyright, first
         setColumnWidth(myJTable.getColumnModel().getColumn(3), 0);
         setColumnWidth(myJTable.getColumnModel().getColumn(4), 0);
         setColumnWidth(myJTable.getColumnModel().getColumn(5), 100);
-        setColumnWidth(myJTable.getColumnModel().getColumn(6), 190);
+        setColumnWidth(myJTable.getColumnModel().getColumn(6), 210);
         setColumnWidth(myJTable.getColumnModel().getColumn(7), 75);
         setColumnWidth(myJTable.getColumnModel().getColumn(8), 80);
     }
@@ -1148,7 +1126,7 @@ int result = bookQueries.updateBook(ISBN, title, editionNumber, copyright, first
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel browsePanel;
-    private javax.swing.JButton btnClearFind;
+    private javax.swing.JButton btnClear;
     private javax.swing.JButton btnDeleteEntry;
     private javax.swing.JButton btnFind;
     private javax.swing.JButton btnNewEntry;
