@@ -343,8 +343,8 @@ public class BooksQuery extends AbstractTableModel
                 throw new Exception("This Author and Book are already added.");
 
                }else if (results.get(i).getISBN().equalsIgnoreCase(aISBN) && 
-                       !(results.get(i).getAuthorLastName().equalsIgnoreCase(aAuthorLastName)) ||
-                       !(results.get(i).getAuthorFirstName().equalsIgnoreCase(aAuthorFirstName))){
+                       (!(results.get(i).getAuthorLastName().equalsIgnoreCase(aAuthorLastName)) ||
+                       !(results.get(i).getAuthorFirstName().equalsIgnoreCase(aAuthorFirstName)))){
                    newAuthor = true;
                    newBook = false;
                }else if (!(results.get(i).getISBN().equalsIgnoreCase(aISBN)) &&
