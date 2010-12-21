@@ -21,15 +21,15 @@ import javax.swing.table.TableColumn;
 
 
 
-/** This is the main window of operation for the entire program. The purpose of
-*  this class is to create a GUI Interface to the AddressBook JavaDB Database
+/** This is the main window of operation for the books database. The purpose of
+*  this class is to create a GUI Interface to the Book JavaDB Database
 *  for the user to interact with.
 *|----------------------------------------------------------------------------|
-*|                                CRC: AddressBookDisplay                     |
+*|                                CRC: BooksDisplay                           |
 *|----------------------------------------------------------------------------|
 *|Creates GUI Interface                                                       |
-*|Initialize Person object to hold current person to edit       Person        |
-*|Initialize PersonQueries to handle AddressBook data entries   PersonQueries |
+*|Initialize Book object to hold current book to edit              Book       |
+*|Initialize BooksQuery to handle Book data entries                BooksQuery |
 *|----------------------------------------------------------------------------|
 *
 * @TheCs Cohesion - All methods in this class work together on similar task.
@@ -517,13 +517,13 @@ public class BooksDisplay extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**Selects Previous entry from List of Person objects
-    * @TheCs Cohesion - Selects Previous entry from List of Person objects
-    * Completeness - Completely selects Previous entry from List of Person
+    /**Selects Previous entry from List of Book objects
+    * @TheCs Cohesion - Selects Previous entry from List of Book objects
+    * Completeness - Completely selects Previous entry from List of Book
     *                objects.
-    * Convenience - Simply selects Previous entry from List of Person objects.
+    * Convenience - Simply selects Previous entry from List of Book objects.
     * Clarity - It is simple to understand that this selects Previous entry
-    *           from List of Person objects.
+    *           from List of Book objects.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
     */
@@ -533,7 +533,7 @@ public class BooksDisplay extends javax.swing.JFrame {
          * than 0 it makes it equal to the last record. This number is then
          * added to the current record text field and 
          * updateCurrentSelected record will use this number to determine 
-         * which person object in the person object list to display for editing.
+         * which book object in the book object list to display for editing.
          */
         currentEntryIndex--;
         if ( currentEntryIndex < 0 ){
@@ -557,19 +557,19 @@ public class BooksDisplay extends javax.swing.JFrame {
     private void txtCurrentRecordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCurrentRecordActionPerformed
         /**
          * updateCurrentSelectedRecord will use the number entered into the
-         * current record textfield to determine which person object in the
-         * person object list to display for editing.
+         * current record textfield to determine which book object in the
+         * book object list to display for editing.
          */
         updateCurrentSelectedRecord();
     }//GEN-LAST:event_txtCurrentRecordActionPerformed
 
-    /**Selects Next entry from List of Person objects
-    * @TheCs Cohesion - Selects Next entry from List of Person objects
-    * Completeness - Completely selects Next entry from List of Person
+    /**Selects Next entry from List of Book objects
+    * @TheCs Cohesion - Selects Next entry from List of Book objects
+    * Completeness - Completely selects Next entry from List of Book
     *                objects.
-    * Convenience - Simply selects Next entry from List of Person objects.
+    * Convenience - Simply selects Next entry from List of Book objects.
     * Clarity - It is simple to understand that this selects Next entry
-    *           from List of Person objects.
+    *           from List of Book objects.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
     */
@@ -579,7 +579,7 @@ public class BooksDisplay extends javax.swing.JFrame {
         * than the total number of entries it makes it equal to the first record
         * . This number is then added to the current record text field and 
         * updateCurrentSelected record will use this number to determine 
-        * which person object in the person object list to display for editing.
+        * which book object in the book object list to display for editing.
         */
         currentEntryIndex++;
 
@@ -590,19 +590,19 @@ public class BooksDisplay extends javax.swing.JFrame {
         updateCurrentSelectedRecord();
     }//GEN-LAST:event_btnNextActionPerformed
 
-    /** Find records based on last name entered
-    * @TheCs Cohesion - Find records based on last name entered
-    * Completeness - Completely finds records based on last name entered.
-    * Convenience - Simply finds records based on last name entered.
+    /** Find records based on author last name entered
+    * @TheCs Cohesion - Find records based on author last name entered
+    * Completeness - Completely finds records based on author last name entered.
+    * Convenience - Simply finds records based on author last name entered.
     * Clarity - It is simple to understand that this finds records based on
-    *           last name entered.
+    *           author last name entered.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
     */
     private void btnFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindActionPerformed
         /**
          * Run the .getBookByAuthorLastName method of bookQueries to return a
-         * list of all persons with the specified last name. It then calls
+         * list of all books with the specified author last name. It then calls
          * checkForErrors to determine if any errors were thrown during this
          * method call by checking the lastError variable through the
          * getLastError method. If so it will send to the TextAreaLogger to
@@ -652,14 +652,20 @@ public class BooksDisplay extends javax.swing.JFrame {
 
         /**
          * This calls the addBook method of the bookQueries object to add
-         * a new person to the database. It's assigned to a int to determine
-         * if it was successful in adding the person or not. checkForErrors is
+         * a new book to the database. It's assigned to a int to determine
+         * if it was successful in adding the book or not. checkForErrors is
          * called after to see if any errors were thrown during the process.
-         * After the person is added the database is reloaded to reflect the new
+         * After the book is added the database is reloaded to reflect the new
          * entry.
          */
         try{
             if (txtISBN.getText().equals("")){
+                /**
+                 * ISBN, unlike authorId, is generated by the user and not the
+                 * computer. Since it is a primary key for the titles table
+                 * it can't be blank. Well, technically yes it can, but it will
+                 * cause issues later if allowed.
+                 */
                 myTextAreaLogger.log("ISBN must be populated before"
                         + " an insert ");
                 return;
@@ -701,15 +707,15 @@ public class BooksDisplay extends javax.swing.JFrame {
     */
     private void btnDeleteEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteEntryActionPerformed
         /**
-         * If the AddressID field is blank then the method is stopped since no
-         * entry is selected for deletion.
+         * If the authorID or ISBN fielda are blank then the method is
+         * stopped since no entry is selected for deletion.
          * This calls the deleteBook method of the bookQueries object to
-         * delete a person from the database. It's assigned to a int to
-         * determine if it was successful in deleting the person or not.
+         * delete a book/author from the database. It's assigned to a int to
+         * determine if it was successful in deleting the author/book or not.
          * checkForErrors is called after to see if any errors were thrown
          * during the process.
-         * After the person is deleted the database is reloaded to reflect the
-         * deleted entry is gone.
+         * After the author/book are deleted the database is reloaded to
+         * reflect the deleted entry is gone.
          */
         if (txtAuthorID.getText().equals("") || txtISBN.getText().equals("")){
             myTextAreaLogger.log("Author ID and ISBN must be "
@@ -735,15 +741,15 @@ public class BooksDisplay extends javax.swing.JFrame {
     */
     private void btnUpdateEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateEntryActionPerformed
         /**
-         * If the AddressID field is blank then the method is stopped since no
-         * entry is selected for updating.
+         * If the authorID or ISBN fields are blank then the method is
+         * stopped since no entry is selected for updating.
          * This calls the updateBook method of the bookQueries object to
-         * update a person from the database. It's assigned to a int to
-         * determine if it was successful in updating the person or not.
+         * update a book/author from the database. It's assigned to a int to
+         * determine if it was successful in updating the author/book or not.
          * checkForErrors is called after to see if any errors were thrown
          * during the process.
-         * After the person is updated the database is reloaded to reflect the
-         * changes.
+         * After the author/book is updated the database is reloaded to
+         * reflect the changes.
          */
         try{
             if (txtAuthorID.getText().equals("") ||
@@ -819,12 +825,12 @@ public class BooksDisplay extends javax.swing.JFrame {
             "Instructions", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_instructionsMenuItemActionPerformed
 
-    /** Switches over to Books database
-    * @TheCs Cohesion - Switches over to Books database
-    * Completeness - Completely switches over to Books database.
-    * Convenience - Simply switches over to Books database.
-    * Clarity - It is simple to understand that this switches over to Books
-    *           database.
+    /** Switches over to AddressBook database
+    * @TheCs Cohesion - Switches over to AddressBook database
+    * Completeness - Completely switches over to AddressBook database.
+    * Convenience - Simply switches over to AddressBook database.
+    * Clarity - It is simple to understand that this switches over to 
+    *           AddressBook database.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
     */
@@ -844,7 +850,7 @@ public class BooksDisplay extends javax.swing.JFrame {
                 }
             });
 
-            this.dispose();
+            this.dispose();//Dispose of this GUI since its no longer needed
 
         }catch (UnsupportedLookAndFeelException exception) {
             myTextAreaLogger.log(exception.getMessage());
@@ -859,12 +865,12 @@ public class BooksDisplay extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_openAddressBookMenuItemActionPerformed
 
-    /** Clear find results, shows entire address book
-    * @TheCs Cohesion - Clear find results, shows entire address book.
-    * Completeness - Completely clears find results, shows entire address book.
-    * Convenience - Simply clears find results, shows entire address book.
+    /** Clear find results, shows entire book database
+    * @TheCs Cohesion - Clear find results, shows entire book database.
+    * Completeness - Completely clears find results, shows entire book database.
+    * Convenience - Simply clears find results, shows entire book database.
     * Clarity - It is simple to understand that this clears find results,
-    *           shows entire address book.
+    *           shows entire book database.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
     */
@@ -900,19 +906,20 @@ public class BooksDisplay extends javax.swing.JFrame {
         try{
             /**
              * First it gets the number from the txtCurrentRecord and -1 since
-             * the person list is zero based.
+             * the book/author list is zero based.
              */
             currentEntryIndex =
                     ( Integer.parseInt( txtCurrentRecord.getText() ) - 1 );
 
             /**
-             * Only attempt to get the person if the number of entries is not
-             * equal to 0 and the index entered is less than the total number
-             * of entries. It assigns the currentEntry, Person object, to the
-             * person object in the results list that is at the selected index
-             * and then retrieves all the information and displays in the
-             * editable area. Also, the record counters are updated and the
-             * JTable is updated to be selected to the entry in question.
+             * Only attempt to get the author/book if the number of entries
+             * is not equal to 0 and the index entered is less than the
+             * total number of entries. It assigns the currentEntry,
+             * Book object, to the book object in the results list that is at
+             * the selected index and then retrieves all the information and
+             * displays in the editable area. Also, the record counters are
+             * updated and the JTable is updated to be selected to the entry
+             * in question.
              */
             if ( numberOfEntries != 0 && currentEntryIndex < numberOfEntries ){
                 currentEntry = results.get( currentEntryIndex );
@@ -956,7 +963,7 @@ public class BooksDisplay extends javax.swing.JFrame {
          * retrieves the first selected index, or -1 if selection is empty
          * and updates the txtCurrentRecord w/ this index.
          * updateCurrentSelectedRecord will use this number to determine
-         * which person object in the person object list to display for editing.
+         * which book object in the book object list to display for editing.
          */
         ListSelectionModel rowSM = (ListSelectionModel)evt.getSource();
         int selectedIndex = rowSM.getMinSelectionIndex();
@@ -1004,7 +1011,7 @@ public class BooksDisplay extends javax.swing.JFrame {
             txtTotalRecordCount.setText( "" + numberOfEntries );
             txtCurrentRecord.setText("");
             myJTable.setModel(bookQueries);
-            setupTableColumns();
+            setupTableColumns();//Setup fixed widths for columns
 
             if ( numberOfEntries > 0 ){
                 enableControls();
@@ -1052,7 +1059,21 @@ public class BooksDisplay extends javax.swing.JFrame {
          btnUpdateEntry.setEnabled(false);
     }
 
+    /** Sets up fixed widths for table columns
+    * @TheCs Cohesion - sets up fixed widths for table columns.
+    * Completeness - Completely sets up fixed widths for table columns.
+    * Convenience - Simply sets up fixed widths for table columns.
+    * Clarity - It is simple to understand that this sets up fixed widths
+    *           for table columns.
+    * Consistency - It uses the same syntax rules as the rest of the class and
+    *               continues to use proper casing and indentation.
+    */
     private void setupTableColumns(){
+        /**
+         * I mainly have this to hide the authorId and duplicate ISBN columns,
+         * but I figured if I'm gonna set a few columns I might as well set
+         * all of them.
+         */
         setColumnWidth(myJTable.getColumnModel().getColumn(0), 0);
         setColumnWidth(myJTable.getColumnModel().getColumn(1), 90);
         setColumnWidth(myJTable.getColumnModel().getColumn(2), 90);
@@ -1063,10 +1084,26 @@ public class BooksDisplay extends javax.swing.JFrame {
         setColumnWidth(myJTable.getColumnModel().getColumn(7), 75);
         setColumnWidth(myJTable.getColumnModel().getColumn(8), 80);
     }
-    
+
+    /** Used injunction w/ setupTableColumns method to set column width
+    * @TheCs Cohesion - Used injunction w/ setupTableColumns method to set
+    *                   column width.
+    * Completeness - Completely used injunction w/ setupTableColumns method
+    *                to set column width.
+    * Convenience - Simply used injunction w/ setupTableColumns method to set
+    *               column width.
+    * Clarity - It is simple to understand that this is used injunction w/
+    *           setupTableColumns method to set column width.
+    * Consistency - It uses the same syntax rules as the rest of the class and
+    *               continues to use proper casing and indentation.
+    */
     private void setColumnWidth(TableColumn column, int width){
+        /**
+         * Setup the preferred width of the columns. Again, this was mainly to
+         * hide the unwanted columns by setting them to zero, but as of right
+         * now I am using this for all columns for consistency.
+         */
         column.setPreferredWidth(width);
-        column.setMaxWidth(width);
     }
 
 
@@ -1083,7 +1120,7 @@ public class BooksDisplay extends javax.swing.JFrame {
         /**
          * Every time bookQueries method is called this is called right after
          * it. It calls the getLastError method to determine of the lastError
-         * variable is null or not. If it is not null then an error occured and
+         * variable is null or not. If it is not null then an error occurred and
          * so this will send the error message to the TextAreaLogger to be
          * displayed on the TextArea on the GUI.
          */

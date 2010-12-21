@@ -7,13 +7,13 @@ package russell_cmis440_lab3;
 * Date: Dec 15,2010
 */
 
-/** This class is used to perform various queries on the AddressBook database
+/** This class is used to perform various queries on the Book database
 * Also, this class extends the AbstractTableModel in order for a JTable to be
 * modeled after this class so that it can display its data.
 *|----------------------------------------------------------------------------|
 *|                           CRC: BooksQuery                                  |
 *|----------------------------------------------------------------------------|
-*|Used to query database to insert/update/delete entries   AddressBookDisplay |
+*|Used to query database to insert/update/delete entries         BooksDisplay |
 *|----------------------------------------------------------------------------|
 *
 * @TheCs Cohesion - All methods in this class work together on similar task.
@@ -46,6 +46,8 @@ public class BooksQuery extends AbstractTableModel
    private static final String PASSWORD = "deitel";
 
    private Connection connection = null; // manages connection
+
+   //****Begin variable initializing here****
    private PreparedStatement selectAll = null;
    private PreparedStatement selectAllAuthors = null;
    private PreparedStatement selectAllAuthorISBN = null;
@@ -61,7 +63,7 @@ public class BooksQuery extends AbstractTableModel
   
 
    private PreparedStatement updateAuthor = null;
-
+   private PreparedStatement updateByDeleteAuthorISBN = null;
 
    private String selectAllAuthorsSQL = "";
    private String selectAllAuthorISBNSQL = "";
@@ -75,9 +77,9 @@ public class BooksQuery extends AbstractTableModel
    private String deleteBookSQL = "";
    private String deleteAuthorSQL = "";
    private String deleteFromAuthorISBNSQL = "";
-
    
    private String updateAuthorSQL = "";
+   private String updateByDeleteAuthorISBNSQL = "";
    
    private int numberOfRows;
    private Statement statement;
@@ -87,15 +89,17 @@ public class BooksQuery extends AbstractTableModel
    // keep track of database connection status
    private boolean connectedToDatabase = false;
    private String lastError = null;
+   //****End variable initializing here****
+
    
-   /** Constructs a PersonQueries object. Sets up SQl statements.
-   * @TheCs Cohesion - Constructs a PersonQueries object. Sets up SQl
+   /** Constructs a BookQuery object. Sets up SQl statements.
+   * @TheCs Cohesion - Constructs a BookQuery object. Sets up SQl
    *                   statements.
-   * Completeness - Completely constructs a PersonQueries object. Sets up SQl
+   * Completeness - Completely constructs a BookQuery object. Sets up SQl
    *                statements.
-   * Convenience - Simply constructs a PersonQueries object. Sets up SQl
+   * Convenience - Simply constructs a BookQuery object. Sets up SQl
    *               statements.
-   * Clarity - It is simple to understand that this constructs a PersonQueries
+   * Clarity - It is simple to understand that this constructs a BookQuery
    *           object. Sets up SQl statements.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
@@ -106,9 +110,24 @@ public class BooksQuery extends AbstractTableModel
        try{
            lastError = null; //Will hold any errors from method
            //*****Begin SQL Definitions******
+           /**
+            * These two selects are used during the insert/update/delete methods
+            * to ensure the integrity of my key constraints. I tried using the
+            * selects w/ the joins, but they would not provide the information
+            * I needed so I had to use separate sql statements w/o the joins.
+            */
            selectAllAuthorsSQL = "select * from authors";
            selectAllAuthorISBNSQL = "select * from authorISBN";
 
+           /**
+            * Originally I was designing the program to allow author without
+            * books or vice versa and that is why I choose the LEFT/RIGHT
+            * OUTER JOINS here, however this proved to be difficult given the
+            * nature of isbn being used as a foreign key constraint. However,
+            * even though I am no longer following this design the outer joins
+            * still prove to work in the new context so I don't see a reaosn to
+            * go back to the inner joins.
+            */
            selectAllSQL = "SELECT * FROM authors "
             + "LEFT OUTER JOIN authorISBN "
             + "on authors.authorID=authorISBN.authorID "
@@ -137,29 +156,42 @@ public class BooksQuery extends AbstractTableModel
                    + "WHERE AuthorID = ? AND ISBN = ?";
 
            deleteAuthorSQL = "DELETE FROM authors WHERE AuthorID = ?";
-           
+           /**
+            * While there are three separate insert/delete statements, one for
+            * each table, there is only one update commands for the authors
+            * table and one delete command used in conjunction with updating
+            * the authorISBN table. Given the nature of the key constraints
+            * on the other two tables I was forced to do a delete/insert
+            * on those instead of a update command. IF JavaDB supported
+            * deferred foreign keys it would be another situation, but given
+            * this limitation the insert/delete will have to suffice.
+            */
            updateAuthorSQL = "UPDATE authors SET FirstName=?, LastName=? "
                    + "WHERE AuthorID=?";
+           updateByDeleteAuthorISBNSQL = "DELETE FROM authorISBN "
+                   + "WHERE ISBN = ?";
            //*****End SQL Definitions******
            
            connection = DriverManager.getConnection( URL, USERNAME, PASSWORD );
            selectAllAuthors = connection.prepareStatement(selectAllAuthorsSQL);
            selectAllAuthorISBN =
                    connection.prepareStatement(selectAllAuthorISBNSQL);
-           // create query that selects all entries in the AddressBook
+           // create query that selects all entries in the Book Database
            selectAll = connection.prepareStatement( selectAllSQL );
            // create query that selects entries with a specific last name
            selectByAuthorLastName = connection.prepareStatement(
                    selectByAuthorLastNameSQL );
-           // create insert that adds a new entry into the database
+           // create inserts that adds new entries into the database
            insertNewBook = connection.prepareStatement(insertNewBookSQL );
            insertAuthorISBN =
                    connection.prepareStatement(insertIntoAuthorISBNSQL );
            insertNewAuthor = connection.prepareStatement(insertNewAuthorSQL );
-           // create update that updates a entry in the database
 
+           // create update that updates a entry in the database
            updateAuthor = connection.prepareStatement(updateAuthorSQL);
-           // create delete that deletes an entry from the database
+           updateByDeleteAuthorISBN =
+                   connection.prepareStatement(updateByDeleteAuthorISBNSQL);
+           // create deletes that delete entries from the database
            deleteBook = connection.prepareStatement(deleteBookSQL);
            deleteAuthorISBN =
                    connection.prepareStatement(deleteFromAuthorISBNSQL);
@@ -183,12 +215,13 @@ public class BooksQuery extends AbstractTableModel
       }
    } 
    
-   /** Returns a list of persons currently in database
-   * @TheCs Cohesion - Returns a list of persons currently in database
-   * Completeness - Completely returns a list of persons currently in database.
-   * Convenience - Simply returns a list of persons currently in database.
-   * Clarity - It is simple to understand that this returns a list of persons
-   *           currently in database.
+   /** Returns a list of books/authors currently in database
+   * @TheCs Cohesion - Returns a list of books/authors currently in database
+   * Completeness - Completely returns a list of books/authors currently
+   *                in database.
+   * Convenience - Simply returns a list of books/authors currently in database.
+   * Clarity - It is simple to understand that this returns a list of books/
+   *           authors currently in database.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
    * @exception SQLException if problems with executing SQL statements
@@ -203,14 +236,14 @@ public class BooksQuery extends AbstractTableModel
        try{
            /**
             * setQuery has to be called here for the purpose of keeping the
-            * JTable data up-to-date. Next the selectAllPeople SQL is executed
-            * and places into myResultSet all persons from the database.
+            * JTable data up-to-date. Next the selectAllSQL SQL is executed
+            * and places into myResultSet all books from the database.
             */
            setQuery( selectAllSQL );
            myResultSet = selectAll.executeQuery();
            results = new ArrayList< Book >();
            /**
-            * Loops through the Resultset and creates a new Person object for
+            * Loops through the Resultset and creates a new Book object for
             * each entry and places this is the results ArrayList.
             *
             */
@@ -241,18 +274,18 @@ public class BooksQuery extends AbstractTableModel
    } 
 
    
-   /** Return entries with given past name
-   * @TheCs Cohesion - Return entries with given past name.
-   * Completeness - Completely returns entries with given past name.
-   * Convenience - Simply returns entries with given past name.
+   /** Return entries with given last name
+   * @TheCs Cohesion - Return entries with given last name.
+   * Completeness - Completely returns entries with given last name.
+   * Convenience - Simply returns entries with given last name.
    * Clarity - It is simple to understand that this returns entries with given
-   *           past name.
+   *           last name.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
    * @exception SQLException if problems with executing SQL statements
    * @exception Exception general exception capture
-   * @return results List of persons in database w/ given last name
-   * @param name last name to find in entries
+   * @return results List of books in database w/ given last name of author
+   * @param name author last name to find in entries
    *
    */
    public List< Book > getBookByAuthorLastName( String name ){
@@ -278,7 +311,7 @@ public class BooksQuery extends AbstractTableModel
 
            results = new ArrayList< Book >();
            /**
-            * Loops through the Resultset and creates a new Person object for
+            * Loops through the Resultset and creates a new Book object for
             * each entry and places this is the results ArrayList.
             */
            while ( myResultSet.next() ){
@@ -307,20 +340,23 @@ public class BooksQuery extends AbstractTableModel
       }
    } 
    
-   /** Adds a person to the database
-   * @TheCs Cohesion -  Adds a person to the database.
-   * Completeness - Completely  adds a person to the database.
-   * Convenience - Simply adds a person to the database.
-   * Clarity - It is simple to understand that this adds a person to the
+   /** Adds a book/author to the database
+   * @TheCs Cohesion -  Adds a book/author to the database.
+   * Completeness - Completely  adds a book/author to the database.
+   * Convenience - Simply adds a book/author to the database.
+   * Clarity - It is simple to understand that this adds a book/author to the
    *           database.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @throws Exception if author/book already exist in database
    * @exception SQLException for sql string being executed
    * @exception Exception general exception capture
-   * @param fName first name of person to add
-   * @param lName last name of person to add
-   * @param email email address of person to add
-   * @param num  Phone number of person to add
+   * @param aISBN ISBN of book to be added
+   * @param aTitle Title of book to be added
+   * @param aEditionNumber Edition Number of book to be added
+   * @param aCopyright copyright year of book to be added
+   * @param aAuthorFirstName first name of book author
+   * @param aAuthorLastName last name of book author
    * @return result returns number of rows affected by sql statement
    */
    public int addBook(String aISBN, String aTitle, int aEditionNumber, 
@@ -331,28 +367,44 @@ public class BooksQuery extends AbstractTableModel
        List< Book > results = getAllBooks();
        lastError = null;//Will hold any errors from method
        int result = 0;
-       int TempAuthorIdHolder = 0;
-       boolean newAuthor = false;
-       boolean newBook = false;
+       int TempAuthorIdHolder = 0;//Hold authorId of book author
+       boolean newAuthor = false; //determine if new author or existing
+       boolean newBook = false;//determine if book already exists or if is new
        // set parameters, then execute insertNewPerson
        try{
            for (int i = 0; i< results.size(); i++){
                if (results.get(i).getISBN().equalsIgnoreCase(aISBN) &&
                     results.get(i).getAuthorLastName().equalsIgnoreCase(aAuthorLastName) &&
                     results.get(i).getAuthorFirstName().equalsIgnoreCase(aAuthorFirstName)){
+                   /**
+                    * An exception is thrown here if ISBN and Author First name
+                    * and last name already exist in database.
+                    */
                 throw new Exception("This Author and Book are already added.");
 
                }else if (results.get(i).getISBN().equalsIgnoreCase(aISBN) && 
                        (!(results.get(i).getAuthorLastName().equalsIgnoreCase(aAuthorLastName)) ||
                        !(results.get(i).getAuthorFirstName().equalsIgnoreCase(aAuthorFirstName)))){
+                   /**
+                    * If the book exist, but if either the first name or last
+                    * name of the author record doesn't match then a new
+                    * author to the existing book is added.
+                    */
                    newAuthor = true;
                    newBook = false;
                }else if (!(results.get(i).getISBN().equalsIgnoreCase(aISBN)) &&
                     results.get(i).getAuthorLastName().equalsIgnoreCase(aAuthorLastName) &&
                     results.get(i).getAuthorFirstName().equalsIgnoreCase(aAuthorFirstName)){
+                   /**
+                    * If the ISBN isn't found, but both the author first name
+                    * and last name are then a new book is added for this author
+                    */
                    newAuthor = false;
                    newBook = true;
                }else{
+                   /**
+                    * Else its a new book and new author
+                    */
                    newAuthor = true;
                    newBook = true;
                }
@@ -363,11 +415,21 @@ public class BooksQuery extends AbstractTableModel
             * statement that was defined in the constructor.
             */
            if (newAuthor){
+               /**
+                * Insert a new author into the authors table.
+                */
                insertNewAuthor.setString(1, aAuthorFirstName);
                insertNewAuthor.setString(2, aAuthorLastName);
                result = insertNewAuthor.executeUpdate();
            }
-
+           /**
+            * Even though the author is added above the getAllBooks method will
+            * still not return a list w/ the new author so I had to make a new
+            * resultset below with one of the individual sql statements I
+            * created earlier to query the table and get the newly added authors
+            * unique ID. This is still used, however for existing authors to
+            * cut down on coding.
+            */
            tempResultSet = selectAllAuthors.executeQuery();
            while ( tempResultSet.next() ){
                if (tempResultSet.getString("firstName").
@@ -381,6 +443,9 @@ public class BooksQuery extends AbstractTableModel
            }
 
            if (newBook){
+               /**
+                * If a new book then add it here
+                */
                insertNewBook.setString(1, aISBN);
                insertNewBook.setString(2, aTitle);
                insertNewBook.setInt(3, aEditionNumber);
@@ -388,7 +453,11 @@ public class BooksQuery extends AbstractTableModel
                result += insertNewBook.executeUpdate();
            }
 
-
+           /**
+            * Finally, regardless of whether just a author, just a book, or both
+            * were added, a new entry with the authorId/ISBN combination
+            * must be added to this table.
+            */
            insertAuthorISBN.setInt(1, TempAuthorIdHolder);
            insertAuthorISBN.setString(2, aISBN);
            result += insertAuthorISBN.executeUpdate();
@@ -409,21 +478,24 @@ public class BooksQuery extends AbstractTableModel
 
 
 
-   /** Updates a person in the database
-   * @TheCs Cohesion -  Updates a person in the database.
-   * Completeness - Completely updates a person in the database.
-   * Convenience - Simply updates a person in the database.
-   * Clarity - It is simple to understand that this updates a person in the
+   /** Updates a book/author in the database
+   * @TheCs Cohesion -  Updates a book/author in the database.
+   * Completeness - Completely updates a book/author in the database.
+   * Convenience - Simply updates a book/author in the database.
+   * Clarity - It is simple to understand that this updates a book/author in the
    *           database.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
    * @exception SQLException for sql string being executed
    * @exception Exception general exception capture
-   * @param addressID unique ID of person to update
-   * @param fName first name of person to update
-   * @param lName last name of person to update
-   * @param email email address of person to update
-   * @param num  Phone number of person to update
+   * @param aISBN ISBN of book to be updated
+   * @param aTitle Title of book to be updated
+   * @param aEditionNumber Edition Number of book to be updated
+   * @param aCopyright copyright year of book to be updated
+   * @param aFirstName first name of book author to be updated
+   * @param aLastName last name of book author to be updated
+   * @param aAuthorId unique author id needed for the update
+   * @param aOldISBN the original ISBN needed for the update
    * @return result returns number of rows affected by sql statement
    */
    public int updateBook( String aISBN, String aTitle, int aEditionNumber,
@@ -433,41 +505,68 @@ public class BooksQuery extends AbstractTableModel
        lastError = null; //Will hold any errors from method
        int result = 0;
        ResultSet tempResultSet = null;
+       /**
+        * Multiple records may need updating since there may be multiple authors
+        * of one book so I had to build an arraylist of authorId's of authors
+        * that belong to the book in question
+        */
        ArrayList <Integer> TempAuthorIDHolder = new ArrayList<Integer>();
-       // set parameters, then execute insertNewPerson
+
        try{
            /**
-            * The setString method will insert the name variable into the sql
-            * statement that was defined in the constructor.
+            * This is another temp resultset that gets all of the entries from
+            * authorISBN table. This is similar to the resultset seen in the
+            * addBook method. I originally wanted to create a common method
+            * since these are similar, however given the vast differences in
+            * sql statements, values passed, values returned, I decided it would
+            * actually be less coding to keep individual ones in each method.
             */
            tempResultSet = selectAllAuthorISBN.executeQuery();
            while ( tempResultSet.next() ){
                if (tempResultSet.getString("ISBN").equalsIgnoreCase(aOldISBN)){
+                   /**
+                    * get the authorId's of all authors for this book
+                    */
                    TempAuthorIDHolder.add(tempResultSet.getInt("authorID"));
                }
            }
 
-           for (Integer tempAuthorId: TempAuthorIDHolder){
-               deleteAuthorISBN.setInt(1, tempAuthorId);
-               deleteAuthorISBN.setString(2, aOldISBN);
-               result += deleteAuthorISBN.executeUpdate();
-           }
+           /**
+            * First delete all records from the authorISBN table for the book
+            * in question
+            */
+           updateByDeleteAuthorISBN.setString(1,aOldISBN);
+           result += updateByDeleteAuthorISBN.executeUpdate();
 
+           /**
+            * The only actual update. update the authors information
+            */
            updateAuthor.setString(1, aFirstName);
            updateAuthor.setString(2, aLastName);
            updateAuthor.setInt(3, aAuthorId);
            result = updateAuthor.executeUpdate();
 
+           /**
+            * Delete the book from the titles table
+            */
            deleteBook.setString( 1, aOldISBN );
-           // delete the entry; returns # of rows updated
            result += deleteBook.executeUpdate();
 
+           /**
+            * Add the new book to the titles table
+            */
            insertNewBook.setString(1, aISBN);
            insertNewBook.setString(2, aTitle);
            insertNewBook.setInt(3, aEditionNumber);
            insertNewBook.setString(4, aCopyright);
            result += insertNewBook.executeUpdate();
 
+           /**
+            * I tried to find a way to do a bulk insert, but couldn't find one
+            * for JavaDB so I have an enhanced for loop that goes through all of
+            * the authors for the book in question and adds the authorId/ISBN
+            * combo to the authorISBN table.
+            */
            for (Integer tempAuthorId: TempAuthorIDHolder){
                insertAuthorISBN.setInt(1, tempAuthorId);
                insertAuthorISBN.setString(2, aISBN);
@@ -487,37 +586,51 @@ public class BooksQuery extends AbstractTableModel
    } 
 
 
-   /** Deletes a person from the database
-   * @TheCs Cohesion -  Deletes a person from the database.
-   * Completeness - Completely deletes a person from the database.
-   * Convenience - Simply deletes a person from the database.
-   * Clarity - It is simple to understand that this deletes a person from the
+   /** Deletes a book from the database
+   * @TheCs Cohesion -  Deletes a book from the database.
+   * Completeness - Completely deletes a book from the database.
+   * Convenience - Simply deletes a book from the database.
+   * Clarity - It is simple to understand that this deletes a book from the
    *           database.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
    * @exception SQLException for sql string being executed
    * @exception Exception general exception capture
-   * @param addressID unique ID of person to delete
+   * @param aAuthorId unique id of author of book to delete
+   * @param aISBN ISBN of book to delete.
    * @return result returns number of rows affected by sql statement
    */
    public int deleteBook(int aAuthorId, String aISBN ){
        lastError = null; //Will hold any errors from method
        int result = 0;
        List< Book > results = null;
+       /**
+        * These two booleans are used below to determine when deleting if the
+        * book should be deleted completely if there are no more authors and
+        * also if the author should be deleted if there are no more books for
+        * the author.
+        */
        boolean noMoreBooksForThisAuthor = false;
        boolean noMoreAuthorsForThisBook = false;
        ResultSet tempResultSet = null;
 
-       // set parameters, then execute insertNewPerson
        try{
            /**
             * The setString method will insert the name variable into the sql
             * statement that was defined in the constructor.
+            *
+            * First the authorId/ISBN combo are removed from the authorISBN
+            * table since this should happen no matter what the circumstance.
             */
            deleteAuthorISBN.setInt(1, aAuthorId);
            deleteAuthorISBN.setString(2, aISBN);
            result = deleteAuthorISBN.executeUpdate();
-            
+
+           /**
+            * Again I needed to build a temp resultset on the authorISBN table
+            * to determine if this book has any more authors. If so then do
+            * not delete the book, otherwise delete it.
+            */
 
            tempResultSet = selectAllAuthorISBN.executeQuery();
            while ( tempResultSet.next() ){
@@ -528,12 +641,19 @@ public class BooksQuery extends AbstractTableModel
                    noMoreAuthorsForThisBook = true;
                }
            }
-
-           results = getAllBooks();
-           for (int i = 0; i < results.size(); i++){
-               if (results.get(i).getAuthorID() == aAuthorId &&
-                       ((results.get(i).getISBN() != null) ||
-                       (!results.get(i).getISBN().equals("")))){
+           /**
+            * After checking for anymore authors for a book, requery to
+            * result set to make sure the cursor is at the beginning and see
+            * if the authorId in question still exist in the authorisbn table.
+            * If so then this author still has other books and shouldn't be
+            * deleted, otherwise if not more records exist then the author
+            * should be deleted. Note, I tried everything on the resultset to
+            * get the cursor to go to the first record, but it wouldn't let me
+            * so I had to requery it to make sure of this.
+            */
+           tempResultSet = selectAllAuthorISBN.executeQuery();
+           while ( tempResultSet.next() ){
+               if (tempResultSet.getInt("AuthorID") == aAuthorId){
                    noMoreBooksForThisAuthor = false;
                    break;
                }else{
@@ -541,13 +661,20 @@ public class BooksQuery extends AbstractTableModel
                }
            }
 
+
+
            if (noMoreBooksForThisAuthor){
+               /**
+                * Delete author from authors table
+                */
                deleteAuthor.setInt(1, aAuthorId);
                result += deleteAuthor.executeUpdate();
            }
            if (noMoreAuthorsForThisBook){
+               /**
+                * Delete book from titles table
+                */
                deleteBook.setString( 1, aISBN );
-               // delete the entry; returns # of rows updated
                result += deleteBook.executeUpdate();
            }
 
@@ -791,16 +918,16 @@ public class BooksQuery extends AbstractTableModel
        }
    }
 
-   /** Returns Error messages from PersonQueries methods
-   * @TheCs Cohesion -  Returns Error messages from PersonQueries methods.
-   * Completeness - Completely returns Error messages from PersonQueries
+   /** Returns Error messages from BooksQuery methods
+   * @TheCs Cohesion -  Returns Error messages from BooksQuery methods.
+   * Completeness - Completely returns Error messages from BooksQuery
    *                methods.
-   * Convenience - Simply returns Error messages from PersonQueries methods.
+   * Convenience - Simply returns Error messages from BooksQuery methods.
    * Clarity - It is simple to understand that this returns Error messages
-   *           from PersonQueries methods.
+   *           from BooksQuery methods.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
-   * @return lastError holds error messages from methods of personQueries
+   * @return lastError holds error messages from methods of BooksQuery
    */
    public String getLastError(){
        return lastError;
