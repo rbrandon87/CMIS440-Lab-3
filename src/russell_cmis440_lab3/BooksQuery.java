@@ -396,8 +396,10 @@ public class BooksQuery extends AbstractTableModel
 
          
        }catch ( SQLException sqlException ){
+           result = 0;
            lastError += sqlException.toString();
        }catch ( Exception exception){
+           result = 0;
            lastError += exception.toString();
        }finally{
            return result;
@@ -474,8 +476,10 @@ public class BooksQuery extends AbstractTableModel
 
             
         }catch ( SQLException sqlException ){
+            result = 0;
             lastError += sqlException.toString();
         }catch ( Exception exception){
+            result = 0;
             lastError += exception.toString();
       }finally{
           return result;
@@ -548,8 +552,10 @@ public class BooksQuery extends AbstractTableModel
            }
 
         }catch ( SQLException sqlException ){
+            result = 0;
             lastError += sqlException.toString();
         }catch ( Exception exception){
+            result = 0;
             lastError += exception.toString();
         }finally{
             return result;

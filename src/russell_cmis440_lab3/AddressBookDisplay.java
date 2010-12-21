@@ -132,15 +132,6 @@ public class AddressBookDisplay extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        browsePanel = new javax.swing.JPanel();
-        btnPrevious = new javax.swing.JButton();
-        txtCurrentRecord = new javax.swing.JTextField();
-        lblOf = new javax.swing.JLabel();
-        txtTotalRecordCount = new javax.swing.JTextField();
-        btnNext = new javax.swing.JButton();
-        myJTableScrollPane = new javax.swing.JScrollPane();
-        myJTable = new javax.swing.JTable();
-        lblNoData = new javax.swing.JLabel();
         newUpdateDeletePanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         txtAddressID = new javax.swing.JTextField();
@@ -155,6 +146,15 @@ public class AddressBookDisplay extends javax.swing.JFrame {
         btnNewEntry = new javax.swing.JButton();
         btnUpdateEntry = new javax.swing.JButton();
         btnDeleteEntry = new javax.swing.JButton();
+        browsePanel = new javax.swing.JPanel();
+        btnPrevious = new javax.swing.JButton();
+        txtCurrentRecord = new javax.swing.JTextField();
+        lblOf = new javax.swing.JLabel();
+        txtTotalRecordCount = new javax.swing.JTextField();
+        btnNext = new javax.swing.JButton();
+        myJTableScrollPane = new javax.swing.JScrollPane();
+        myJTable = new javax.swing.JTable();
+        lblNoData = new javax.swing.JLabel();
         findPanel = new javax.swing.JPanel();
         txtFind = new javax.swing.JTextField();
         btnFind = new javax.swing.JButton();
@@ -173,15 +173,131 @@ public class AddressBookDisplay extends javax.swing.JFrame {
         setTitle("CMIS440 Lab 3 JavaDB Address Book Program");
         setBackground(javax.swing.UIManager.getDefaults().getColor("Nb.Desktop.background"));
 
+        newUpdateDeletePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("New/Update/Delete Record"));
+
+        jLabel1.setText("Address ID:");
+
+        txtAddressID.setBackground(javax.swing.UIManager.getDefaults().getColor("TextField.disabledBackground"));
+        txtAddressID.setToolTipText("Unique key for entry");
+        txtAddressID.setEnabled(false);
+
+        lblFirstName.setText("First Name:");
+
+        txtFirstName.setToolTipText("First name of person");
+
+        lblLastName.setText("Last Name:");
+
+        txtLastName.setToolTipText("Last name of person");
+
+        lblEmail.setText("Email:");
+
+        txtEmail.setToolTipText("Email Address of person");
+
+        lblPhoneNum.setText("Phone Number:");
+
+        txtPhoneNum.setToolTipText("Phone Number of person");
+
+        btnNewEntry.setText("Insert New Entry");
+        btnNewEntry.setToolTipText("Make a new entry into address book database");
+        btnNewEntry.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewEntryActionPerformed(evt);
+            }
+        });
+
+        btnUpdateEntry.setText("Update Entry");
+        btnUpdateEntry.setToolTipText("Update currently selected record");
+        btnUpdateEntry.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateEntryActionPerformed(evt);
+            }
+        });
+
+        btnDeleteEntry.setText("Delete Entry");
+        btnDeleteEntry.setToolTipText("Delete currently selected record");
+        btnDeleteEntry.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteEntryActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout newUpdateDeletePanelLayout = new javax.swing.GroupLayout(newUpdateDeletePanel);
+        newUpdateDeletePanel.setLayout(newUpdateDeletePanelLayout);
+        newUpdateDeletePanelLayout.setHorizontalGroup(
+            newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(newUpdateDeletePanelLayout.createSequentialGroup()
+                .addGroup(newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(newUpdateDeletePanelLayout.createSequentialGroup()
+                        .addGap(53, 53, 53)
+                        .addGroup(newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(newUpdateDeletePanelLayout.createSequentialGroup()
+                                .addGroup(newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblPhoneNum)
+                                    .addComponent(lblEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(txtPhoneNum, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtAddressID, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(newUpdateDeletePanelLayout.createSequentialGroup()
+                        .addGap(30, 30, 30)
+                        .addComponent(btnNewEntry)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnUpdateEntry)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnDeleteEntry)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        newUpdateDeletePanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnDeleteEntry, btnNewEntry, btnUpdateEntry});
+
+        newUpdateDeletePanelLayout.setVerticalGroup(
+            newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(newUpdateDeletePanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(jLabel1)
+                    .addComponent(txtAddressID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(lblFirstName))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(lblLastName)
+                    .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(lblEmail)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                    .addComponent(lblPhoneNum)
+                    .addComponent(txtPhoneNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(44, 44, 44)
+                .addGroup(newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnNewEntry)
+                    .addComponent(btnUpdateEntry)
+                    .addComponent(btnDeleteEntry))
+                .addContainerGap(110, Short.MAX_VALUE))
+        );
+
         browsePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Browse"));
 
         btnPrevious.setText("Previous");
+        btnPrevious.setToolTipText("Show previous record in editable area");
         btnPrevious.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPreviousActionPerformed(evt);
             }
         });
 
+        txtCurrentRecord.setToolTipText("Current record selected, or enter record to select");
         txtCurrentRecord.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCurrentRecordActionPerformed(evt);
@@ -191,9 +307,11 @@ public class AddressBookDisplay extends javax.swing.JFrame {
         lblOf.setText("of");
 
         txtTotalRecordCount.setBackground(javax.swing.UIManager.getDefaults().getColor("TextField.disabledBackground"));
+        txtTotalRecordCount.setToolTipText("Total amount of records in database");
         txtTotalRecordCount.setEnabled(false);
 
         btnNext.setText("Next");
+        btnNext.setToolTipText("Show next record in editable area");
         btnNext.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNextActionPerformed(evt);
@@ -208,6 +326,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
 
             }
         ));
+        myJTable.setToolTipText("Show records in current database");
         myJTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         myJTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -286,111 +405,12 @@ public class AddressBookDisplay extends javax.swing.JFrame {
 
         browsePanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {txtCurrentRecord, txtTotalRecordCount});
 
-        newUpdateDeletePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("New/Update/Delete Record"));
-
-        jLabel1.setText("Address ID:");
-
-        txtAddressID.setBackground(javax.swing.UIManager.getDefaults().getColor("TextField.disabledBackground"));
-        txtAddressID.setEnabled(false);
-
-        lblFirstName.setText("First Name:");
-
-        lblLastName.setText("Last Name:");
-
-        lblEmail.setText("Email:");
-
-        lblPhoneNum.setText("Phone Number:");
-
-        btnNewEntry.setText("Insert New Entry");
-        btnNewEntry.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnNewEntryActionPerformed(evt);
-            }
-        });
-
-        btnUpdateEntry.setText("Update Entry");
-        btnUpdateEntry.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUpdateEntryActionPerformed(evt);
-            }
-        });
-
-        btnDeleteEntry.setText("Delete Entry");
-        btnDeleteEntry.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteEntryActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout newUpdateDeletePanelLayout = new javax.swing.GroupLayout(newUpdateDeletePanel);
-        newUpdateDeletePanel.setLayout(newUpdateDeletePanelLayout);
-        newUpdateDeletePanelLayout.setHorizontalGroup(
-            newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(newUpdateDeletePanelLayout.createSequentialGroup()
-                .addGroup(newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(newUpdateDeletePanelLayout.createSequentialGroup()
-                        .addGap(53, 53, 53)
-                        .addGroup(newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(newUpdateDeletePanelLayout.createSequentialGroup()
-                                .addGroup(newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblPhoneNum)
-                                    .addComponent(lblEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(txtPhoneNum, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(txtAddressID, javax.swing.GroupLayout.PREFERRED_SIZE, 220, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(newUpdateDeletePanelLayout.createSequentialGroup()
-                        .addGap(30, 30, 30)
-                        .addComponent(btnNewEntry)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnUpdateEntry)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnDeleteEntry)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        newUpdateDeletePanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnDeleteEntry, btnNewEntry, btnUpdateEntry});
-
-        newUpdateDeletePanelLayout.setVerticalGroup(
-            newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(newUpdateDeletePanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(jLabel1)
-                    .addComponent(txtAddressID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(txtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(lblFirstName))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(lblLastName)
-                    .addComponent(txtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(lblEmail)
-                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(lblPhoneNum)
-                    .addComponent(txtPhoneNum, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(44, 44, 44)
-                .addGroup(newUpdateDeletePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnNewEntry)
-                    .addComponent(btnUpdateEntry)
-                    .addComponent(btnDeleteEntry))
-                .addContainerGap(110, Short.MAX_VALUE))
-        );
-
         findPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Find by Last Name"));
 
+        txtFind.setToolTipText("Enter last name of person to find");
+
         btnFind.setText("Find");
+        btnFind.setToolTipText("Find all records that match the last name entered");
         btnFind.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnFindActionPerformed(evt);
@@ -418,10 +438,11 @@ public class AddressBookDisplay extends javax.swing.JFrame {
                 .addContainerGap(83, Short.MAX_VALUE))
         );
 
-        errorPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Errors"));
+        errorPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Log"));
 
         debugTextArea.setColumns(20);
         debugTextArea.setRows(5);
+        debugTextArea.setToolTipText("Display messages/errors/exceptions");
         myTextAreaScrollPane.setViewportView(debugTextArea);
 
         javax.swing.GroupLayout errorPanelLayout = new javax.swing.GroupLayout(errorPanel);
@@ -436,6 +457,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
         );
 
         btnClear.setText("Clear");
+        btnClear.setToolTipText("Clear fields and reload database");
         btnClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnClearActionPerformed(evt);
@@ -446,6 +468,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
 
         openBooksMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         openBooksMenuItem.setText("Switch to Books Database");
+        openBooksMenuItem.setToolTipText("Close Address Book Database and open Books Database");
         openBooksMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openBooksMenuItemActionPerformed1(evt);
@@ -657,15 +680,8 @@ public class AddressBookDisplay extends javax.swing.JFrame {
                 txtLastName.getText(), txtEmail.getText(),
                 txtPhoneNum.getText() );
         checkForErrors();
-
-          if ( result == 1 ){
-              JOptionPane.showMessageDialog( this, "Person added!",
-                      "Person added", JOptionPane.PLAIN_MESSAGE );
-          }else{
-            JOptionPane.showMessageDialog( this, "Person not added!",
-                    "Error", JOptionPane.PLAIN_MESSAGE );
-          }
-
+        
+        myTextAreaLogger.log(result > 0 ? "Successful" : "Not Successful");
         loadDatabase();
     }//GEN-LAST:event_btnNewEntryActionPerformed
 
@@ -695,18 +711,13 @@ public class AddressBookDisplay extends javax.swing.JFrame {
          * deleted entry is gone.
          */
         if (txtAddressID.getText().equals("")){
+            myTextAreaLogger.log("No record is selected for deletion");
             return;
         }
         int result = personQueries.deletePerson( txtAddressID.getText());
         checkForErrors();
-
-        if ( result == 1 ){
-            JOptionPane.showMessageDialog( this, "Person deleted!",
-                    "Person added", JOptionPane.PLAIN_MESSAGE );
-        }else{
-            JOptionPane.showMessageDialog( this, "Person not deleted!",
-                    "Error", JOptionPane.PLAIN_MESSAGE );
-        }
+        
+        myTextAreaLogger.log(result > 0 ? "Successful" : "Not Successful");
         loadDatabase();
     }//GEN-LAST:event_btnDeleteEntryActionPerformed
 
@@ -732,21 +743,16 @@ public class AddressBookDisplay extends javax.swing.JFrame {
          * changes.
          */
         if (txtAddressID.getText().equals("")){
+            myTextAreaLogger.log("No record is selected for an update");
             return;
         }
             int result = personQueries.updatePerson( txtAddressID.getText(),
                     txtFirstName.getText(),txtLastName.getText(),
                     txtEmail.getText(),txtPhoneNum.getText() );
             checkForErrors();
-
-        if ( result == 1 ){
-            JOptionPane.showMessageDialog( this, "Person updated!",
-                    "Person added", JOptionPane.PLAIN_MESSAGE );
-        }else{
-                JOptionPane.showMessageDialog( this, "Person not updated!",
-                        "Error", JOptionPane.PLAIN_MESSAGE );
-        }
-        loadDatabase();
+            
+            myTextAreaLogger.log(result > 0 ? "Successful" : "Not Successful");
+            loadDatabase();
     }//GEN-LAST:event_btnUpdateEntryActionPerformed
 
     /** Properly exits the program.

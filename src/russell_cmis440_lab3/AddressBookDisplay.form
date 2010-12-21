@@ -15,6 +15,7 @@
                   <KeyStroke key="Shift+Ctrl+S"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Switch to Books Database"/>
+                <Property name="toolTipText" type="java.lang.String" value="Close Address Book Database and open Books Database"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openBooksMenuItemActionPerformed1"/>
@@ -119,141 +120,6 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="browsePanel">
-      <Properties>
-        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Browse"/>
-          </Border>
-        </Property>
-      </Properties>
-
-      <Layout>
-        <DimensionLayout dim="0">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" alignment="1" attributes="0">
-                  <Group type="103" groupAlignment="1" attributes="0">
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="myJTableScrollPane" pref="677" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace pref="602" max="32767" attributes="0"/>
-                          <Component id="lblNoData" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="191" max="-2" attributes="0"/>
-                          <Component id="btnPrevious" linkSize="4" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="txtCurrentRecord" linkSize="5" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="lblOf" min="-2" max="-2" attributes="0"/>
-                          <EmptySpace max="-2" attributes="0"/>
-                          <Component id="txtTotalRecordCount" linkSize="5" min="-2" pref="30" max="-2" attributes="0"/>
-                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                          <Component id="btnNext" linkSize="4" min="-2" max="-2" attributes="0"/>
-                      </Group>
-                  </Group>
-                  <EmptySpace max="-2" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-        <DimensionLayout dim="1">
-          <Group type="103" groupAlignment="0" attributes="0">
-              <Group type="102" attributes="0">
-                  <Group type="103" groupAlignment="2" attributes="0">
-                      <Component id="txtCurrentRecord" linkSize="6" alignment="2" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtTotalRecordCount" linkSize="6" alignment="2" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnPrevious" alignment="2" min="-2" max="-2" attributes="0"/>
-                      <Component id="lblOf" alignment="2" min="-2" max="-2" attributes="0"/>
-                      <Component id="btnNext" alignment="2" min="-2" max="-2" attributes="0"/>
-                  </Group>
-                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                  <Component id="myJTableScrollPane" pref="258" max="32767" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
-                  <Component id="lblNoData" min="-2" max="-2" attributes="0"/>
-              </Group>
-          </Group>
-        </DimensionLayout>
-      </Layout>
-      <SubComponents>
-        <Component class="javax.swing.JButton" name="btnPrevious">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Previous"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPreviousActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JTextField" name="txtCurrentRecord">
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtCurrentRecordActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JLabel" name="lblOf">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="of"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JTextField" name="txtTotalRecordCount">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="f0" green="f0" id="TextField.disabledBackground" palette="3" red="f0" type="palette"/>
-            </Property>
-            <Property name="enabled" type="boolean" value="false"/>
-          </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="btnNext">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Next"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNextActionPerformed"/>
-          </Events>
-        </Component>
-        <Container class="javax.swing.JScrollPane" name="myJTableScrollPane">
-          <AuxValues>
-            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-          </AuxValues>
-
-          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-          <SubComponents>
-            <Component class="javax.swing.JTable" name="myJTable">
-              <Properties>
-                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="0" rowCount="0"/>
-                </Property>
-                <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-                  <TableColumnModel selectionModel="0"/>
-                </Property>
-                <Property name="selectionModel" type="javax.swing.ListSelectionModel" editor="org.netbeans.modules.form.editors2.JTableSelectionModelEditor">
-                  <JTableSelectionModel selectionMode="0"/>
-                </Property>
-                <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-                  <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
-                </Property>
-              </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="myJTableMouseClicked"/>
-                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="myJTableMouseReleased"/>
-                <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="myJTablePropertyChange"/>
-              </Events>
-              <AuxValues>
-                <AuxValue name="JavaCodeGenerator_ListenersCodePost" type="java.lang.String" value="/**&#xa;* The code below creates a ListSelectionModel based on the JTable and then&#xa;* attaches a listener and refers it to the valueChanged method. This is used&#xa;* so that the user can change the entry being edited by selecting it from the&#xa;* table.&#xa;*/&#xa;ListSelectionModel rowSM = myJTable.getSelectionModel();&#xa;rowSM.addListSelectionListener(new ListSelectionListener() {&#xa;public void valueChanged(ListSelectionEvent evt) {&#xa;    myJTableValueChanged(evt);&#xa;}&#xa;});"/>
-              </AuxValues>
-            </Component>
-          </SubComponents>
-        </Container>
-        <Component class="javax.swing.JLabel" name="lblNoData">
-          <Properties>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="0" green="0" id="nb.errorForeground" palette="3" red="ff" type="palette"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="*No Data Present"/>
-          </Properties>
-        </Component>
-      </SubComponents>
-    </Container>
     <Container class="javax.swing.JPanel" name="newUpdateDeletePanel">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
@@ -353,6 +219,7 @@
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="f0" green="f0" id="TextField.disabledBackground" palette="3" red="f0" type="palette"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Unique key for entry"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
@@ -362,6 +229,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtFirstName">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="First name of person"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblLastName">
           <Properties>
@@ -369,6 +239,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtLastName">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Last name of person"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblEmail">
           <Properties>
@@ -376,6 +249,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtEmail">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Email Address of person"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblPhoneNum">
           <Properties>
@@ -383,10 +259,14 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtPhoneNum">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Phone Number of person"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btnNewEntry">
           <Properties>
             <Property name="text" type="java.lang.String" value="Insert New Entry"/>
+            <Property name="toolTipText" type="java.lang.String" value="Make a new entry into address book database"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNewEntryActionPerformed"/>
@@ -395,6 +275,7 @@
         <Component class="javax.swing.JButton" name="btnUpdateEntry">
           <Properties>
             <Property name="text" type="java.lang.String" value="Update Entry"/>
+            <Property name="toolTipText" type="java.lang.String" value="Update currently selected record"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUpdateEntryActionPerformed"/>
@@ -403,10 +284,153 @@
         <Component class="javax.swing.JButton" name="btnDeleteEntry">
           <Properties>
             <Property name="text" type="java.lang.String" value="Delete Entry"/>
+            <Property name="toolTipText" type="java.lang.String" value="Delete currently selected record"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeleteEntryActionPerformed"/>
           </Events>
+        </Component>
+      </SubComponents>
+    </Container>
+    <Container class="javax.swing.JPanel" name="browsePanel">
+      <Properties>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+            <TitledBorder title="Browse"/>
+          </Border>
+        </Property>
+      </Properties>
+
+      <Layout>
+        <DimensionLayout dim="0">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" alignment="1" attributes="0">
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="myJTableScrollPane" pref="677" max="32767" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace pref="602" max="32767" attributes="0"/>
+                          <Component id="lblNoData" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="191" max="-2" attributes="0"/>
+                          <Component id="btnPrevious" linkSize="4" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="txtCurrentRecord" linkSize="5" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="lblOf" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="txtTotalRecordCount" linkSize="5" min="-2" pref="30" max="-2" attributes="0"/>
+                          <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                          <Component id="btnNext" linkSize="4" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <EmptySpace max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+        <DimensionLayout dim="1">
+          <Group type="103" groupAlignment="0" attributes="0">
+              <Group type="102" attributes="0">
+                  <Group type="103" groupAlignment="2" attributes="0">
+                      <Component id="txtCurrentRecord" linkSize="6" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="txtTotalRecordCount" linkSize="6" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnPrevious" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="lblOf" alignment="2" min="-2" max="-2" attributes="0"/>
+                      <Component id="btnNext" alignment="2" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                  <Component id="myJTableScrollPane" pref="258" max="32767" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="lblNoData" min="-2" max="-2" attributes="0"/>
+              </Group>
+          </Group>
+        </DimensionLayout>
+      </Layout>
+      <SubComponents>
+        <Component class="javax.swing.JButton" name="btnPrevious">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Previous"/>
+            <Property name="toolTipText" type="java.lang.String" value="Show previous record in editable area"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPreviousActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtCurrentRecord">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Current record selected, or enter record to select"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtCurrentRecordActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblOf">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="of"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtTotalRecordCount">
+          <Properties>
+            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="f0" green="f0" id="TextField.disabledBackground" palette="3" red="f0" type="palette"/>
+            </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Total amount of records in database"/>
+            <Property name="enabled" type="boolean" value="false"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JButton" name="btnNext">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Next"/>
+            <Property name="toolTipText" type="java.lang.String" value="Show next record in editable area"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNextActionPerformed"/>
+          </Events>
+        </Component>
+        <Container class="javax.swing.JScrollPane" name="myJTableScrollPane">
+          <AuxValues>
+            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+          </AuxValues>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JTable" name="myJTable">
+              <Properties>
+                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                  <Table columnCount="0" rowCount="0"/>
+                </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Show records in current database"/>
+                <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                  <TableColumnModel selectionModel="0"/>
+                </Property>
+                <Property name="selectionModel" type="javax.swing.ListSelectionModel" editor="org.netbeans.modules.form.editors2.JTableSelectionModelEditor">
+                  <JTableSelectionModel selectionMode="0"/>
+                </Property>
+                <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                  <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+                </Property>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="myJTableMouseClicked"/>
+                <EventHandler event="mouseReleased" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="myJTableMouseReleased"/>
+                <EventHandler event="propertyChange" listener="java.beans.PropertyChangeListener" parameters="java.beans.PropertyChangeEvent" handler="myJTablePropertyChange"/>
+              </Events>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_ListenersCodePost" type="java.lang.String" value="/**&#xa;* The code below creates a ListSelectionModel based on the JTable and then&#xa;* attaches a listener and refers it to the valueChanged method. This is used&#xa;* so that the user can change the entry being edited by selecting it from the&#xa;* table.&#xa;*/&#xa;ListSelectionModel rowSM = myJTable.getSelectionModel();&#xa;rowSM.addListSelectionListener(new ListSelectionListener() {&#xa;public void valueChanged(ListSelectionEvent evt) {&#xa;    myJTableValueChanged(evt);&#xa;}&#xa;});"/>
+              </AuxValues>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Component class="javax.swing.JLabel" name="lblNoData">
+          <Properties>
+            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+              <Color blue="0" green="0" id="nb.errorForeground" palette="3" red="ff" type="palette"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="*No Data Present"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
@@ -446,10 +470,14 @@
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JTextField" name="txtFind">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Enter last name of person to find"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btnFind">
           <Properties>
             <Property name="text" type="java.lang.String" value="Find"/>
+            <Property name="toolTipText" type="java.lang.String" value="Find all records that match the last name entered"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFindActionPerformed"/>
@@ -461,7 +489,7 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Errors"/>
+            <TitledBorder title="Log"/>
           </Border>
         </Property>
       </Properties>
@@ -490,6 +518,7 @@
               <Properties>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
+                <Property name="toolTipText" type="java.lang.String" value="Display messages/errors/exceptions"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -499,6 +528,7 @@
     <Component class="javax.swing.JButton" name="btnClear">
       <Properties>
         <Property name="text" type="java.lang.String" value="Clear"/>
+        <Property name="toolTipText" type="java.lang.String" value="Clear fields and reload database"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnClearActionPerformed"/>

@@ -138,12 +138,14 @@ public class BooksDisplay extends javax.swing.JFrame {
         browsePanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Browse"));
 
         btnPrevious.setText("Previous");
+        btnPrevious.setToolTipText("Show previous record in editable area");
         btnPrevious.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPreviousActionPerformed(evt);
             }
         });
 
+        txtCurrentRecord.setToolTipText("Current record selected, or enter record to select");
         txtCurrentRecord.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtCurrentRecordActionPerformed(evt);
@@ -153,9 +155,11 @@ public class BooksDisplay extends javax.swing.JFrame {
         lblOf.setText("of");
 
         txtTotalRecordCount.setBackground(javax.swing.UIManager.getDefaults().getColor("TextField.disabledBackground"));
+        txtTotalRecordCount.setToolTipText("Total amount of records in database");
         txtTotalRecordCount.setEnabled(false);
 
         btnNext.setText("Next");
+        btnNext.setToolTipText("Show next record in editable area");
         btnNext.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNextActionPerformed(evt);
@@ -170,6 +174,7 @@ public class BooksDisplay extends javax.swing.JFrame {
 
             }
         ));
+        myJTable.setToolTipText("Show records in current database");
         myJTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         myJTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -207,12 +212,10 @@ public class BooksDisplay extends javax.swing.JFrame {
             browsePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(browsePanelLayout.createSequentialGroup()
                 .addGroup(browsePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, browsePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, browsePanelLayout.createSequentialGroup()
-                            .addContainerGap()
-                            .addComponent(myJTableScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE))
-                        .addGroup(browsePanelLayout.createSequentialGroup()
-                            .addContainerGap(614, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, browsePanelLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(browsePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(myJTableScrollPane, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
                             .addComponent(lblNoData)))
                     .addGroup(browsePanelLayout.createSequentialGroup()
                         .addGap(191, 191, 191)
@@ -252,17 +255,27 @@ public class BooksDisplay extends javax.swing.JFrame {
         lblAuthorId.setText("Author ID:");
 
         txtAuthorID.setBackground(javax.swing.UIManager.getDefaults().getColor("TextField.disabledBackground"));
+        txtAuthorID.setToolTipText("Unique Key for Author");
         txtAuthorID.setEnabled(false);
 
         lblFirstName.setText("First Name:");
 
+        txtFirstName.setToolTipText("Author First Name");
+
         lblLastName.setText("Last Name:");
+
+        txtLastName.setToolTipText("Author Last Name");
 
         lblISBN.setText("ISBN:");
 
+        txtISBN.setToolTipText("ISBN for book. Also unique key for book");
+
         lblTitle.setText("Title:");
 
+        txtTitle.setToolTipText("Title of Book");
+
         btnNewEntry.setText("Insert New Entry");
+        btnNewEntry.setToolTipText("Make new Author/Book Entry");
         btnNewEntry.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnNewEntryActionPerformed(evt);
@@ -270,6 +283,7 @@ public class BooksDisplay extends javax.swing.JFrame {
         });
 
         btnUpdateEntry.setText("Update Entry");
+        btnUpdateEntry.setToolTipText("Update selected Author/Book record");
         btnUpdateEntry.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateEntryActionPerformed(evt);
@@ -277,6 +291,7 @@ public class BooksDisplay extends javax.swing.JFrame {
         });
 
         btnDeleteEntry.setText("Delete Entry");
+        btnDeleteEntry.setToolTipText("Delete Author/Book record");
         btnDeleteEntry.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteEntryActionPerformed(evt);
@@ -285,7 +300,11 @@ public class BooksDisplay extends javax.swing.JFrame {
 
         lblEditionNumber.setText("Edition Number:");
 
+        txtEditionNumber.setToolTipText("Edition Number of book");
+
         lblCopyright.setText("Copyright:");
+
+        txtCopyright.setToolTipText("Copyright year of book");
 
         javax.swing.GroupLayout newUpdateDeletePanelLayout = new javax.swing.GroupLayout(newUpdateDeletePanel);
         newUpdateDeletePanel.setLayout(newUpdateDeletePanelLayout);
@@ -365,7 +384,10 @@ public class BooksDisplay extends javax.swing.JFrame {
 
         findPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Find by Author Last Name"));
 
+        txtFind.setToolTipText("Enter last name of author to find");
+
         btnFind.setText("Find");
+        btnFind.setToolTipText("Find all records that match the last name entered");
         btnFind.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnFindActionPerformed(evt);
@@ -393,10 +415,11 @@ public class BooksDisplay extends javax.swing.JFrame {
                 .addContainerGap(83, Short.MAX_VALUE))
         );
 
-        errorPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Errors"));
+        errorPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Log"));
 
         debugTextArea.setColumns(20);
         debugTextArea.setRows(5);
+        debugTextArea.setToolTipText("Display messages/errors/exceptions");
         myTextAreaScrollPane.setViewportView(debugTextArea);
 
         javax.swing.GroupLayout errorPanelLayout = new javax.swing.GroupLayout(errorPanel);
@@ -411,6 +434,7 @@ public class BooksDisplay extends javax.swing.JFrame {
         );
 
         btnClear.setText("Clear");
+        btnClear.setToolTipText("Clear fields and reload database");
         btnClear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnClearActionPerformed(evt);
@@ -423,6 +447,7 @@ public class BooksDisplay extends javax.swing.JFrame {
 
         openAddressBookMenuItem.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_S, java.awt.event.InputEvent.SHIFT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         openAddressBookMenuItem.setText("Switch to Address Book Database");
+        openAddressBookMenuItem.setToolTipText("Close this Database and open the Address Book Database");
         openAddressBookMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 openAddressBookMenuItemActionPerformed(evt);
@@ -1069,60 +1094,7 @@ public class BooksDisplay extends javax.swing.JFrame {
     
 
 
-    /** Main method that starts the program by making the GUI visible.
-    * @TheCs Cohesion - Starts the program by making the GUI visible.
-    * Completeness - Completely makes the GUI visible.
-    * Convenience - Simply makes the GUI visible.
-    * Clarity - It is simple to understand that this makes the GUI visible.
-    * Consistency - It uses the same syntax rules as the rest of the class and
-    *               continues to use proper casing and indentation.
-    *
-    * @param args the command line arguments
-    * @exception UnsupportedLookAndFeelException for UIManager method
-    * @exception ClassNotFoundException for UIManager method
-    * @exception InstantiationException for UIManager method
-    * @exception IllegalAccessException for UIManager method
-    * @exception Exception general exception capture
-    */
-    public static void main(String args[]) {
-        try{
-            //Sets Look and Feel of GUI to Nimbus.
-            UIManager.setLookAndFeel(
-                    "com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel");
 
-        }catch (UnsupportedLookAndFeelException exception) {
-            JOptionPane.showMessageDialog(null,exception.getMessage(),
-                    "UnsupportedLookAndFeelException Exception Thrown on"
-                    + " UIManager",
-                    JOptionPane.ERROR_MESSAGE);
-        }catch (ClassNotFoundException exception) {
-            JOptionPane.showMessageDialog(null,exception.getMessage(),
-                    "ClassNotFoundException Exception Thrown on UIManager",
-                    JOptionPane.ERROR_MESSAGE);
-        }catch (InstantiationException exception) {
-            JOptionPane.showMessageDialog(null,exception.getMessage(),
-                    "InstantiationException Exception Thrown on UIManager",
-                    JOptionPane.ERROR_MESSAGE);
-        }catch (IllegalAccessException exception) {
-            JOptionPane.showMessageDialog(null,exception.getMessage(),
-                    "IllegalAccessException Exception Thrown on UIManager",
-                    JOptionPane.ERROR_MESSAGE);
-        }catch (Exception exception) {
-            JOptionPane.showMessageDialog(null,exception.getMessage(),
-                    "Unknown Exception Thrown on UIManager",
-                    JOptionPane.ERROR_MESSAGE);
-        }
-
-        /**
-         * After the UIManager is updated, then make a new Runnable on the
-         * SwingUtilities.invoke later to run the program and make it visible.
-         */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new BooksDisplay().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel browsePanel;

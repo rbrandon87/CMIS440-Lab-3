@@ -21,6 +21,7 @@
                   <KeyStroke key="Shift+Ctrl+S"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Switch to Address Book Database"/>
+                <Property name="toolTipText" type="java.lang.String" value="Close this Database and open the Address Book Database"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openAddressBookMenuItemActionPerformed"/>
@@ -140,14 +141,11 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="103" alignment="1" groupAlignment="1" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Component id="myJTableScrollPane" pref="689" max="32767" attributes="0"/>
-                          </Group>
-                          <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace pref="614" max="32767" attributes="0"/>
-                              <Component id="lblNoData" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="myJTableScrollPane" alignment="0" pref="689" max="32767" attributes="0"/>
+                              <Component id="lblNoData" alignment="1" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
@@ -189,12 +187,16 @@
         <Component class="javax.swing.JButton" name="btnPrevious">
           <Properties>
             <Property name="text" type="java.lang.String" value="Previous"/>
+            <Property name="toolTipText" type="java.lang.String" value="Show previous record in editable area"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnPreviousActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="txtCurrentRecord">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Current record selected, or enter record to select"/>
+          </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtCurrentRecordActionPerformed"/>
           </Events>
@@ -209,12 +211,14 @@
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="f0" green="f0" id="TextField.disabledBackground" palette="3" red="f0" type="palette"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Total amount of records in database"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btnNext">
           <Properties>
             <Property name="text" type="java.lang.String" value="Next"/>
+            <Property name="toolTipText" type="java.lang.String" value="Show next record in editable area"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNextActionPerformed"/>
@@ -232,6 +236,7 @@
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="0" rowCount="0"/>
                 </Property>
+                <Property name="toolTipText" type="java.lang.String" value="Show records in current database"/>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0"/>
                 </Property>
@@ -372,6 +377,7 @@
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="f0" green="f0" id="TextField.disabledBackground" palette="3" red="f0" type="palette"/>
             </Property>
+            <Property name="toolTipText" type="java.lang.String" value="Unique Key for Author"/>
             <Property name="enabled" type="boolean" value="false"/>
           </Properties>
         </Component>
@@ -381,6 +387,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtFirstName">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Author First Name"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblLastName">
           <Properties>
@@ -388,6 +397,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtLastName">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Author Last Name"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblISBN">
           <Properties>
@@ -395,6 +407,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtISBN">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="ISBN for book. Also unique key for book"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblTitle">
           <Properties>
@@ -402,10 +417,14 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtTitle">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Title of Book"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btnNewEntry">
           <Properties>
             <Property name="text" type="java.lang.String" value="Insert New Entry"/>
+            <Property name="toolTipText" type="java.lang.String" value="Make new Author/Book Entry"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnNewEntryActionPerformed"/>
@@ -414,6 +433,7 @@
         <Component class="javax.swing.JButton" name="btnUpdateEntry">
           <Properties>
             <Property name="text" type="java.lang.String" value="Update Entry"/>
+            <Property name="toolTipText" type="java.lang.String" value="Update selected Author/Book record"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnUpdateEntryActionPerformed"/>
@@ -422,6 +442,7 @@
         <Component class="javax.swing.JButton" name="btnDeleteEntry">
           <Properties>
             <Property name="text" type="java.lang.String" value="Delete Entry"/>
+            <Property name="toolTipText" type="java.lang.String" value="Delete Author/Book record"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeleteEntryActionPerformed"/>
@@ -433,6 +454,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtEditionNumber">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Edition Number of book"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblCopyright">
           <Properties>
@@ -440,6 +464,9 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="txtCopyright">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Copyright year of book"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
@@ -479,10 +506,14 @@
       </Layout>
       <SubComponents>
         <Component class="javax.swing.JTextField" name="txtFind">
+          <Properties>
+            <Property name="toolTipText" type="java.lang.String" value="Enter last name of author to find"/>
+          </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btnFind">
           <Properties>
             <Property name="text" type="java.lang.String" value="Find"/>
+            <Property name="toolTipText" type="java.lang.String" value="Find all records that match the last name entered"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFindActionPerformed"/>
@@ -494,7 +525,7 @@
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-            <TitledBorder title="Errors"/>
+            <TitledBorder title="Log"/>
           </Border>
         </Property>
       </Properties>
@@ -523,6 +554,7 @@
               <Properties>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
+                <Property name="toolTipText" type="java.lang.String" value="Display messages/errors/exceptions"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -532,6 +564,7 @@
     <Component class="javax.swing.JButton" name="btnClear">
       <Properties>
         <Property name="text" type="java.lang.String" value="Clear"/>
+        <Property name="toolTipText" type="java.lang.String" value="Clear fields and reload database"/>
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnClearActionPerformed"/>
