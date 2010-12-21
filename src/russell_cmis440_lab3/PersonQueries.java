@@ -179,12 +179,12 @@ public class PersonQueries extends AbstractTableModel
    } 
 
    
-   /** Return entries with given past name
-   * @TheCs Cohesion - Return entries with given past name.
-   * Completeness - Completely returns entries with given past name.
-   * Convenience - Simply returns entries with given past name.
+   /** Return entries with given last name
+   * @TheCs Cohesion - Return entries with given last name.
+   * Completeness - Completely returns entries with given last name.
+   * Convenience - Simply returns entries with given last name.
    * Clarity - It is simple to understand that this returns entries with given
-   *           past name.
+   *           last name.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
    * @exception SQLException if problems with executing SQL statements

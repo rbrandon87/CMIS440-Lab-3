@@ -27,7 +27,6 @@ package russell_cmis440_lab3;
 */
 
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -125,19 +124,20 @@ public class BooksQuery extends AbstractTableModel
             * OUTER JOINS here, however this proved to be difficult given the
             * nature of isbn being used as a foreign key constraint. However,
             * even though I am no longer following this design the outer joins
-            * still prove to work in the new context so I don't see a reaosn to
-            * go back to the inner joins.
+            * still proved to work in the new context so I didn't see a reason
+            * to go back to the inner joins; however, just to be on the safe
+            * side I decided to go back to them anyways.
             */
            selectAllSQL = "SELECT * FROM authors "
-            + "LEFT OUTER JOIN authorISBN "
+            + "INNER JOIN authorISBN "
             + "on authors.authorID=authorISBN.authorID "
-            + "RIGHT OUTER JOIN Titles on AuthorISBN.isbn=Titles.isbn";
+            + "INNER JOIN Titles on AuthorISBN.isbn=Titles.isbn";
 
            
            selectByAuthorLastNameSQL = "SELECT * FROM authors "
-            + "LEFT OUTER JOIN authorISBN "
+            + "INNER JOIN authorISBN "
             + "on authors.authorID=authorISBN.authorID "
-            + "RIGHT OUTER JOIN Titles on AuthorISBN.isbn=Titles.isbn "
+            + "INNER JOIN Titles on AuthorISBN.isbn=Titles.isbn "
             + "WHERE authors.LastName = ?";
 
            insertNewBookSQL = "INSERT INTO Titles "

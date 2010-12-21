@@ -175,6 +175,7 @@ public class BooksDisplay extends javax.swing.JFrame {
             }
         ));
         myJTable.setToolTipText("Show records in current database");
+        myJTable.setFocusable(false);
         myJTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         myJTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -420,6 +421,7 @@ public class BooksDisplay extends javax.swing.JFrame {
         debugTextArea.setColumns(20);
         debugTextArea.setRows(5);
         debugTextArea.setToolTipText("Display messages/errors/exceptions");
+        debugTextArea.setFocusable(false);
         myTextAreaScrollPane.setViewportView(debugTextArea);
 
         javax.swing.GroupLayout errorPanelLayout = new javax.swing.GroupLayout(errorPanel);

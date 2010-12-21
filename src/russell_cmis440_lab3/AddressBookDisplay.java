@@ -9,7 +9,8 @@ package russell_cmis440_lab3;
 * IDE: NetBeans 6.9.1
 * OS: Windows 7
 * Java: JDK 1.6.0_22
-* Files:
+* Files: AddressBookDisplay.java, PersonQueries.java, Person.java,
+*        BooksDisplay.java, BooksQuery.java, Book.java
 *
 * Program Requirements:
 * Minimum Assignment Requirements:
@@ -327,6 +328,8 @@ public class AddressBookDisplay extends javax.swing.JFrame {
             }
         ));
         myJTable.setToolTipText("Show records in current database");
+        myJTable.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        myJTable.setFocusable(false);
         myJTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         myJTable.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -443,6 +446,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
         debugTextArea.setColumns(20);
         debugTextArea.setRows(5);
         debugTextArea.setToolTipText("Display messages/errors/exceptions");
+        debugTextArea.setFocusable(false);
         myTextAreaScrollPane.setViewportView(debugTextArea);
 
         javax.swing.GroupLayout errorPanelLayout = new javax.swing.GroupLayout(errorPanel);
