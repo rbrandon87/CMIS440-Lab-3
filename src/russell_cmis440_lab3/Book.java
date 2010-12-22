@@ -15,6 +15,7 @@ package russell_cmis440_lab3;
 *|                           CRC: Book                                        |
 *|----------------------------------------------------------------------------|
 *|Provides setter/getter methods for Book object                 BooksDisplay |
+*|Used to test equality of two Book objects                      BooksQuery   |
 *|----------------------------------------------------------------------------|
 *
 * @TheCs Cohesion - All methods in this class work together on similar task.
@@ -267,7 +268,7 @@ public class Book
     * This method takes the author first/last name and the book isbn, and
     * multiplies their hashCodes together and by 17, a prime number,
     * to create a unique hashCode that will later be used to test for equality
-    * of Book objects in the BookQuery class.
+    * of Book objects in the BooksQuery class.
     * @TheCs Cohesion - Sets the hashCode of the Book object to 17 times
     *                   the first/last name and isbn. 17 used since it's a prime
     * Completeness - Completely sets the hashCode of the Book object.
