@@ -48,7 +48,6 @@ public class BooksQuery extends AbstractTableModel
 
    //****Begin variable initializing here****
    private PreparedStatement selectAll = null;
-   private PreparedStatement selectAllAuthors = null;
    private PreparedStatement selectAllAuthorISBN = null;
    private PreparedStatement selectByAuthorLastName = null;
 
@@ -64,7 +63,6 @@ public class BooksQuery extends AbstractTableModel
    private PreparedStatement updateAuthor = null;
    private PreparedStatement updateByDeleteAuthorISBN = null;
 
-   private String selectAllAuthorsSQL = "";
    private String selectAllAuthorISBNSQL = "";
    private String selectAllSQL = "";
    private String selectByAuthorLastNameSQL = "";
@@ -110,12 +108,12 @@ public class BooksQuery extends AbstractTableModel
            lastError = null; //Will hold any errors from method
            //*****Begin SQL Definitions******
            /**
-            * These two selects are used during the insert/update/delete methods
+            * This select is used during the update/delete methods
             * to ensure the integrity of my key constraints. I tried using the
-            * selects w/ the joins, but they would not provide the information
-            * I needed so I had to use separate sql statements w/o the joins.
+            * select w/ the joins, but it would not provide the information
+            * I needed so I had to use separate sql statement w/o the joins.
             */
-           selectAllAuthorsSQL = "select * from authors";
+
            selectAllAuthorISBNSQL = "select * from authorISBN";
 
            /**
@@ -173,7 +171,7 @@ public class BooksQuery extends AbstractTableModel
            //*****End SQL Definitions******
            
            connection = DriverManager.getConnection( URL, USERNAME, PASSWORD );
-           selectAllAuthors = connection.prepareStatement(selectAllAuthorsSQL);
+
            selectAllAuthorISBN =
                    connection.prepareStatement(selectAllAuthorISBNSQL);
            // create query that selects all entries in the Book Database
@@ -185,7 +183,7 @@ public class BooksQuery extends AbstractTableModel
            insertNewBook = connection.prepareStatement(insertNewBookSQL );
            insertAuthorISBN =
                    connection.prepareStatement(insertIntoAuthorISBNSQL );
-           insertNewAuthor = connection.prepareStatement(insertNewAuthorSQL );
+           insertNewAuthor = connection.prepareStatement(insertNewAuthorSQL,  Statement.RETURN_GENERATED_KEYS );
 
            // create update that updates a entry in the database
            updateAuthor = connection.prepareStatement(updateAuthorSQL);
@@ -365,51 +363,71 @@ public class BooksQuery extends AbstractTableModel
        
        ResultSet tempResultSet = null;
        List< Book > results = getAllBooks();
+       /**
+        * tempBook makes a temporary book object w/ only the information needed
+        * for comparison to determine of the book/author being entered already
+        * exist or not.
+        */
+       Book tempBookCheck =
+               new Book(aISBN,"","","",0,aAuthorFirstName,aAuthorLastName);
+       
        lastError = null;//Will hold any errors from method
        int result = 0;
        int TempAuthorIdHolder = 0;//Hold authorId of book author
-       boolean newAuthor = false; //determine if new author or existing
-       boolean newBook = false;//determine if book already exists or if is new
+       boolean newAuthor = true; //determine if new author or existing
+       boolean newBook = true;//determine if book already exists or if is new
        // set parameters, then execute insertNewPerson
        try{
-           for (int i = 0; i< results.size(); i++){
-               if (results.get(i).getISBN().equalsIgnoreCase(aISBN) &&
-                    results.get(i).getAuthorLastName().equalsIgnoreCase(aAuthorLastName) &&
-                    results.get(i).getAuthorFirstName().equalsIgnoreCase(aAuthorFirstName)){
-                   /**
-                    * An exception is thrown here if ISBN and Author First name
-                    * and last name already exist in database.
-                    */
-                throw new Exception("This Author and Book are already added.");
-
-               }else if (results.get(i).getISBN().equalsIgnoreCase(aISBN) && 
-                       (!(results.get(i).getAuthorLastName().equalsIgnoreCase(aAuthorLastName)) ||
-                       !(results.get(i).getAuthorFirstName().equalsIgnoreCase(aAuthorFirstName)))){
-                   /**
-                    * If the book exist, but if either the first name or last
-                    * name of the author record doesn't match then a new
-                    * author to the existing book is added.
-                    */
-                   newAuthor = true;
-                   newBook = false;
-               }else if (!(results.get(i).getISBN().equalsIgnoreCase(aISBN)) &&
-                    results.get(i).getAuthorLastName().equalsIgnoreCase(aAuthorLastName) &&
-                    results.get(i).getAuthorFirstName().equalsIgnoreCase(aAuthorFirstName)){
-                   /**
-                    * If the ISBN isn't found, but both the author first name
-                    * and last name are then a new book is added for this author
-                    */
-                   newAuthor = false;
-                   newBook = true;
-               }else{
-                   /**
-                    * Else its a new book and new author
-                    */
-                   newAuthor = true;
-                   newBook = true;
-               }
-
+           if (results.contains(tempBookCheck)) {
+               /**
+                * If the author/book combo already exist then throw an exception
+                */
+               throw new Exception("This Author and Book are already added.");
            }
+           for (int i = 0; i< results.size(); i++){
+
+               if (results.get(i).getISBN().equalsIgnoreCase(aISBN)){
+                   /**
+                    * If the book already exist don't add it again
+                    */
+                   newBook = false;
+               }else if(newBook){
+                   /**
+                    * Else, if the book is not found then add it.
+                    */
+                   newBook = true;
+               }else {
+                   /**
+                    * Do Nothing. I needed this here so that the two if
+                    * statements, one to check if the book is new and one to
+                    * check if the author is new, would both we checked
+                    * separately. If they weren't it wouldn't work correctly.
+                    */
+               }
+               /**
+                * I went past the 80 character mark on this one, but I think
+                * its more readable this way.
+                */
+               if(results.get(i).getAuthorLastName().equalsIgnoreCase(aAuthorLastName) &&
+                  results.get(i).getAuthorFirstName().equalsIgnoreCase(aAuthorFirstName)){
+                   /**
+                    * If the first name and last name already exist then don't
+                    * add this author again, just get the authorId so it can
+                    * be used to add it along w/ this book to the
+                    * authorsISBN table.
+                    */
+                   TempAuthorIdHolder = results.get(i).getAuthorID();
+                   newAuthor = false;
+               }else if (newAuthor){
+                   /**
+                    * Else, either the first name, last name, or both didn't
+                    * match so add this as a new author.
+                    */
+                   newAuthor = true;
+               }
+           }
+
+
            /**
             * The setString method will insert the given variable into the sql
             * statement that was defined in the constructor.
@@ -421,25 +439,14 @@ public class BooksQuery extends AbstractTableModel
                insertNewAuthor.setString(1, aAuthorFirstName);
                insertNewAuthor.setString(2, aAuthorLastName);
                result = insertNewAuthor.executeUpdate();
-           }
-           /**
-            * Even though the author is added above the getAllBooks method will
-            * still not return a list w/ the new author so I had to make a new
-            * resultset below with one of the individual sql statements I
-            * created earlier to query the table and get the newly added authors
-            * unique ID. This is still used, however for existing authors to
-            * cut down on coding.
-            */
-           tempResultSet = selectAllAuthors.executeQuery();
-           while ( tempResultSet.next() ){
-               if (tempResultSet.getString("firstName").
-                       equalsIgnoreCase(aAuthorFirstName) &&
-                       tempResultSet.getString("lastName")
-                       .equalsIgnoreCase(aAuthorLastName)){
-
-                   TempAuthorIdHolder = tempResultSet.getInt("authorID");
-                   break;
-               }
+               /**
+                * Below the .getGeneratedKey method is used to get the unique
+                * Id assigned to the new author so that it can be added to the
+                * authorsISBN table below.
+                */
+               tempResultSet = insertNewAuthor.getGeneratedKeys();
+               tempResultSet.next();
+               TempAuthorIdHolder = tempResultSet.getInt(1);
            }
 
            if (newBook){
@@ -505,12 +512,6 @@ public class BooksQuery extends AbstractTableModel
        lastError = null; //Will hold any errors from method
        int result = 0;
        ResultSet tempResultSet = null;
-       /**
-        * Multiple records may need updating since there may be multiple authors
-        * of one book so I had to build an arraylist of authorId's of authors
-        * that belong to the book in question
-        */
-       ArrayList <Integer> TempAuthorIDHolder = new ArrayList<Integer>();
 
        try{
            /**
@@ -525,9 +526,17 @@ public class BooksQuery extends AbstractTableModel
            while ( tempResultSet.next() ){
                if (tempResultSet.getString("ISBN").equalsIgnoreCase(aOldISBN)){
                    /**
-                    * get the authorId's of all authors for this book
+                    * This gets a listing of all the authors associated w/ the
+                    * old ISBN for the purpose of updating them to be associated
+                    * with the new ISBN. Each loop adds a new sql to the batch
+                    * w/ the new author and new isbn. The batchs are added here
+                    * but are not executed until the end of the method since
+                    * the authors and titles tables must first be updated before
+                    * the authorsISBN table is.
                     */
-                   TempAuthorIDHolder.add(tempResultSet.getInt("authorID"));
+                   insertAuthorISBN.setInt(1, tempResultSet.getInt("authorID"));
+                   insertAuthorISBN.setString(2, aISBN);
+                   insertAuthorISBN.addBatch();
                }
            }
 
@@ -562,18 +571,14 @@ public class BooksQuery extends AbstractTableModel
            result += insertNewBook.executeUpdate();
 
            /**
-            * I tried to find a way to do a bulk insert, but couldn't find one
-            * for JavaDB so I have an enhanced for loop that goes through all of
-            * the authors for the book in question and adds the authorId/ISBN
-            * combo to the authorISBN table.
+            * This statement executes all of the sql statements added to the
+            * batch before to insert author/isbn to the authorsISBN table.
+            * The return value is an array of ints so I just use the length of
+            * the array to indicate how many records were updated.
             */
-           for (Integer tempAuthorId: TempAuthorIDHolder){
-               insertAuthorISBN.setInt(1, tempAuthorId);
-               insertAuthorISBN.setString(2, aISBN);
-               result += insertAuthorISBN.executeUpdate();
-            }
+           result += insertAuthorISBN.executeBatch().length;
 
-            
+
         }catch ( SQLException sqlException ){
             result = 0;
             lastError += sqlException.toString();
@@ -603,16 +608,16 @@ public class BooksQuery extends AbstractTableModel
    public int deleteBook(int aAuthorId, String aISBN ){
        lastError = null; //Will hold any errors from method
        int result = 0;
-       List< Book > results = null;
        /**
         * These two booleans are used below to determine when deleting if the
         * book should be deleted completely if there are no more authors and
         * also if the author should be deleted if there are no more books for
         * the author.
         */
-       boolean noMoreBooksForThisAuthor = false;
-       boolean noMoreAuthorsForThisBook = false;
+       boolean noMoreBooksForThisAuthor = true;
+       boolean noMoreAuthorsForThisBook = true;
        ResultSet tempResultSet = null;
+
 
        try{
            /**
@@ -628,35 +633,41 @@ public class BooksQuery extends AbstractTableModel
 
            /**
             * Again I needed to build a temp resultset on the authorISBN table
-            * to determine if this book has any more authors. If so then do
-            * not delete the book, otherwise delete it.
+            * to determine if this book has any more authors and also if the 
+            * author has any more books. If so then do not delete the book and/
+            * or author, otherwise delete the author and/or book.
             */
 
            tempResultSet = selectAllAuthorISBN.executeQuery();
+
+
            while ( tempResultSet.next() ){
                if (tempResultSet.getString("ISBN").equalsIgnoreCase(aISBN)){
+                   /**
+                    * One or more authors still exist for this book, so don't
+                    * delete it from the titles table.
+                    */
                    noMoreAuthorsForThisBook = false;
-                   break;
-               }else{
+               }else if (noMoreAuthorsForThisBook){
+                   /**
+                    * Else no more authors exists so delete the book from the
+                    * titles table.
+                    */
                    noMoreAuthorsForThisBook = true;
-               }
-           }
-           /**
-            * After checking for anymore authors for a book, requery to
-            * result set to make sure the cursor is at the beginning and see
-            * if the authorId in question still exist in the authorisbn table.
-            * If so then this author still has other books and shouldn't be
-            * deleted, otherwise if not more records exist then the author
-            * should be deleted. Note, I tried everything on the resultset to
-            * get the cursor to go to the first record, but it wouldn't let me
-            * so I had to requery it to make sure of this.
-            */
-           tempResultSet = selectAllAuthorISBN.executeQuery();
-           while ( tempResultSet.next() ){
-               if (tempResultSet.getInt("AuthorID") == aAuthorId){
-                   noMoreBooksForThisAuthor = false;
-                   break;
                }else{
+
+               }
+               if (tempResultSet.getInt("AuthorID") == aAuthorId){
+                   /**
+                    * One of more books still exist for this author so don't
+                    * delete the author from the authors table.
+                    */
+                   noMoreBooksForThisAuthor = false;
+               }else if (noMoreBooksForThisAuthor){
+                   /**
+                    * Else no more books exist for this author so delete the
+                    * author from the authors table.
+                    */
                    noMoreBooksForThisAuthor = true;
                }
            }

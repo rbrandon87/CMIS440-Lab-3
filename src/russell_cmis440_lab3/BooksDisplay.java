@@ -680,6 +680,7 @@ public class BooksDisplay extends javax.swing.JFrame {
             String firstName = txtFirstName.getText();
             String lastName = txtLastName.getText();
 
+
             int result = bookQueries.addBook(ISBN, title, editionNumber,
                     copyright, firstName, lastName);
             checkForErrors();
