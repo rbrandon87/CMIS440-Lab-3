@@ -685,7 +685,8 @@ public class AddressBookDisplay extends javax.swing.JFrame {
                 txtPhoneNum.getText() );
         checkForErrors();
         
-        myTextAreaLogger.log(result > 0 ? "Successful" : "Not Successful");
+        myTextAreaLogger.log(result > 0 ? "Insert Successful"
+                : "Insert Not Successful");
         loadDatabase();
     }//GEN-LAST:event_btnNewEntryActionPerformed
 
@@ -721,7 +722,8 @@ public class AddressBookDisplay extends javax.swing.JFrame {
         int result = personQueries.deletePerson( txtAddressID.getText());
         checkForErrors();
         
-        myTextAreaLogger.log(result > 0 ? "Successful" : "Not Successful");
+        myTextAreaLogger.log(result > 0 ? "Delete Successful"
+                : "Delete Not Successful");
         loadDatabase();
     }//GEN-LAST:event_btnDeleteEntryActionPerformed
 
@@ -755,7 +757,8 @@ public class AddressBookDisplay extends javax.swing.JFrame {
                     txtEmail.getText(),txtPhoneNum.getText() );
             checkForErrors();
             
-            myTextAreaLogger.log(result > 0 ? "Successful" : "Not Successful");
+            myTextAreaLogger.log(result > 0 ? "Update Successful"
+                    : "Update Not Successful");
             loadDatabase();
     }//GEN-LAST:event_btnUpdateEntryActionPerformed
 
@@ -803,15 +806,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
             "Instructions", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_instructionsMenuItemActionPerformed
 
-    /** Switches over to Books database
-    * @TheCs Cohesion - Switches over to Books database
-    * Completeness - Completely switches over to Books database.
-    * Convenience - Simply switches over to Books database.
-    * Clarity - It is simple to understand that this switches over to Books
-    *           database.
-    * Consistency - It uses the same syntax rules as the rest of the class and
-    *               continues to use proper casing and indentation.
-    */
+
     private void openBooksMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openBooksMenuItemActionPerformed
 
     }//GEN-LAST:event_openBooksMenuItemActionPerformed
@@ -838,6 +833,15 @@ public class AddressBookDisplay extends javax.swing.JFrame {
 
     }//GEN-LAST:event_myJTableMouseReleased
 
+    /** Switches over to Books database
+    * @TheCs Cohesion - Switches over to Books database
+    * Completeness - Completely switches over to Books database.
+    * Convenience - Simply switches over to Books database.
+    * Clarity - It is simple to understand that this switches over to Books
+    *           database.
+    * Consistency - It uses the same syntax rules as the rest of the class and
+    *               continues to use proper casing and indentation.
+    */
     private void openBooksMenuItemActionPerformed1(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openBooksMenuItemActionPerformed1
         try{
             //Sets Look and Feel of GUI to Nimbus.
@@ -846,7 +850,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
 
         /**
          * After the UIManager is updated, then make a new Runnable on the
-         * SwingUtilities.invoke later to run the program and make it visible.
+         * EventQueue.invoke later to run the program and make it visible.
          */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -854,7 +858,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
             }
         });
         
-        this.dispose();
+        this.dispose();//Dispose of this GUI since its no longer needed
 
         }catch (UnsupportedLookAndFeelException exception) {
             myTextAreaLogger.log(exception.getMessage());
@@ -937,8 +941,8 @@ public class AddressBookDisplay extends javax.swing.JFrame {
             return; // if you don't want to handle intermediate selections
         }
         /**
-         * This basically selection list model to the table change event and
-         * retrieves the first selected index, or -1 if selection is empty
+         * This basically make a selection list model to the table change event
+         * and retrieves the first selected index, or -1 if selection is empty
          * and updates the txtCurrentRecord w/ this index.
          * updateCurrentSelectedRecord will use this number to determine
          * which person object in the person object list to display for editing.

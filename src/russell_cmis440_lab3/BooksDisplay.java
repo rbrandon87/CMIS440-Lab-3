@@ -674,6 +674,11 @@ public class BooksDisplay extends javax.swing.JFrame {
             }
             String ISBN = txtISBN.getText();
             String title = txtTitle.getText();
+            /**
+             * If edition number is blank make it a zero, otherwise parse the
+             * text to an int. I have NumberFormatException setup in case
+             * text can't be parsed.
+             */
             int editionNumber = txtEditionNumber.getText().equals("") ? 0
                     : Integer.parseInt(txtEditionNumber.getText());
             String copyright = txtCopyright.getText();
@@ -685,7 +690,8 @@ public class BooksDisplay extends javax.swing.JFrame {
                     copyright, firstName, lastName);
             checkForErrors();
 
-            myTextAreaLogger.log(result > 0 ? "Successful" : "Not Successful");
+            myTextAreaLogger.log(result > 0 ? "Insert Successful"
+                    : "Insert Not Successful");
 
             loadDatabase();
         }catch (NumberFormatException exception){
@@ -729,7 +735,8 @@ public class BooksDisplay extends javax.swing.JFrame {
                 Integer.parseInt(txtAuthorID.getText()), txtISBN.getText());
         checkForErrors();
 
-        myTextAreaLogger.log(result > 0 ? "Successful" : "Not Successful");
+        myTextAreaLogger.log(result > 0 ? "Delete Successful"
+                : "Delete Not Successful");
         loadDatabase();
     }//GEN-LAST:event_btnDeleteEntryActionPerformed
 
@@ -764,6 +771,11 @@ public class BooksDisplay extends javax.swing.JFrame {
             int authorID = Integer.parseInt(txtAuthorID.getText());
             String ISBN = txtISBN.getText();
             String title = txtTitle.getText();
+            /**
+             * If edition number is blank make it a zero, otherwise parse the
+             * text to an int. I have NumberFormatException setup in case
+             * text can't be parsed.
+             */
             int editionNumber = txtEditionNumber.getText().equals("") ? 0
                     : Integer.parseInt(txtEditionNumber.getText());
             String copyright = txtCopyright.getText();
@@ -774,7 +786,8 @@ public class BooksDisplay extends javax.swing.JFrame {
                     copyright,firstName, lastName, authorID, TempISBNHolder );
             checkForErrors();
 
-            myTextAreaLogger.log(result > 0 ? "Successful" : "Not Successful");
+            myTextAreaLogger.log(result > 0 ? "Update Successful"
+                    : "Update Not Successful");
             loadDatabase();
         }catch (NumberFormatException exception){
             myTextAreaLogger.log(exception.toString());
@@ -845,7 +858,7 @@ public class BooksDisplay extends javax.swing.JFrame {
 
         /**
          * After the UIManager is updated, then make a new Runnable on the
-         * SwingUtilities.invoke later to run the program and make it visible.
+         * EventQueue.invoke later to run the program and make it visible.
          */
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {

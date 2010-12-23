@@ -183,7 +183,13 @@ public class BooksQuery extends AbstractTableModel
            insertNewBook = connection.prepareStatement(insertNewBookSQL );
            insertAuthorISBN =
                    connection.prepareStatement(insertIntoAuthorISBNSQL );
-           insertNewAuthor = connection.prepareStatement(insertNewAuthorSQL,  Statement.RETURN_GENERATED_KEYS );
+           /**
+            * This insert statement has the .return_generated_keys at the end
+            * , it is used later to retrieve the unique key created when
+            * inserting a new author.
+            */
+           insertNewAuthor = connection.prepareStatement(insertNewAuthorSQL,
+                   Statement.RETURN_GENERATED_KEYS );
 
            // create update that updates a entry in the database
            updateAuthor = connection.prepareStatement(updateAuthorSQL);
@@ -462,7 +468,7 @@ public class BooksQuery extends AbstractTableModel
 
            /**
             * Finally, regardless of whether just a author, just a book, or both
-            * were added, a new entry with the authorId/ISBN combination
+            * were added a new entry with the authorId/ISBN combination
             * must be added to this table.
             */
            insertAuthorISBN.setInt(1, TempAuthorIdHolder);
@@ -545,7 +551,7 @@ public class BooksQuery extends AbstractTableModel
             * in question
             */
            updateByDeleteAuthorISBN.setString(1,aOldISBN);
-           result += updateByDeleteAuthorISBN.executeUpdate();
+           result = updateByDeleteAuthorISBN.executeUpdate();
 
            /**
             * The only actual update. update the authors information
@@ -553,7 +559,7 @@ public class BooksQuery extends AbstractTableModel
            updateAuthor.setString(1, aFirstName);
            updateAuthor.setString(2, aLastName);
            updateAuthor.setInt(3, aAuthorId);
-           result = updateAuthor.executeUpdate();
+           result += updateAuthor.executeUpdate();
 
            /**
             * Delete the book from the titles table
