@@ -551,6 +551,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
     *           from List of Person objects.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    * @param evt ActionEvent from button click
     */
     private void btnPreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreviousActionPerformed
         /**
@@ -578,6 +579,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
     *           a number of record to select.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    * @param evt ActionEvent from enter
     */
     private void txtCurrentRecordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCurrentRecordActionPerformed
         /**
@@ -597,6 +599,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
     *           from List of Person objects.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    * @param evt ActionEvent from button click
     */
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         /**
@@ -623,6 +626,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
     *           last name entered.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    * @param evt ActionEvent from button click
     */
     private void btnFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindActionPerformed
         /**
@@ -669,6 +673,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
     *           database.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    * @param evt ActionEvent from button click
     */
     private void btnNewEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewEntryActionPerformed
 
@@ -702,6 +707,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
     *           database.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    * @param evt ActionEvent from button click
     */
     private void btnDeleteEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteEntryActionPerformed
         /**
@@ -735,6 +741,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
     *           database.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    * @param evt ActionEvent from button click
     */
     private void btnUpdateEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateEntryActionPerformed
         /**
@@ -769,6 +776,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
     * Clarity - It is simple to understand that this exits the program.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    * @param evt ActionEvent from menu item click
     */
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         System.exit(0);
@@ -782,6 +790,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
     *           program.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    * @param evt ActionEvent from menu item click
     */
     private void instructionsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_instructionsMenuItemActionPerformed
         String instructionMessage = ""
@@ -819,6 +828,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
     *           shows entire address book.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    * @param evt ActionEvent from button click
     */
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         txtFind.setText("");
@@ -841,6 +851,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
     *           database.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    * @param evt ActionEvent from menu item click
     */
     private void openBooksMenuItemActionPerformed1(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openBooksMenuItemActionPerformed1
         try{
@@ -935,6 +946,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
     *           JTable to display in editable area.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    * @param evt ListSelectionEvent from Table Select change
     */
     private void myJTableValueChanged(ListSelectionEvent evt) {
         if (evt.getValueIsAdjusting()){

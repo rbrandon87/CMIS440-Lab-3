@@ -60,6 +60,13 @@ public class Book
    *           with initial values.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @param aISBN ISBN of book object
+   * @param aTitle Title of book object
+   * @param aEditionNumber edition number of book object
+   * @param aCopyright copyright year of book object
+   * @param aAuthorID unique author id of book object
+   * @param aAuthorFirstName first name of author of book object
+   * @param aAuthorLastName last name of author of book object
    */
    public Book( String aISBN, String aTitle, String aEditionNumber,
            String aCopyright, int aAuthorID, String aAuthorFirstName,
@@ -87,6 +94,7 @@ public class Book
    *           book object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @param aAuthorID unique author id of book object
    */
    private void setAuthorID( int aAuthorID ){
        authorID = aAuthorID;
@@ -100,6 +108,7 @@ public class Book
    *           book object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @return unique author id of book object
    */
    public int getAuthorID(){
        return authorID;
@@ -113,6 +122,7 @@ public class Book
    *           object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @param aISBN ISBN of book object
    */
    private void setISBN( String aISBN ){
        ISBN = aISBN;
@@ -126,6 +136,7 @@ public class Book
    *           object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @return ISBN of book object
    */
    public String getISBN(){
        return ISBN;
@@ -140,6 +151,7 @@ public class Book
    *           object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @param aTitle title of book object
    */
    private void setTitle( String aTitle ){
        title = aTitle;
@@ -154,6 +166,7 @@ public class Book
    *           object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @return title of book object
    */
    public String getTitle(){
        return title;
@@ -167,6 +180,7 @@ public class Book
    *           book object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @param aEditionNumber edition number of book object
    */
    private void setEditionNumber( String aEditionNumber ){
        editionNumber = aEditionNumber;
@@ -180,6 +194,7 @@ public class Book
    *           book object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @return edition number of book object
    */
    public String getEditionNumber(){
        return editionNumber;
@@ -193,6 +208,7 @@ public class Book
    *           the book object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @param aCopyright copyright year of book object
    */
    private void setCopyright( String aCopyright ){
        copyright = aCopyright;
@@ -206,6 +222,7 @@ public class Book
    *           the book object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @return copyright year of book object
    */
    public String getCopyright(){
        return copyright;
@@ -219,6 +236,7 @@ public class Book
    *           of the book object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @param aAuthorFirstName  author first name of book object
    */
    private void setAuthorFirstName( String aAuthorFirstName ){
        authorFirstName = aAuthorFirstName;
@@ -232,6 +250,7 @@ public class Book
    *           of the book object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @return author first name of book object
    */
    public String getAuthorFirstName(){
        return authorFirstName;
@@ -245,6 +264,7 @@ public class Book
    *           of the book object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @param aAuthorLastName author last name of book object
    */
    private void setAuthorLastName( String aAuthorLastName ){
        authorLastName = aAuthorLastName;
@@ -258,6 +278,7 @@ public class Book
    *           of the book object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @return author last name of book object
    */
    public String getAuthorLastName(){
        return authorLastName;
@@ -277,6 +298,7 @@ public class Book
     *           Book object.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    * @return unique hashCode of book object
     */
     @Override
     public int hashCode(){
@@ -302,6 +324,7 @@ public class Book
     *               continues to use proper casing and indentation.
     * @param obj Check for equality against this object.
     * @precondition obj be a Book object, otherwise return false.
+    * @return true or false depending on if objects are equal or not
     */
     @Override
     public boolean equals(Object obj){

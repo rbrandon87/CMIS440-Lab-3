@@ -661,6 +661,13 @@ public class BooksQuery extends AbstractTableModel
                     */
                    noMoreAuthorsForThisBook = true;
                }else{
+                   /**
+                    * Do Nothing. I needed this here so that the two if
+                    * statements, one to check if the book has no more authors
+                    * and one to check if the author has no more books,
+                    * would both we checked separately.
+                    * If they weren't it wouldn't work correctly.
+                    */
 
                }
                if (tempResultSet.getInt("AuthorID") == aAuthorId){

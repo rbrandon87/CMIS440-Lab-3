@@ -1,0 +1,62 @@
+Program Name: CMIS440 Lab 3 JavaDB Address Book Program
+@author Brandon R Russell
+@Course CMIS440
+Date: Dec 15,2010
+IDE: NetBeans 6.9.1
+OS: Windows 7
+Java: JDK 1.6.0_22
+Files: AddressBookDisplay.java, PersonQueries.java, Person.java,
+        BooksDisplay.java, BooksQuery.java, Book.java
+
+Program Requirements:
+Minimum Assignment Requirements:
+ 
+1)Install and configure the Java DB per section 28.10 of the text. 
+2)If you use the text book examples as your starting point, you will 
+demonstrate you understand the code by a) commenting the code to meet 
+the course standards and b) ensuring the course naming conventions 
+are followed. 
+3)Implement the additions stated in Exercise 28.6 of the text. 
+4)Implement the additions stated in Exercise 28.7 of the text. 
+5)Add a JTextArea to the main UI form for the display of the internal
+'debugging' statements. 
+6)Create a class called TextAreaLogger that takes a JTextArea in its 
+contructor and provides one or more log methods. Possible log methods 
+might be: 
+
+log(String msg) - log the given message to the provided JTextArea 
+log(String msg, int value) - log the given message and value to the 
+provided JTextArea in a format: message = value 
+7)Add a getLastError method to the PersonQueries class. The backing variable 
+should be cleared (set to null) at the beginning of each method in the 
+class and will contain any error messages that occurred in the method, i.e.,
+replace the current sqlException.printStackTrace() to use this last error 
+variable. This implies that after every method call on a PersonQueries 
+instance you should check to see if the returned value of getLastError()
+is null, meaning the operation was successful, or not null meaning the 
+operation failed. All failures should be written to the 'debugging'
+JTextArea. 
+8)Remove all System.exit calls in the PersonQueries class and use the last
+error variable approach outlined above. 
+9)Add strategically placed logging statements in your UI code only. 
+
+Assignment Optional Implementations:
+
+1)Add support for the Books database in a similar manner as the Address
+database by creating a Book class, BooksQuery class and BoosDisplay form
+class.
+
+Things you what me to know before I grade your work: I used the NetBeans
+Graphic designer to create the GUI portion of this program.
+
+
+
+			Git Log
+-------------------------------------
+
+
+
+
+
+
+

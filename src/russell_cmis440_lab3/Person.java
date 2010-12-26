@@ -57,6 +57,11 @@ public class Person
    *           with initial values.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @param id unique id of person object
+   * @param first first name of person for person object
+   * @param last last name of person for person object
+   * @param emailAddress email address of person for person object
+   * @param phone phone number of person for person object
    */
    public Person( int id, String first, String last,
            String emailAddress, String phone ){
@@ -81,6 +86,7 @@ public class Person
    *           person object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @param unique id of person object
    */
    private void setAddressID( int id ){
        addressID = id;
@@ -94,6 +100,7 @@ public class Person
    *           person object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @return unique id of person object
    */
    public int getAddressID(){
        return addressID;
@@ -108,6 +115,7 @@ public class Person
    *           person object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @param first first name of person object
    */
    private void setFirstName( String first ){
        firstName = first;
@@ -122,6 +130,7 @@ public class Person
    *           person object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @return return first name of person object
    */
    public String getFirstName(){
        return firstName;
@@ -135,6 +144,7 @@ public class Person
    *           person object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @param last last name of person object
    */
    private void setLastName( String last ){
        lastName = last;
@@ -148,6 +158,7 @@ public class Person
    *           person object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @return last name of person object
    */
    public String getLastName(){
        return lastName;
@@ -161,6 +172,7 @@ public class Person
    *           person object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @param emailAddress email address of person object
    */
    private void setEmail( String emailAddress ){
        email = emailAddress;
@@ -174,6 +186,7 @@ public class Person
    *           person object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @return email address of person object
    */
    public String getEmail(){
        return email;
@@ -187,6 +200,7 @@ public class Person
    *           person object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @param phone phone number of person object
    */
    private void setPhoneNumber( String phone ){
        phoneNumber = phone;
@@ -200,6 +214,7 @@ public class Person
    *           person object.
    * Consistency - It uses the same syntax rules as the rest of the class and
    *               continues to use proper casing and indentation.
+   * @return phone number of person object
    */
    public String getPhoneNumber(){
        return phoneNumber;

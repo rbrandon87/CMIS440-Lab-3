@@ -528,6 +528,7 @@ public class BooksDisplay extends javax.swing.JFrame {
     *           from List of Book objects.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    * @param evt ActionEvent from button click
     */
     private void btnPreviousActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreviousActionPerformed
         /**
@@ -555,6 +556,7 @@ public class BooksDisplay extends javax.swing.JFrame {
     *           a number of record to select.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    * @param evt ActionEvent from enter
     */
     private void txtCurrentRecordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCurrentRecordActionPerformed
         /**
@@ -574,6 +576,7 @@ public class BooksDisplay extends javax.swing.JFrame {
     *           from List of Book objects.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    * @param evt ActionEvent from button click
     */
     private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
         /**
@@ -600,6 +603,7 @@ public class BooksDisplay extends javax.swing.JFrame {
     *           author last name entered.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    * @param evt ActionEvent from button click
     */
     private void btnFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindActionPerformed
         /**
@@ -649,6 +653,10 @@ public class BooksDisplay extends javax.swing.JFrame {
     *           database.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    *
+    * @param evt ActionEvent from button click
+    * @exception NumberFormatException for Integer.parseInt
+    * @exception Exception general exception capture
     */
     private void btnNewEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewEntryActionPerformed
 
@@ -713,6 +721,10 @@ public class BooksDisplay extends javax.swing.JFrame {
     *           database.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    *
+    * @param evt ActionEvent from button click
+    * @exception NumberFormatException for Integer.parseInt
+    * @exception Exception general exception capture
     */
     private void btnDeleteEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteEntryActionPerformed
         /**
@@ -726,18 +738,25 @@ public class BooksDisplay extends javax.swing.JFrame {
          * After the author/book are deleted the database is reloaded to
          * reflect the deleted entry is gone.
          */
-        if (txtAuthorID.getText().equals("") || txtISBN.getText().equals("")){
-            myTextAreaLogger.log("Author ID and ISBN must be "
-                    + "populated before a delete ");
-            return;
-        }
-        int result = bookQueries.deleteBook(
-                Integer.parseInt(txtAuthorID.getText()), txtISBN.getText());
-        checkForErrors();
+        try{
+            if (txtAuthorID.getText().equals("") ||
+                    txtISBN.getText().equals("")){
+                myTextAreaLogger.log("Author ID and ISBN must be "
+                        + "populated before a delete ");
+                return;
+            }
+            int result = bookQueries.deleteBook(
+                    Integer.parseInt(txtAuthorID.getText()), txtISBN.getText());
+            checkForErrors();
 
-        myTextAreaLogger.log(result > 0 ? "Delete Successful"
-                : "Delete Not Successful");
-        loadDatabase();
+            myTextAreaLogger.log(result > 0 ? "Delete Successful"
+                    : "Delete Not Successful");
+            loadDatabase();
+        }catch (NumberFormatException exception){
+            myTextAreaLogger.log(exception.toString());
+        }catch (Exception exception){
+            myTextAreaLogger.log(exception.toString());
+        }
     }//GEN-LAST:event_btnDeleteEntryActionPerformed
 
     /** Updates a entry into the database
@@ -748,6 +767,10 @@ public class BooksDisplay extends javax.swing.JFrame {
     *           database.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    *
+    * @param evt ActionEvent from button click
+    * @exception NumberFormatException for Integer.parseInt
+    * @exception Exception general exception capture
     */
     private void btnUpdateEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateEntryActionPerformed
         /**
@@ -803,6 +826,8 @@ public class BooksDisplay extends javax.swing.JFrame {
     * Clarity - It is simple to understand that this exits the program.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    *
+    * @param evt ActionEvent from menu item click
     */
     private void exitMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitMenuItemActionPerformed
         System.exit(0);
@@ -816,6 +841,8 @@ public class BooksDisplay extends javax.swing.JFrame {
     *           program.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    *
+    * @param evt ActionEvent from menu item click
     */
     private void instructionsMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_instructionsMenuItemActionPerformed
         String instructionMessage = ""
@@ -849,6 +876,8 @@ public class BooksDisplay extends javax.swing.JFrame {
     *           AddressBook database.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    *
+    * @param evt ActionEvent from menu item click 
     */
     private void openAddressBookMenuItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openAddressBookMenuItemActionPerformed
         try{
@@ -889,6 +918,8 @@ public class BooksDisplay extends javax.swing.JFrame {
     *           shows entire book database.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    *
+    * @param evt ActionEvent from button click
     */
     private void btnClearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearActionPerformed
         txtFind.setText("");
@@ -969,6 +1000,8 @@ public class BooksDisplay extends javax.swing.JFrame {
     *           JTable to display in editable area.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    *
+    * @param evt ListSelectionEvent from Table select change
     */
     private void myJTableValueChanged(ListSelectionEvent evt) {
         if (evt.getValueIsAdjusting()){
@@ -1112,6 +1145,8 @@ public class BooksDisplay extends javax.swing.JFrame {
     *           setupTableColumns method to set column width.
     * Consistency - It uses the same syntax rules as the rest of the class and
     *               continues to use proper casing and indentation.
+    * @param column the column of the table whose width will be adjusted
+    * @param width the width the column will be set to
     */
     private void setColumnWidth(TableColumn column, int width){
         /**
