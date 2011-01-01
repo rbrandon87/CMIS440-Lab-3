@@ -54,6 +54,131 @@ Graphic designer to create the GUI portion of this program.
 			Git Log
 -------------------------------------
 
+commit 02fbc88d0b88306ac78c859c1d22fc7e3bc8f7a5
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Sat Jan 1 14:59:22 2011 -0100
+
+    Final Debugging complete. Updated JavaDoc and UML
+
+commit 18486156c802d24c9676cd173c6bb674f440c9c8
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Sun Dec 26 13:51:40 2010 -0100
+
+    Fixed lots of JavaDoc comments. Added Try/Catch to BooksQuery deleteBook method. Lots of Debugging done.
+
+commit a8306e86d53bf9f2bac5db7231a4428f48ea725f
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Thu Dec 23 13:49:04 2010 -0100
+
+    Modified some comments, nothing big
+
+commit 3e69b10b5762593d1237fdcbc82900dda087d4b1
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Wed Dec 22 16:24:25 2010 -0100
+
+    Forgot a few comments on last push
+
+commit 32c311ba819c9dfcfe216d2e5aaddf8006010bf3
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Wed Dec 22 16:22:42 2010 -0100
+
+    Lots of code optimizing. Removed a lot of unnecessary loops from BooksQuery. Fixed up Comments a bit, lots of debugging.
+
+commit ec80b191477a230b42090c02691789d449f6d286
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Tue Dec 21 21:13:28 2010 -0100
+
+    Updated tab order. changed back to inner joins. minor stuff w/ comments
+
+commit 35d5fba7ccf983c06a00fcea1e574da2080da2c3
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Tue Dec 21 19:06:30 2010 -0100
+
+    Made efficency changes to updateBook method of BooksQuery. Finished up comments. Need to work on JavaDoc/UML. Need more debugging. Done, more or less;however
+
+commit accef49e62df6a558ef1f66d39192f2ecff40019
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Tue Dec 21 10:24:50 2010 -0100
+
+    Fixed logic error w/ books insert. did some debugging/testing
+
+commit cf9fcaf9d3f21296ffb0c72855c6114f34a23d12
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Tue Dec 21 10:08:13 2010 -0100
+
+    Added Tooltips/fixed color scheme. Changed result to 0 in Book if exception occurs
+
+commit 1c61e907bedafadefc9955e46c203af4736cf060
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Mon Dec 20 22:13:19 2010 -0100
+
+    Comments done for book class
+
+commit 077a91fccd687ad4e08374eef16eeaca443f2f4b
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Mon Dec 20 17:48:45 2010 -0100
+
+    Fixed logic errors w/ Books insert/update/delete. Minor code formatting.
+
+commit 83a739ab7e23a080be069c2a1e49e9d07ac21e8e
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Mon Dec 20 15:07:50 2010 -0100
+
+    Books is up and running all the way. Still messy. Need to clean up code/ do comments. Minor UI Stuff needed.
+
+commit 8735020430e4be6fd873ebfa07cc55111ca06d9e
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Mon Dec 20 00:48:52 2010 -0100
+
+    Lots of stuff. Got Books databae going, sort of, needs work.
+
+commit 0703e2126bcf10e94ec425f080db4334d233733e
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Sat Dec 18 21:47:13 2010 -0100
+
+    UI Work. Made N&F. Fixed up Exception handling/getLastError/TextAreaLogger. Did lots of work on comments.
+
+commit 6c52fff89f0a479a3e0b7ac11df2d5de75204c49
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Fri Dec 17 21:58:06 2010 -0100
+
+    Worked on TextAreaLogger and getLastError/Write Error methods for PersonQueries.
+
+commit bab4ded33975d796d38003cc351ca81ed3186050
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Thu Dec 16 22:18:54 2010 -0100
+
+    Finally got JTable up and working. Got Update/Delete working. So far everything is looking pretty nasty, code wise, however. Need to work on Logger class and error messages next. Then clean up the code.
+
+commit 25a77bd670d0acb4c7f72960c0a6091022db1511
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Thu Dec 16 07:37:55 2010 -0100
+
+    Linked JTable to index change from previous/next buttons
+
+commit a5416e247ecedaf9ebdf6f8036fa32c32462f6fb
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Thu Dec 16 06:33:29 2010 -0100
+
+    Got JTable to work. Added Logger class and getLastError method barebones
+
+commit e21a8dfe2f3b393f3ed7d2cb2cd17f6c922f1832
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Wed Dec 15 23:03:56 2010 -0100
+
+    Basic GUI setup
+
+commit 2d2e2f5cf058fe04e6489809a47e9bc3ea254ab1
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Tue Dec 14 22:30:20 2010 -0100
+
+    second commit
+
+commit d5411ca79a04d3bffdfed3c951788a55abe9f623
+Author: Brandon Russell <rbrandon87@gmail.com>
+Date:   Tue Dec 14 22:29:21 2010 -0100
+
+    first commit
 
 
 
