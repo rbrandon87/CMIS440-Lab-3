@@ -728,7 +728,7 @@ public class BooksDisplay extends javax.swing.JFrame {
     */
     private void btnDeleteEntryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteEntryActionPerformed
         /**
-         * If the authorID or ISBN fielda are blank then the method is
+         * If the authorID or ISBN fields are blank then the method is
          * stopped since no entry is selected for deletion.
          * This calls the deleteBook method of the bookQueries object to
          * delete a book/author from the database. It's assigned to a int to

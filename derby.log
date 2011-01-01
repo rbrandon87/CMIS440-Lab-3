@@ -1,12 +1,12 @@
 ----------------------------------------------------------------
-2010-12-26 14:48:53.048 GMT:
- Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance a816c00e-012d-2327-47b7-000002a73cd0
+2011-01-01 15:38:56.830 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance a816c00e-012d-423b-4522-000002a6fcb8
 on database directory C:\Users\Bwiz_Dual_PC\Documents\NetBeansProjects\Russell_CMIS440_Lab3\AddressBook  
 
 Database Class Loader started - derby.database.classpath=''
 ----------------------------------------------------------------
-2010-12-26 14:49:18.607 GMT:
- Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 80840021-012d-2327-47b7-000002a73cd0
+2011-01-01 15:39:00.102 GMT:
+ Booting Derby version The Apache Software Foundation - Apache Derby - 10.5.3.0 - (802917): instance 185e801c-012d-423b-4522-000002a6fcb8
 on database directory C:\Users\Bwiz_Dual_PC\Documents\NetBeansProjects\Russell_CMIS440_Lab3\Books  
 
 Database Class Loader started - derby.database.classpath=''

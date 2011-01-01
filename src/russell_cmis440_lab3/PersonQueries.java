@@ -14,6 +14,7 @@ package russell_cmis440_lab3;
 *|                           CRC: PersonQueries                               |
 *|----------------------------------------------------------------------------|
 *|Used to query database to insert/update/delete entries   AddressBookDisplay |
+*|Used to build list of person objects                                 Person |
 *|----------------------------------------------------------------------------|
 *
 * @TheCs Cohesion - All methods in this class work together on similar task.

@@ -1118,7 +1118,7 @@ public class AddressBookDisplay extends javax.swing.JFrame {
 
         /**
          * After the UIManager is updated, then make a new Runnable on the
-         * SwingUtilities.invoke later to run the program and make it visible.
+         * EventQueue.invoke later to run the program and make it visible.
          */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {

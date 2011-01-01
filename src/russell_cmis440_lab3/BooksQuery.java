@@ -14,6 +14,7 @@ package russell_cmis440_lab3;
 *|                           CRC: BooksQuery                                  |
 *|----------------------------------------------------------------------------|
 *|Used to query database to insert/update/delete entries         BooksDisplay |
+*|Used to build list of books/comparison during insert                   Book |
 *|----------------------------------------------------------------------------|
 *
 * @TheCs Cohesion - All methods in this class work together on similar task.

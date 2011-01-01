@@ -13,6 +13,7 @@ package russell_cmis440_lab3;
 *|                           CRC: TextAreaLogger                              |
 *|----------------------------------------------------------------------------|
 *|Updates TextArea with passed error messages             AddressBookDisplay  |
+*|Updates TextArea with passed error messages                   BooksDisplay  |
 *|----------------------------------------------------------------------------|
 *
 * @TheCs Cohesion - All methods in this class work together on similar task.
